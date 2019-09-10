@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"thesissummariser9e3ef1b3": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}
