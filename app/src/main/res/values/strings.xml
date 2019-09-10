@@ -1,3 +1,44 @@
 <resources>
-    <string name="app_name">My First App</string>
+    <string name="app_name">ThesisSummariser</string>
+    <string name="title_activity_processing">ProcessingActivity</string>
+
+    <!-- Bottom Navigation Titles -->
+    <string name="title_raw_footage">Raw Footage</string>
+    <string name="title_processing">Processing</string>
+    <string name="title_summarised_videos">Summarised Videos</string>
+
+    <!-- Setting Activity Title -->
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+
+    <string name="summarisation_header">Summarisation</string>
+
+    <!-- Summarisation Preferences -->
+    <string name="auto_retrieval_title">Auto Retrieval</string>
+    <string name="auto_retrieval_summary_on">Automatically retrieve videos from the dashcam</string>
+    <string name="auto_retrieval_summary_off">Only retrieve videos when manually requested</string>
+
+    <string name="auto_summarise_title">Auto Summarise</string>
+    <string name="auto_summarise_summary_on">Automatically add raw videos to the processing queue.</string>
+    <string name="auto_summarise_summary_off">Only add raw videos to the processing queue when manually requested</string>
+
+    <string name="auto_upload_title">Auto Upload</string>
+    <string name="auto_upload_summary_on">Automatically upload summarised video to the Cloud storage</string>
+    <string name="auto_upload_summary_off">Only upload summarised video to the Cloud storage when manually requested</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>
