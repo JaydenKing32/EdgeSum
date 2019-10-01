@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +20,8 @@ import com.example.myfirstapp.data.VideoViewModelFactory;
 import com.example.myfirstapp.data.VideosRepository;
 import com.example.myfirstapp.model.Video;
 import com.example.myfirstapp.util.video.viewholderprocessor.VideoViewHolderProcessor;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -125,12 +128,12 @@ public class VideoFragment extends Fragment {
 
             final VideoRecyclerViewAdapter adapter = new VideoRecyclerViewAdapter(mListener, this.getContext(), this.actionButton.getText(), videoViewHolderProcessor);
             recyclerView.setAdapter(adapter);
-//            videoViewModel.getVideos().observe(this, new Observer<List<Video>>() {
-//                @Override
-//                public void onChanged(List<Video> videos) {
-//                    adapter.setVideos(videos);
-//                }
-//            });
+            videoViewModel.getVideos().observe(this, new Observer<List<Video>>() {
+                @Override
+                public void onChanged(List<Video> videos) {
+                    adapter.setVideos(videos);
+                }
+            });
         }
         return view;
     }

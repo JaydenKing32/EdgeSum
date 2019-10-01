@@ -77,7 +77,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         holder.thumbnailView.setImageBitmap(getThumbnail(videos.get(position).getId()));
         holder.videoFileNameView.setText(videos.get(position).getName());
         holder.actionButton.setText(BUTTON_ACTION_TEXT);
-
+        Log.i("videos",holder.video.toString());
         videoViewHolderProcessor.process(holder, position);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +99,8 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
                 Video video = videos.get(position);
                 System.out.println(videos.get(position));
 //                String path = video.getData();
-                String path = "/storage/emulated/0/Android/succeed360p.mp4";
-                String output = "/storage/emulated/0/Android/summarised.mp4";
+                String path = video.getData();
+                String output = "storage/emulated/0/Android/summarised.mp4";
                 Summariser summariser = new Summariser(path, 60, 2, output, true);
                 summariser.summarise();
                 uploadWithTransferUtility(output);
@@ -126,7 +126,8 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
             final String S3Key = String.format("%s/%s", userPrivatePath, name);
             TransferObserver uploadObserver =
                     transferUtility.upload(
-                            S3Key,
+//                            S3Key,
+                            "public/summarisedVid.mp4",
                             file);
 
             // Attach a listener to the observer to get state update and progress notifications
