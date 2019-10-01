@@ -1,0 +1,258 @@
+package com.example.myfirstapp.util.video.summariser;
+
+import android.util.Log;
+
+import org.apache.commons.io.FilenameUtils;
+
+import com.arthenica.mobileffmpeg.FFmpeg;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+public class Summariser {
+    private final String filename;
+    private final double noise;
+    private final double duration;
+    private final boolean verbose;
+    private final String outFile;
+
+    public Summariser(String filename, double noise, double duration, String outFile, boolean verbose) {
+        this.filename = filename;
+        this.noise = noise;
+        this.duration = duration;
+        this.outFile = outFile;
+        this.verbose = verbose;
+    }
+
+    public void summarise() {
+        ArrayList<Double[]> activeTimes = getActiveTimes();
+        ArrayList<String> ffmpegArgs;
+
+        if (activeTimes == null) {
+            // Video file is completely active, so just copy it
+            try {
+                System.out.println("Whole video is active");
+                Files.copy(new File(filename).toPath(), new File(sumFilename()).toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        switch (activeTimes.size()) {
+            case 0:
+                System.out.println("No activity detected");
+                System.exit(0);
+            case 1:
+                Double[] times = activeTimes.get(0);
+                ffmpegArgs = getArgumentsOneScene(times[0], times[1]);
+                System.out.println("One active section found");
+                break;
+            default:
+                ffmpegArgs = getArgumentsMultipleScenes(activeTimes);
+                System.out.println(String.format("%d active sections found", activeTimes.size()));
+        }
+
+        executeFfmpeg(ffmpegArgs);
+//        if (verbose) {
+//            echoFfmpegOutput(runFfmpeg(ffmpegArgs));
+//        } else {
+//            getFfmpegOutput(runFfmpeg(ffmpegArgs));
+//        }
+    }
+
+    private void executeFfmpeg(ArrayList<String> ffmpegArgs) {
+        String arguments = ffmpegArgs.stream().collect(Collectors.joining(" "));
+        FFmpeg.execute(arguments);
+    }
+
+    private ArrayList<String> getArgumentsOneScene(Double start, Double end) {
+        return new ArrayList<>(Arrays.asList(
+//                "ffmpeg",
+                "-y", // Skip prompts
+                "-i", filename,
+                "-ss", start.toString(),
+                "-to", end.toString(),
+                "-c", "copy",
+                sumFilename()
+        ));
+    }
+
+    // https://superuser.com/a/1230097/911563
+    private ArrayList<String> getArgumentsMultipleScenes(ArrayList<Double[]> activeTimes) {
+        ArrayList<String> ffmpegArgs = new ArrayList<>(Arrays.asList(
+//                "ffmpeg",
+                "-y", // Skip prompts
+                "-i", filename,
+                "-filter_complex"
+        ));
+        StringBuilder filter = new StringBuilder("\"");
+
+        for (int i = 0; i < activeTimes.size(); i++) {
+            filter.append(String.format(
+                    "[0:v]trim=%1$f:%2$f,setpts=PTS-STARTPTS[v%3$d]; " +
+                            "[0:a]atrim=%1$f:%2$f,asetpts=PTS-STARTPTS[a%3$d]; ",
+                    activeTimes.get(i)[0], activeTimes.get(i)[1], i));
+        }
+        for (int i = 0; i < activeTimes.size(); i++) {
+            filter.append(String.format("[v%1$d][a%1$d]", i));
+        }
+        filter.append(String.format("concat=n=%d:v=1:a=1[outv][outa]\"", activeTimes.size()));
+
+        ffmpegArgs.addAll(new ArrayList<>(Arrays.asList(
+                filter.toString(),
+                "-map", "\"[outv]\"",
+                "-map", "\"[outa]\"",
+                "-crf", "18", // Set quality
+                sumFilename()
+        )));
+
+        return ffmpegArgs;
+    }
+
+    private ArrayList<Double[]> getActiveTimes() {
+//        Process ffmpegProcess = runFfmpeg(new ArrayList<>(Arrays.asList(
+//                "ffmpeg",
+//                "-i", filename,
+//                "-vf", String.format("freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=freeze.txt", noise, duration),
+//                "-f", "null", "-")));
+        detectFreeze();
+//        if (verbose) {
+//            echoFfmpegOutput(ffmpegProcess);
+//        } else {
+//            getFfmpegOutput(ffmpegProcess);
+//        }
+
+        File freeze = new File("/storage/emulated/0/Android/freeze.txt");
+
+        if (!freeze.exists() || freeze.length() == 0) {  // No inactive sections
+            Log.i("No freeze", "freeze");
+            return null;
+        }
+        Scanner sc = null;
+
+        try {
+            sc = new Scanner(freeze);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        ArrayList<Double[]> activeTimes = new ArrayList<>();
+        Pattern gotoEquals = Pattern.compile(".*=");
+
+        sc.nextLine(); // Skip first line
+        double start_time = sc.skip(gotoEquals).nextDouble();
+
+        if (start_time != 0) { // Video starts active
+            activeTimes.add(new Double[]{0.0, start_time});
+        }
+        while (sc.hasNextLine()) {
+            String start_prefix = sc.findInLine("freeze_end");
+
+            if (start_prefix != null) {
+                Double[] times = new Double[2];
+                sc.skip(gotoEquals);
+                times[0] = sc.nextDouble();
+
+                sc.nextLine(); // Go to next line
+
+                if (sc.hasNextLine()) {
+                    sc.nextLine(); // Skip line
+                    times[1] = sc.skip(gotoEquals).nextDouble();
+                    sc.nextLine();
+                } else { // Active until end
+                    times[1] = getVideoDuration();
+                }
+
+                if (times[0] < times[1]) { // Make sure start time is before end time
+                    activeTimes.add(times);
+                }
+            } else {
+                sc.nextLine();
+            }
+        }
+        return activeTimes;
+    }
+
+    private void detectFreeze() {
+        FFmpeg.execute(String.format("-i %s -vf %s -f null -",
+                filename,
+                String.format("freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=/storage/emulated/0/Android/freeze.txt", noise, duration)));
+    }
+
+    private Process runFfmpeg(ArrayList<String> args) {
+        ProcessBuilder build = new ProcessBuilder(args).redirectErrorStream(true);
+
+        try {
+            return build.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        return null;
+    }
+
+    // https://stackoverflow.com/a/13991171/8031185
+    private void echoFfmpegOutput(Process process) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+
+        try {
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private ArrayList<String> getFfmpegOutput(Process process) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        ArrayList<String> output = new ArrayList<>();
+        String line;
+
+        try {
+            while ((line = reader.readLine()) != null) {
+                output.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        return output;
+    }
+
+    private Double getVideoDuration() {
+        Process ffmpegProcess = runFfmpeg(new ArrayList<>(Arrays.asList(
+                "ffprobe",
+                "-v", "error",
+                "-show_entries", "format=duration",
+                "-of", "default=noprint_wrappers=1:nokey=1",
+                filename)));
+        String output = getFfmpegOutput(ffmpegProcess).get(0);
+        return Double.parseDouble(output);
+    }
+
+    private String sumFilename() {
+        if (outFile == null) {
+            return String.format("%s-sum.%s",
+                    FilenameUtils.getBaseName(filename),
+                    FilenameUtils.getExtension(filename));
+        } else {
+            return outFile;
+        }
+    }
+}

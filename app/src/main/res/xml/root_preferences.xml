@@ -41,4 +41,14 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="Summarised Videos">
+
+        <Preference
+            android:defaultValue="true"
+            app:key="view_summarised_video"
+            app:title="View Summarised Videos" />
+
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

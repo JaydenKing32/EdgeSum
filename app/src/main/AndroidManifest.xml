@@ -9,17 +9,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:name=".page.viewuploadedvideos.ViewUploadedVideosActivity"
+            android:parentActivityName=".page.main.MainActivity"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.myfirstapp.MainActivity" />
+                android:value="com.example.myfirstapp.page.main.MainActivity" />
         </activity>
 
         <activity
-            android:name=".AuthActivity"
+            android:name=".page.setting.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".page.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.myfirstapp.page.main.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".page.authentication.AuthenticationActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,10 +38,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".page.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
         <service android:name="org.eclipse.paho.android.service.MqttService" />
+
+        <service android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService" android:enabled="true" />
     </application>
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />

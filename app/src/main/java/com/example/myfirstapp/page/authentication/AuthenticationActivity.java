@@ -1,4 +1,4 @@
-package com.example.myfirstapp;
+package com.example.myfirstapp.page.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,12 +10,14 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.Callback;
 import com.amazonaws.mobile.client.SignInUIOptions;
 import com.amazonaws.mobile.client.UserStateDetails;
+import com.example.myfirstapp.R;
+import com.example.myfirstapp.page.main.MainActivity;
 
-public class AuthActivity extends AppCompatActivity {
+public class AuthenticationActivity extends AppCompatActivity {
 
     // Based off https://aws.amazon.com/blogs/mobile/building-an-android-app-with-aws-amplify-part-1/.
 
-    private final String TAG = AuthActivity.class.getSimpleName();
+    private final String TAG = AuthenticationActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class AuthActivity extends AppCompatActivity {
                 switch (userStateDetails.getUserState()){
                     case SIGNED_IN:
                         // If user have successfully sign in, direct user to the MainActivity.
-                        Intent i = new Intent(AuthActivity.this, MainActivity.class);
+                        Intent i = new Intent(AuthenticationActivity.this, MainActivity.class);
                         startActivity(i);
                         break;
                     case SIGNED_OUT:
@@ -59,7 +61,10 @@ public class AuthActivity extends AppCompatActivity {
         // Attempt to show the drop-in authentication screen that Amplify provides.
         try {
             AWSMobileClient.getInstance().showSignIn(this,
-                    SignInUIOptions.builder().nextActivity(MainActivity.class).build());
+                    SignInUIOptions.builder()
+                            .nextActivity(MainActivity.class)
+                            .canCancel(true)
+                            .build());
         } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
