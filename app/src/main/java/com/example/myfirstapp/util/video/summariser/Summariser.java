@@ -1,10 +1,14 @@
 package com.example.myfirstapp.util.video.summariser;
 
+import android.content.Context;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
-import org.apache.commons.io.FilenameUtils;
-
 import com.arthenica.mobileffmpeg.FFmpeg;
+
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,13 +24,23 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Summariser {
+
+    private final String TAG = Summariser.class.getSimpleName();
+
+    private final String freezeFilePath = "/sdcard/Movies/rawFootage/freeze.txt";
+
     private final String filename;
     private final double noise;
     private final double duration;
     private final boolean verbose;
     private final String outFile;
 
-    public Summariser(String filename, double noise, double duration, String outFile, boolean verbose) {
+    public static Summariser createSummariser(String filename, double noise, double duration, String outFile, boolean verbose) {
+        return new Summariser(filename, noise, duration, outFile, verbose);
+    }
+
+
+    private Summariser(String filename, double noise, double duration, String outFile, boolean verbose) {
         this.filename = filename;
         this.noise = noise;
         this.duration = duration;
@@ -36,7 +50,7 @@ public class Summariser {
 
     public void summarise() {
         ArrayList<Double[]> activeTimes = getActiveTimes();
-        ArrayList<String> ffmpegArgs;
+        ArrayList<String> ffmpegArgs = new ArrayList<>();
 
         if (activeTimes == null) {
             // Video file is completely active, so just copy it
@@ -50,21 +64,34 @@ public class Summariser {
             return;
         }
 
+        ActivtySections activtySections;
+
         switch (activeTimes.size()) {
             case 0:
                 System.out.println("No activity detected");
-                System.exit(0);
+//                System.exit(0);
+                try {
+                    Files.copy(new File(filename).toPath(), new File(sumFilename()).toPath(),
+                            StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                activtySections = ActivtySections.NONE;
+                break;
             case 1:
                 Double[] times = activeTimes.get(0);
                 ffmpegArgs = getArgumentsOneScene(times[0], times[1]);
                 System.out.println("One active section found");
+                activtySections = ActivtySections.ONE;
                 break;
             default:
                 ffmpegArgs = getArgumentsMultipleScenes(activeTimes);
                 System.out.println(String.format("%d active sections found", activeTimes.size()));
+                activtySections = ActivtySections.MANY;
         }
-
-        executeFfmpeg(ffmpegArgs);
+        if (activtySections != ActivtySections.NONE) {
+            executeFfmpeg(ffmpegArgs);
+        }
 //        if (verbose) {
 //            echoFfmpegOutput(runFfmpeg(ffmpegArgs));
 //        } else {
@@ -134,7 +161,7 @@ public class Summariser {
 //            getFfmpegOutput(ffmpegProcess);
 //        }
 
-        File freeze = new File("/storage/emulated/0/Android/freeze.txt");
+        File freeze = new File(freezeFilePath);
 
         if (!freeze.exists() || freeze.length() == 0) {  // No inactive sections
             Log.i("No freeze", "freeze");
@@ -188,7 +215,7 @@ public class Summariser {
     private void detectFreeze() {
         FFmpeg.execute(String.format("-i %s -vf %s -f null -",
                 filename,
-                String.format("freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=/storage/emulated/0/Android/freeze.txt", noise, duration)));
+                String.format("freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=%s", noise, duration, freezeFilePath)));
     }
 
     private Process runFfmpeg(ArrayList<String> args) {
@@ -255,4 +282,10 @@ public class Summariser {
             return outFile;
         }
     }
+
+    private enum ActivtySections {
+        NONE, ONE, MANY;
+    }
 }
+
+

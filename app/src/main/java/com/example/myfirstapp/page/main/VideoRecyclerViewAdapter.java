@@ -21,14 +21,13 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.myfirstapp.R;
-import com.example.myfirstapp.page.main.VideoFragment.OnListFragmentInteractionListener;
+import com.example.myfirstapp.data.VideoViewModel;
 import com.example.myfirstapp.model.Video;
-import com.example.myfirstapp.util.video.summariser.Summariser;
+import com.example.myfirstapp.page.main.VideoFragment.OnListFragmentInteractionListener;
 import com.example.myfirstapp.util.video.viewholderprocessor.NullVideoViewHolderProcess;
 import com.example.myfirstapp.util.video.viewholderprocessor.VideoViewHolderProcessor;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,15 +36,15 @@ import java.util.List;
  * TODO: Replace the implementation with code for your data type.
  */
 public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecyclerViewAdapter.VideoViewHolder> {
-
-    private List<Video> videos = new ArrayList<>();
+    private String TAG = VideoRecyclerViewAdapter.class.getSimpleName();
+    private List<Video> videos;
     private final OnListFragmentInteractionListener listFragmentInteractionListener;
     private Context context;
     private final String BUTTON_ACTION_TEXT;
 
     private VideoViewHolderProcessor videoViewHolderProcessor;
 
-    private Summariser summariser;
+    private VideoViewModel viewModel;
 
     public VideoRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, String buttonText) {
         this.listFragmentInteractionListener = listener;
@@ -63,6 +62,18 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         this.videoViewHolderProcessor = videoViewHolderProcessor;
     }
 
+    public VideoRecyclerViewAdapter(
+            OnListFragmentInteractionListener listener,
+            Context context,
+            String buttonText,
+            VideoViewHolderProcessor videoViewHolderProcessor,
+            VideoViewModel videoViewModel) {
+        this(listener, context, buttonText);
+        this.videoViewHolderProcessor = videoViewHolderProcessor;
+        this.viewModel = videoViewModel;
+    }
+
+
 
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -77,8 +88,8 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         holder.thumbnailView.setImageBitmap(getThumbnail(videos.get(position).getId()));
         holder.videoFileNameView.setText(videos.get(position).getName());
         holder.actionButton.setText(BUTTON_ACTION_TEXT);
-        Log.i("videos",holder.video.toString());
-        videoViewHolderProcessor.process(holder, position);
+
+        videoViewHolderProcessor.process(context, viewModel, holder, position);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,21 +103,9 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
                 System.out.println(position);
             }
         });
+        final VideoRecyclerViewAdapter a = this;
 
-        holder.actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Video video = videos.get(position);
-                System.out.println(videos.get(position));
-//                String path = video.getData();
-                String path = video.getData();
-                String output = "storage/emulated/0/Android/summarised.mp4";
-                Summariser summariser = new Summariser(path, 60, 2, output, true);
-                summariser.summarise();
-                uploadWithTransferUtility(output);
-                Toast.makeText(context, "Add to processing queue", Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
     public void uploadWithTransferUtility(String path) {
@@ -126,8 +125,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
             final String S3Key = String.format("%s/%s", userPrivatePath, name);
             TransferObserver uploadObserver =
                     transferUtility.upload(
-//                            S3Key,
-                            "public/summarisedVid.mp4",
+                            S3Key,
                             file);
 
             // Attach a listener to the observer to get state update and progress notifications

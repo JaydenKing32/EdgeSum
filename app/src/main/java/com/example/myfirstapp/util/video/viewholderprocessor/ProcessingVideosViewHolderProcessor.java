@@ -1,12 +1,14 @@
 package com.example.myfirstapp.util.video.viewholderprocessor;
 
+import android.content.Context;
 import android.graphics.Color;
 
+import com.example.myfirstapp.data.VideoViewModel;
 import com.example.myfirstapp.page.main.VideoRecyclerViewAdapter;
 
 public class ProcessingVideosViewHolderProcessor implements VideoViewHolderProcessor {
     @Override
-    public void process(VideoRecyclerViewAdapter.VideoViewHolder viewHolder, int position) {
+    public void process(Context context, final VideoViewModel vm,  VideoRecyclerViewAdapter.VideoViewHolder viewHolder, int position) {
         disableFirstRowButton(viewHolder, position);
 
     }

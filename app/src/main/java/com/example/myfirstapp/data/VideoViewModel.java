@@ -34,4 +34,8 @@ public class VideoViewModel extends ViewModel {
     public void remove(int position) {
         repository.delete(position);
     }
+
+    public void update(Video video, int position) {
+        repository.update(video, position);
+    }
 }

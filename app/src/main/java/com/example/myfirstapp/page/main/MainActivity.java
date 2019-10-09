@@ -1,6 +1,5 @@
 package com.example.myfirstapp.page.main;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,9 +22,13 @@ import com.example.myfirstapp.page.authentication.AuthenticationActivity;
 import com.example.myfirstapp.page.setting.SettingsActivity;
 import com.example.myfirstapp.util.Injection;
 import com.example.myfirstapp.util.file.FileManager;
-import com.example.myfirstapp.util.permissions.PermissionsManager;
+import com.example.myfirstapp.util.video.videoeventhandler.ProcessingVideosEventHandler;
+import com.example.myfirstapp.util.video.videoeventhandler.RawFootageEventHandler;
+import com.example.myfirstapp.util.video.videoeventhandler.SummarisedVideosEventHandler;
 import com.example.myfirstapp.util.video.viewholderprocessor.NullVideoViewHolderProcess;
 import com.example.myfirstapp.util.video.viewholderprocessor.ProcessingVideosViewHolderProcessor;
+import com.example.myfirstapp.util.video.viewholderprocessor.RawFootageViewHolderProcessor;
+import com.example.myfirstapp.util.video.viewholderprocessor.SummarisedVideosViewHolderProcessor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
@@ -35,15 +38,14 @@ public class MainActivity
         implements
         VideoFragment.OnListFragmentInteractionListener {
 
-    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
-    private static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 2;
+    private final String TAG = MainActivity.class.getSimpleName();
 
-    final VideoFragment rawFootageFragment = VideoFragment.newInstance(1, new NullVideoViewHolderProcess(), ActionButton.ADD);
-    final VideoFragment processingFragment = VideoFragment.newInstance(1, new ProcessingVideosViewHolderProcessor(), ActionButton.REMOVE);
-    final VideoFragment summarisedVideoFragment = VideoFragment.newInstance(1, new NullVideoViewHolderProcess(), ActionButton.UPLOAD);
+    VideoFragment rawFootageFragment;
+    VideoFragment processingFragment;
+    VideoFragment summarisedVideoFragment;
 
     final FragmentManager supportFragmentManager = getSupportFragmentManager();
-    Fragment activeFragment = rawFootageFragment;
+    Fragment activeFragment;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationOnNavigationItemSelectedListener
@@ -79,25 +81,19 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-        requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+
         startAwsS3TransferService();
 
-
         // Set the toolbar as the app bar for this Activity.
-        setUpAppBar();
+        setToolBarAsTheAppBar();
 
         setUpBottomNavigation();
 
         setUpFragments();
 
-
-
-
-
         File externalStoragePublicMovieDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         makeRawFootageDirectory(externalStoragePublicMovieDirectory);
-
+        makeSummarisedVideosDirectory(externalStoragePublicMovieDirectory);
     }
 
     private void startAwsS3TransferService() {
@@ -106,35 +102,39 @@ public class MainActivity
 
     private void makeRawFootageDirectory(File path) {
         final String rawFootageDirectoryName = "rawFootage/";
-        FileManager.makeDirectory(path, rawFootageDirectoryName);
+        FileManager.makeDirectory(this.getApplicationContext(), path, rawFootageDirectoryName);
+    }
+
+    private void makeSummarisedVideosDirectory(File path) {
+        final String rawFootageDirectoryName = "summarised/";
+        FileManager.makeDirectory(this.getApplicationContext(), path, rawFootageDirectoryName);
     }
 
 
-    private void setUpAppBar() {
+    private void setToolBarAsTheAppBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
-    private void requestPermission(String permission, int permissionCode) {
-        if (!PermissionsManager.checkIfContextHavePermission(this, permission)) {
-            final String[] permissionToRequest = {permission};
-            PermissionsManager.requestPermissionForActivity(this, permissionToRequest, permissionCode);
-        }
-    }
-
 
     private void setUpFragments() {
+        VideosRepository rawFootageRepository = Injection.getExternalVideoRepository(this, "", FileManager.RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath());
+        VideosRepository processingVideosRepository = Injection.getProcessingVideosRespository(this);
+        VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "", FileManager.SUMMARISED_VIDEOS_PATH.getAbsolutePath());
+
+        rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(), ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository));
+        processingFragment = VideoFragment.newInstance(1, new ProcessingVideosViewHolderProcessor(), ActionButton.REMOVE, new ProcessingVideosEventHandler(processingVideosRepository));
+        summarisedVideoFragment = VideoFragment.newInstance(1, new SummarisedVideosViewHolderProcessor(), ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository));
+
         supportFragmentManager.beginTransaction().add(R.id.main_container, summarisedVideoFragment, "3").hide(summarisedVideoFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, processingFragment, "2").hide(processingFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, rawFootageFragment, "1").commit();
 
-        VideosRepository rawFootageRepository = Injection.getExternalVideoRepository(this, "", "");
-        VideosRepository processingVideosRepository = Injection.getProcessingVideosRespository(this);
-        VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "", "");
-
         rawFootageFragment.setRepository(rawFootageRepository);
         processingFragment.setRepository(processingVideosRepository);
         summarisedVideoFragment.setRepository(summarisedVideosRepository);
+
+        setActiveFragment(rawFootageFragment);
     }
 
     private void setUpBottomNavigation() {

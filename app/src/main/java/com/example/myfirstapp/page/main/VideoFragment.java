@@ -2,7 +2,7 @@ package com.example.myfirstapp.page.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,10 @@ import com.example.myfirstapp.data.VideoViewModel;
 import com.example.myfirstapp.data.VideoViewModelFactory;
 import com.example.myfirstapp.data.VideosRepository;
 import com.example.myfirstapp.model.Video;
+import com.example.myfirstapp.util.video.videoeventhandler.VideoEventHandler;
 import com.example.myfirstapp.util.video.viewholderprocessor.VideoViewHolderProcessor;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -47,6 +50,11 @@ public class VideoFragment extends Fragment {
 
     private VideoViewModel videoViewModel;
 
+    private String TAG = VideoFragment.class.getSimpleName();
+
+
+    private VideoEventHandler videoEventHandler;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -54,34 +62,17 @@ public class VideoFragment extends Fragment {
     public VideoFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    public static VideoFragment newInstance(int columnCount, VideosRepository repository, VideoViewHolderProcessor videoViewHolderProcessor, ActionButton actionButton) {
+    public static VideoFragment newInstance(int columnCount,
+                                            VideoViewHolderProcessor videoViewHolderProcessor,
+                                            ActionButton actionButton,
+                                            VideoEventHandler handler) {
         VideoFragment fragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         fragment.videoViewHolderProcessor = videoViewHolderProcessor;
         fragment.actionButton = actionButton;
-        fragment.repository = repository;
-
-        fragment.setVideoViewModel(
-                ViewModelProviders.of(
-                        fragment,
-                        new VideoViewModelFactory(
-                                fragment.getActivity().getApplication(),
-                                repository))
-                        .get(VideoViewModel.class)
-        );
-        return fragment;
-    }
-
-    public static VideoFragment newInstance(int columnCount, VideoViewHolderProcessor videoViewHolderProcessor, ActionButton actionButton) {
-        VideoFragment fragment = new VideoFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        fragment.videoViewHolderProcessor = videoViewHolderProcessor;
-        fragment.actionButton = actionButton;
+        fragment.videoEventHandler = handler;
         return fragment;
     }
 
@@ -103,18 +94,15 @@ public class VideoFragment extends Fragment {
                         .get(VideoViewModel.class)
         );
 
-
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_videos_list, container, false);
 
-        String[] proj = {MediaStore.Video.Media._ID,
-                MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.DISPLAY_NAME,
-                MediaStore.Video.Media.SIZE};
+        EventBus.getDefault().register(videoEventHandler);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -126,11 +114,17 @@ public class VideoFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            final VideoRecyclerViewAdapter adapter = new VideoRecyclerViewAdapter(mListener, this.getContext(), this.actionButton.getText(), videoViewHolderProcessor);
+            final VideoRecyclerViewAdapter adapter = new VideoRecyclerViewAdapter(
+                    mListener,
+                    this.getContext(),
+                    this.actionButton.getText(),
+                    videoViewHolderProcessor,
+                    videoViewModel);
             recyclerView.setAdapter(adapter);
-            videoViewModel.getVideos().observe(this, new Observer<List<Video>>() {
+            videoViewModel.getVideos().observe(getActivity(), new Observer<List<Video>>() {
                 @Override
                 public void onChanged(List<Video> videos) {
+                    Log.i(TAG, "onChanged for Videos");
                     adapter.setVideos(videos);
                 }
             });
@@ -150,10 +144,13 @@ public class VideoFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+
+
     }
 
     @Override
     public void onDetach() {
+        EventBus.getDefault().unregister(videoEventHandler);
         super.onDetach();
         mListener = null;
     }
@@ -165,6 +162,11 @@ public class VideoFragment extends Fragment {
     private void setVideoViewModel(VideoViewModel videoViewModel) {
         this.videoViewModel = videoViewModel;
 
+    }
+
+
+    public void setVideoEventHandler(VideoEventHandler handler) {
+        this.videoEventHandler = handler;
     }
 
     /**

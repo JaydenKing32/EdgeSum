@@ -1,20 +1,20 @@
 package com.example.myfirstapp.page.authentication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.Callback;
 import com.amazonaws.mobile.client.SignInUIOptions;
 import com.amazonaws.mobile.client.UserStateDetails;
 import com.example.myfirstapp.R;
-import com.example.myfirstapp.page.main.MainActivity;
+import com.example.myfirstapp.page.main.LoadingActivity;
+import com.example.myfirstapp.util.permissions.PermissionsManager;
 
 public class AuthenticationActivity extends AppCompatActivity {
-
     // Based off https://aws.amazon.com/blogs/mobile/building-an-android-app-with-aws-amplify-part-1/.
 
     private final String TAG = AuthenticationActivity.class.getSimpleName();
@@ -22,7 +22,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auth);
+        setContentView(R.layout.activity_authentication);
 
         // Initialise the instance. Implement callback that will called when there a result on initialisation or error.
         AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
@@ -32,10 +32,10 @@ public class AuthenticationActivity extends AppCompatActivity {
                 Log.i(TAG, userStateDetails.getUserState().toString());
 
                 // Decide the flow based on the user state.
-                switch (userStateDetails.getUserState()){
+                switch (userStateDetails.getUserState()) {
                     case SIGNED_IN:
                         // If user have successfully sign in, direct user to the MainActivity.
-                        Intent i = new Intent(AuthenticationActivity.this, MainActivity.class);
+                        Intent i = new Intent(AuthenticationActivity.this, LoadingActivity.class);
                         startActivity(i);
                         break;
                     case SIGNED_OUT:
@@ -57,12 +57,13 @@ public class AuthenticationActivity extends AppCompatActivity {
         });
     }
 
+
     private void showSignIn() {
         // Attempt to show the drop-in authentication screen that Amplify provides.
         try {
             AWSMobileClient.getInstance().showSignIn(this,
                     SignInUIOptions.builder()
-                            .nextActivity(MainActivity.class)
+                            .nextActivity(LoadingActivity.class)
                             .canCancel(true)
                             .build());
         } catch (Exception e) {

@@ -16,4 +16,8 @@ public interface VideosRepository {
     void insert(Video video);
 
     void delete(int position);
+
+    void delete(String path);
+
+    void update(Video video, int position);
 }

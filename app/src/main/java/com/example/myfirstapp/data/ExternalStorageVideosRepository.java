@@ -14,6 +14,7 @@ import com.example.myfirstapp.util.video.VideoManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExternalStorageVideosRepository implements VideosRepository {
 
@@ -24,44 +25,54 @@ public class ExternalStorageVideosRepository implements VideosRepository {
     private File videoDirectory;
 
     private List<Video> videos = new ArrayList<>();
+    MutableLiveData<List<Video>> result = new MutableLiveData<>();
 
 
     public ExternalStorageVideosRepository(Context context, String tag, String path) {
         this.context = context;
         this.TAG = tag;
         this.PATH = path;
-        final File externalStoragePublicMovieDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         if (PATH == null) {
             Log.i("ExternalStorageVideosRepository", "null");
         }
-        videoDirectory = new File(externalStoragePublicMovieDirectory, PATH);
 
-        FileManager.makeDirectory(externalStoragePublicMovieDirectory, PATH);
+        videoDirectory = new File(PATH);
+        Log.i("Repo", videoDirectory.getAbsolutePath());
+//        FileManager.makeDirectory(context, externalStoragePublicMovieDirectory, PATH);
     }
 
     @Override
     public MutableLiveData<List<Video>> getVideos() {
-        String[] proj = {MediaStore.Video.Media._ID,
-                MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.DISPLAY_NAME,
-                MediaStore.Video.Media.SIZE};
 
-//        return VideoManager.getAllVideoFromExternalStorageFolder(context, proj, videoDirectory);
-
-        videos = VideoManager.getAllVideosFromExternalStorage(context, proj);
-        MutableLiveData<List<Video>> result = new MutableLiveData<>();
+        videos = VideoManager.getAllVideoFromExternalStorageFolder(context.getApplicationContext(), videoDirectory);
         result.setValue(videos);
-
         return result;
     }
 
     @Override
     public void insert(Video video) {
-        videos.add(video);
+//        videos.add(video);
+
+        videos = VideoManager.getAllVideoFromExternalStorageFolder(context.getApplicationContext(), videoDirectory);
+        result.postValue(videos);
     }
 
     @Override
     public void delete(int position) {
         videos.remove(position);
+        result.postValue(videos);
     }
+
+    @Override
+    public void delete(String path) {
+        videos = videos.stream().filter(e -> !e.getData().equalsIgnoreCase(path)).collect(Collectors.toList());
+        result.postValue(videos);
+    }
+
+    @Override
+    public void update(Video video, int position) {
+        videos.set(position, video);
+        result.postValue(videos);
+    }
+
 }

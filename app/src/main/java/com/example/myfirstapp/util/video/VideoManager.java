@@ -16,15 +16,23 @@ import java.util.List;
 
 public class VideoManager {
 
+    private final static String TAG = VideoManager.class.getSimpleName();
+
     private VideoManager() {
 
     }
 
-    public static List<Video> getAllVideoFromExternalStorageFolder(Context context, String[] projection, File file) {
-        Log.i("VideoManager", "getAllVideoFromExternalStorageFolder");
+    public static List<Video> getAllVideoFromExternalStorageFolder(Context context, File file) {
+        Log.i(TAG, "getAllVideoFromExternalStorageFolder");
+        String[] projection = {MediaStore.Video.Media._ID,
+                MediaStore.Video.Media.DATA,
+                MediaStore.Video.Media.DISPLAY_NAME,
+                MediaStore.Video.Media.SIZE,
+                MediaStore.Video.Media.MIME_TYPE
+        };
         if (DeviceExternalStorage.externalStorageIsReadable()) {
             String selection=MediaStore.Video.Media.DATA +" LIKE ? ";
-            String[] selectionArgs=new String[]{"%" + "storage/emulated/0/Movies" + "%"};
+            String[] selectionArgs=new String[]{"%" + file.getAbsolutePath() + "%"};
             Log.i("VideoManager", file.getAbsolutePath());
             return getVideosFromExternalStorage(context, projection, selection, selectionArgs, null);
         }
@@ -33,7 +41,7 @@ public class VideoManager {
 
 
     public static List<Video> getAllVideosFromExternalStorage(Context context, String[] projection) {
-        Log.i("VideoManager", "getAllVideosFromExternalStorage");
+        Log.i(TAG, "getAllVideosFromExternalStorage");
         if (DeviceExternalStorage.externalStorageIsReadable()) {
             return getVideosFromExternalStorage(context, projection, null, null, null);
         }
@@ -46,7 +54,7 @@ public class VideoManager {
         List<Video> videos = new ArrayList<>(videoCursor.getCount());
         getVideosFromCursor(videoCursor, videos);
         videoCursor.close();
-        Log.i("VideoManager", String.format("%d videos return", videos.size()));
+        Log.i(TAG, String.format("%d videos return", videos.size()));
         return videos;
     }
 
@@ -62,11 +70,14 @@ public class VideoManager {
     }
 
     private static Video videoFromCursor(Cursor cursor) {
+        Log.i(TAG, "videoFromCursor");
         String id = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID));
         String name = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
+        Log.i(TAG, name);
         String data = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
         BigInteger size = new BigInteger(cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE)));
-        Video video = new Video(id, name, data, size);
+        String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
+        Video video = new Video(id, name, data, mimeType, size);
         return video;
     }
 }
