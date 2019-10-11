@@ -100,8 +100,7 @@ public class Summariser {
     }
 
     private void executeFfmpeg(ArrayList<String> ffmpegArgs) {
-        String arguments = ffmpegArgs.stream().collect(Collectors.joining(" "));
-        FFmpeg.execute(arguments);
+        FFmpeg.execute(ffmpegArgs.stream().toArray(String[]::new));
     }
 
     private ArrayList<String> getArgumentsOneScene(Double start, Double end) {
@@ -124,23 +123,23 @@ public class Summariser {
                 "-i", filename,
                 "-filter_complex"
         ));
-        StringBuilder filter = new StringBuilder("\"");
+        StringBuilder filter = new StringBuilder();
 
         for (int i = 0; i < activeTimes.size(); i++) {
             filter.append(String.format(
-                    "[0:v]trim=%1$f:%2$f,setpts=PTS-STARTPTS[v%3$d]; " +
-                            "[0:a]atrim=%1$f:%2$f,asetpts=PTS-STARTPTS[a%3$d]; ",
+                    "[0:v]trim=%1$f:%2$f,setpts=PTS-STARTPTS[v%3$d];" +
+                            "[0:a]atrim=%1$f:%2$f,asetpts=PTS-STARTPTS[a%3$d];",
                     activeTimes.get(i)[0], activeTimes.get(i)[1], i));
         }
         for (int i = 0; i < activeTimes.size(); i++) {
             filter.append(String.format("[v%1$d][a%1$d]", i));
         }
-        filter.append(String.format("concat=n=%d:v=1:a=1[outv][outa]\"", activeTimes.size()));
+        filter.append(String.format("concat=n=%d:v=1:a=1[outv][outa]", activeTimes.size()));
 
         ffmpegArgs.addAll(new ArrayList<>(Arrays.asList(
                 filter.toString(),
-                "-map", "\"[outv]\"",
-                "-map", "\"[outa]\"",
+                "-map", "[outv]",
+                "-map", "[outa]",
                 "-crf", "18", // Set quality
                 sumFilename()
         )));
@@ -263,14 +262,8 @@ public class Summariser {
     }
 
     private Double getVideoDuration() {
-        Process ffmpegProcess = runFfmpeg(new ArrayList<>(Arrays.asList(
-                "ffprobe",
-                "-v", "error",
-                "-show_entries", "format=duration",
-                "-of", "default=noprint_wrappers=1:nokey=1",
-                filename)));
-        String output = getFfmpegOutput(ffmpegProcess).get(0);
-        return Double.parseDouble(output);
+        Long ms = FFmpeg.getMediaInformation(filename).getDuration();
+        return ms / 1000.0;
     }
 
     private String sumFilename() {
