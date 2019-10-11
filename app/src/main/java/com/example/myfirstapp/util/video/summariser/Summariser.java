@@ -53,14 +53,14 @@ public class Summariser {
         ArrayList<String> ffmpegArgs = new ArrayList<>();
 
         if (activeTimes == null) {
-            // Video file is completely active, so just copy it
-            try {
+            // Testing purposes: Video file is completely active, so just copy it
+            /*try {
                 System.out.println("Whole video is active");
                 Files.copy(new File(filename).toPath(), new File(sumFilename()).toPath(),
                         StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
             return;
         }
 
