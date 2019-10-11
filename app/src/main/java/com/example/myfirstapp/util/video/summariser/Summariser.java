@@ -263,14 +263,8 @@ public class Summariser {
     }
 
     private Double getVideoDuration() {
-        Process ffmpegProcess = runFfmpeg(new ArrayList<>(Arrays.asList(
-                "ffprobe",
-                "-v", "error",
-                "-show_entries", "format=duration",
-                "-of", "default=noprint_wrappers=1:nokey=1",
-                filename)));
-        String output = getFfmpegOutput(ffmpegProcess).get(0);
-        return Double.parseDouble(output);
+        Long ms = FFmpeg.getMediaInformation(filename).getDuration();
+        return ms / 1000.0;
     }
 
     private String sumFilename() {
