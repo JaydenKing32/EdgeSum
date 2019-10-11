@@ -63,21 +63,30 @@ public class VideoManager {
         if (cursorIsNotEmpty) {
             do {
                 Video video = videoFromCursor(videoCursor);
-                videos.add(video);
-                Log.i("Video toString", video.toString());
+                if (video != null) {
+                    videos.add(video);
+                    Log.i("Video toString", video.toString());
+                } else {
+                    Log.e(TAG, "Video is null");
+                }
             } while (videoCursor.moveToNext());
         }
     }
 
     private static Video videoFromCursor(Cursor cursor) {
         Log.i(TAG, "videoFromCursor");
-        String id = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID));
-        String name = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-        Log.i(TAG, name);
-        String data = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
-        BigInteger size = new BigInteger(cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE)));
-        String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
-        Video video = new Video(id, name, data, mimeType, size);
+        Video video = null;
+        try {
+            String id = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID));
+            String name = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
+            Log.i(TAG, name);
+            String data = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+            BigInteger size = new BigInteger(cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE)));
+            String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
+            video = new Video(id, name, data, mimeType, size);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
         return video;
     }
 }
