@@ -1,18 +1,18 @@
 {
     "dev": {
         "awscloudformation": {
-            "AuthRoleName": "thesissummariser-dev-20190910233834-authRole",
-            "UnauthRoleArn": "arn:aws:iam::278795455586:role/thesissummariser-dev-20190910233834-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::278795455586:role/thesissummariser-dev-20190910233834-authRole",
+            "AuthRoleName": "thesisapp-dev-20191003121030-authRole",
+            "UnauthRoleArn": "arn:aws:iam::960905323149:role/thesisapp-dev-20191003121030-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::960905323149:role/thesisapp-dev-20191003121030-authRole",
             "Region": "ap-southeast-2",
-            "DeploymentBucketName": "thesissummariser-dev-20190910233834-deployment",
-            "UnauthRoleName": "thesissummariser-dev-20190910233834-unauthRole",
-            "StackName": "thesissummariser-dev-20190910233834",
-            "StackId": "arn:aws:cloudformation:ap-southeast-2:278795455586:stack/thesissummariser-dev-20190910233834/48a14e60-d3d0-11e9-b9b1-02e50230e918"
+            "DeploymentBucketName": "thesisapp-dev-20191003121030-deployment",
+            "UnauthRoleName": "thesisapp-dev-20191003121030-unauthRole",
+            "StackName": "thesisapp-dev-20191003121030",
+            "StackId": "arn:aws:cloudformation:ap-southeast-2:960905323149:stack/thesisapp-dev-20191003121030/f9f1bfb0-e582-11e9-ba18-02bf7f1fc1f4"
         },
         "categories": {
             "auth": {
-                "thesissummariser9e3ef1b3": {}
+                "thesisappdd7e979d": {}
             }
         }
     }

@@ -33,6 +33,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 
+import static com.example.myfirstapp.util.video.VidDownloading.getLastVideos;
+
 public class MainActivity
         extends AppCompatActivity
         implements
@@ -148,6 +150,11 @@ public class MainActivity
 
         // Define logic on how to handle each option item selected.
         switch (item.getItemId()) {
+            case R.id.action_download:
+                Log.i("Info", "Download button clicked");
+                Intent down = new Intent(MainActivity.this, DownloadActivity.class);
+                startActivity(down);
+                return true;
             case R.id.action_settings:
                 Log.i("Info", "Setting button clicked");
                 goToSettingsActivity();

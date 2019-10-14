@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.myfirstapp.MainActivity">
     <item
+        android:id="@+id/action_download"
+        android:icon="@android:drawable/stat_sys_download"
+        android:orderInCategory="100"
+        android:title="Download"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="Settings"
