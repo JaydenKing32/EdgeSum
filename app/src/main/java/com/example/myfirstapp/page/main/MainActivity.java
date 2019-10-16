@@ -1,6 +1,11 @@
 package com.example.myfirstapp.page.main;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -8,8 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -31,9 +38,17 @@ import com.example.myfirstapp.util.video.viewholderprocessor.RawFootageViewHolde
 import com.example.myfirstapp.util.video.viewholderprocessor.SummarisedVideosViewHolderProcessor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.File;
+import org.apache.commons.io.FileUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
-import static com.example.myfirstapp.util.video.VidDownloading.getLastVideos;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class MainActivity
         extends AppCompatActivity
@@ -96,6 +111,7 @@ public class MainActivity
         File externalStoragePublicMovieDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         makeRawFootageDirectory(externalStoragePublicMovieDirectory);
         makeSummarisedVideosDirectory(externalStoragePublicMovieDirectory);
+        verifyStoragePermissions();
     }
 
     private void startAwsS3TransferService() {
@@ -152,8 +168,8 @@ public class MainActivity
         switch (item.getItemId()) {
             case R.id.action_download:
                 Log.i("Info", "Download button clicked");
-                Intent down = new Intent(MainActivity.this, DownloadActivity.class);
-                startActivity(down);
+                DownloadTask mDownloadTask = new DownloadTask();
+                mDownloadTask.execute("http://192.168.1.254/DCIM/MOVIE/");
                 return true;
             case R.id.action_settings:
                 Log.i("Info", "Setting button clicked");
@@ -189,5 +205,79 @@ public class MainActivity
     @Override
     public void onListFragmentInteraction(Video item) {
 
+    }
+
+    // https://stackoverflow.com/a/33292700/8031185
+    public void verifyStoragePermissions() {
+        final int REQUEST_EXTERNAL_STORAGE = 1;
+        String[] PERMISSIONS_STORAGE = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public class DownloadTask extends AsyncTask<String, Void, List<String>> {
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected List<String> doInBackground(String... strings) {
+            String baseUrl = strings[0];
+
+            int last_n = 2;
+            List<String> allFiles = getVideoFilenames(baseUrl);
+            List<String> lastFiles = allFiles.subList(Math.max(allFiles.size(), 0) - last_n, allFiles.size());
+            String rawFootagePath = Environment.getExternalStorageDirectory().getPath() + "/Movies/rawFootage/";
+            File rawFootageDir = new File(rawFootagePath);
+
+            if (!rawFootageDir.exists()) {
+                rawFootageDir.mkdirs();
+            }
+
+            for (String filename : lastFiles) {
+                try {
+                    FileUtils.copyURLToFile(
+                            new URL(baseUrl + filename),
+                            new File(rawFootagePath + filename)
+                    );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return lastFiles;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        private List<String> getVideoFilenames(String url) {
+            Document doc = null;
+
+            try {
+                doc = Jsoup.connect(url).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<String> allFiles = new ArrayList<>();
+            assert doc != null;
+
+            for (Element file : doc.select("td:eq(0) > a")) {
+                if (file.text().endsWith("MP4")) {
+                    allFiles.add(file.text());
+                }
+            }
+            allFiles.sort(Comparator.comparing(String::toString));
+            return allFiles;
+        }
     }
 }
