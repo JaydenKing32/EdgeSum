@@ -54,13 +54,13 @@ public class Summariser {
 
         if (activeTimes == null) {
             // Testing purposes: Video file is completely active, so just copy it
-            /*try {
+            try {
                 System.out.println("Whole video is active");
                 Files.copy(new File(filename).toPath(), new File(sumFilename()).toPath(),
                         StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
             return;
         }
 
@@ -68,14 +68,15 @@ public class Summariser {
 
         switch (activeTimes.size()) {
             case 0:
+                // Video file is completely inactive, so ignore it, don't copy it
                 System.out.println("No activity detected");
 //                System.exit(0);
-                try {
-                    Files.copy(new File(filename).toPath(), new File(sumFilename()).toPath(),
-                            StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Files.copy(new File(filename).toPath(), new File(sumFilename()).toPath(),
+//                            StandardCopyOption.REPLACE_EXISTING);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
                 activtySections = ActivtySections.NONE;
                 break;
             case 1:
