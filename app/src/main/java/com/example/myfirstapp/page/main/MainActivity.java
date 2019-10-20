@@ -233,6 +233,7 @@ public class MainActivity
         }
     }
 
+    // Need AsyncTask to perform network operations as they are not permitted in the main thread
     @SuppressLint("StaticFieldLeak")
     public class DownloadTask extends AsyncTask<String, Void, List<String>> {
         @Override
@@ -261,6 +262,11 @@ public class MainActivity
                         new URL(baseUrl + filename),
                         videoFile
                 );
+                /*
+                New files aren't immediately added to the MediaStore database, so it's necessary manually trigger it
+                Tried using sendBroadcast, but that doesn't guarantee that it will be immediately added.
+                Using MediaScannerConnection does ensure that the new file is added to the database before it is queried
+                 */
                 // https://stackoverflow.com/a/5814533/8031185
                 MediaScannerConnection.scanFile(MainActivity.this,
                         new String[]{videoFile.getAbsolutePath()}, null,
@@ -276,6 +282,7 @@ public class MainActivity
                             Cursor videoCursor = getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                                     projection, selection, selectionArgs, null);
 
+                            assert videoCursor != null;
                             videoCursor.moveToFirst();
                             Video video = VideoManager.videoFromCursor(videoCursor);
                             EventBus.getDefault().post(new AddEvent(video, Type.RAW));

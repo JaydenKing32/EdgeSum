@@ -2,13 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myfirstapp">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- Necessary to transfer files over Wi-Fi -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- Necessary to save files in external memory -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- usesCleartextTraffic is necessary if the dashcam doesn't support HTTPS -->
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
@@ -17,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".page.main.DownloadActivity"></activity>
+        <activity android:name=".page.main.DownloadActivity" />
         <activity android:name=".page.main.LoadingActivity" />
         <activity
             android:name=".page.viewuploadedvideos.ViewUploadedVideosActivity"
