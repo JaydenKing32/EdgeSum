@@ -45,6 +45,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -230,20 +231,17 @@ public class MainActivity
 
     @SuppressLint("StaticFieldLeak")
     public class DownloadTask extends AsyncTask<String, Void, List<String>> {
-        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected List<String> doInBackground(String... strings) {
             String baseUrl = strings[0];
-
-            int last_n = 2;
             List<String> allFiles = getVideoFilenames(baseUrl);
+
+            if (allFiles == null) {
+                return null;
+            }
+            int last_n = 2;
             List<String> lastFiles = allFiles.subList(Math.max(allFiles.size(), 0) - last_n, allFiles.size());
             String rawFootagePath = Environment.getExternalStorageDirectory().getPath() + "/Movies/rawFootage/";
-            File rawFootageDir = new File(rawFootagePath);
-
-            if (!rawFootageDir.exists()) {
-                rawFootageDir.mkdirs();
-            }
 
             for (String filename : lastFiles) {
                 try {
@@ -251,11 +249,12 @@ public class MainActivity
                             new URL(baseUrl + filename),
                             new File(rawFootagePath + filename)
                     );
+                    Log.i("Info", String.format("Downloaded '%s'", filename));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
+            Log.i("Info", "Completed Downloads");
             return lastFiles;
         }
 
@@ -265,6 +264,9 @@ public class MainActivity
 
             try {
                 doc = Jsoup.connect(url).get();
+            } catch (SocketTimeoutException e) {
+                Log.e("Error", "Could not connect to dashcam");
+                return null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
