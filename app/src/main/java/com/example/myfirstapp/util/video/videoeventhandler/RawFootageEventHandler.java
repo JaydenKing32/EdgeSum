@@ -25,6 +25,7 @@ public class RawFootageEventHandler implements VideoEventHandler {
     public void onAdd(AddEvent event) {
         if (event.type == Type.RAW) {
             Log.i(TAG, "onAdd");
+            repository.insert(event.video);
         }
     }
 

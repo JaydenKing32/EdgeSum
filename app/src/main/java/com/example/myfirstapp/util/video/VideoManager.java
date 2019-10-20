@@ -73,7 +73,7 @@ public class VideoManager {
         }
     }
 
-    private static Video videoFromCursor(Cursor cursor) {
+    public static Video videoFromCursor(Cursor cursor) {
         Log.i(TAG, "videoFromCursor");
         Video video = null;
         try {

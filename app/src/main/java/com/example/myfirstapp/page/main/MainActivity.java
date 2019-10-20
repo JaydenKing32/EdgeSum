@@ -4,16 +4,17 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -24,21 +25,24 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService;
 import com.example.myfirstapp.R;
 import com.example.myfirstapp.data.VideosRepository;
+import com.example.myfirstapp.event.AddEvent;
+import com.example.myfirstapp.event.Type;
 import com.example.myfirstapp.model.Video;
 import com.example.myfirstapp.page.authentication.AuthenticationActivity;
 import com.example.myfirstapp.page.setting.SettingsActivity;
 import com.example.myfirstapp.util.Injection;
 import com.example.myfirstapp.util.file.FileManager;
+import com.example.myfirstapp.util.video.VideoManager;
 import com.example.myfirstapp.util.video.videoeventhandler.ProcessingVideosEventHandler;
 import com.example.myfirstapp.util.video.videoeventhandler.RawFootageEventHandler;
 import com.example.myfirstapp.util.video.videoeventhandler.SummarisedVideosEventHandler;
-import com.example.myfirstapp.util.video.viewholderprocessor.NullVideoViewHolderProcess;
 import com.example.myfirstapp.util.video.viewholderprocessor.ProcessingVideosViewHolderProcessor;
 import com.example.myfirstapp.util.video.viewholderprocessor.RawFootageViewHolderProcessor;
 import com.example.myfirstapp.util.video.viewholderprocessor.SummarisedVideosViewHolderProcessor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.apache.commons.io.FileUtils;
+import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -244,21 +248,45 @@ public class MainActivity
             String rawFootagePath = Environment.getExternalStorageDirectory().getPath() + "/Movies/rawFootage/";
 
             for (String filename : lastFiles) {
-                try {
-                    FileUtils.copyURLToFile(
-                            new URL(baseUrl + filename),
-                            new File(rawFootagePath + filename)
-                    );
-                    Log.i("Info", String.format("Downloaded '%s'", filename));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                downloadVideo(baseUrl, rawFootagePath, filename);
             }
             Log.i("Info", "Completed Downloads");
             return lastFiles;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
+        private void downloadVideo(String baseUrl, String directory, String filename) {
+            try {
+                File videoFile = new File(directory + filename);
+                FileUtils.copyURLToFile(
+                        new URL(baseUrl + filename),
+                        videoFile
+                );
+                // https://stackoverflow.com/a/5814533/8031185
+                MediaScannerConnection.scanFile(MainActivity.this,
+                        new String[]{videoFile.getAbsolutePath()}, null,
+                        (path, uri) -> {
+                            String[] projection = {MediaStore.Video.Media._ID,
+                                    MediaStore.Video.Media.DATA,
+                                    MediaStore.Video.Media.DISPLAY_NAME,
+                                    MediaStore.Video.Media.SIZE,
+                                    MediaStore.Video.Media.MIME_TYPE
+                            };
+                            String selection = MediaStore.Video.Media.DATA + "=?";
+                            String[] selectionArgs = new String[]{videoFile.getAbsolutePath()};
+                            Cursor videoCursor = getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                                    projection, selection, selectionArgs, null);
+
+                            videoCursor.moveToFirst();
+                            Video video = VideoManager.videoFromCursor(videoCursor);
+                            EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                            videoCursor.close();
+                            Log.i("Info", String.format("Downloaded '%s'", filename));
+                        });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         private List<String> getVideoFilenames(String url) {
             Document doc = null;
 
