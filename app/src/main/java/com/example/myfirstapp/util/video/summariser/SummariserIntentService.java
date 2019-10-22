@@ -45,22 +45,22 @@ public class SummariserIntentService extends IntentService {
 
 
         Summariser summariser = Summariser.createSummariser(video.getData(), 60, 2, output, false);
-        summariser.summarise();
+        boolean isVideo = summariser.summarise();
 
+        if (isVideo) {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Video.Media.TITLE, video.getName());
+            values.put(MediaStore.Video.Media.MIME_TYPE, video.getMimeType());
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
+            values.put(MediaStore.Images.Media.DESCRIPTION, "");
+            values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+            values.put(MediaStore.Video.Media.DATA, new File(output).getAbsolutePath());
+            getApplicationContext().getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
 
-
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Video.Media.TITLE, video.getName());
-        values.put(MediaStore.Video.Media.MIME_TYPE, video.getMimeType());
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "");
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
-        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
-        values.put(MediaStore.Video.Media.DATA, new File(output).getAbsolutePath());
-        getApplicationContext().getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
-
+            EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
+        }
         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
-        EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
 
         MediaScannerConnection.scanFile(getApplicationContext(), new String[]{FileManager.summarisedVideosFolderPath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
             public void onScanCompleted(String path, Uri uri) {

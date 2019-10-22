@@ -48,7 +48,10 @@ public class Summariser {
         this.verbose = verbose;
     }
 
-    public void summarise() {
+    /**
+     * @return true if a summary video is created, false if no video is created
+     */
+    public boolean summarise() {
         ArrayList<Double[]> activeTimes = getActiveTimes();
         ArrayList<String> ffmpegArgs = new ArrayList<>();
 
@@ -61,7 +64,7 @@ public class Summariser {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return;
+            return true;
         }
 
         ActivtySections activtySections;
@@ -78,14 +81,16 @@ public class Summariser {
 //                    e.printStackTrace();
 //                }
                 activtySections = ActivtySections.NONE;
-                break;
+                return false;
             case 1:
+                // One active scene found, extract that scene and copy it
                 Double[] times = activeTimes.get(0);
                 ffmpegArgs = getArgumentsOneScene(times[0], times[1]);
                 System.out.println("One active section found");
                 activtySections = ActivtySections.ONE;
                 break;
             default:
+                // Multiple active scenes found, extract them and combine them into a summarised video
                 ffmpegArgs = getArgumentsMultipleScenes(activeTimes);
                 System.out.println(String.format("%d active sections found", activeTimes.size()));
                 activtySections = ActivtySections.MANY;
@@ -93,6 +98,7 @@ public class Summariser {
         if (activtySections != ActivtySections.NONE) {
             executeFfmpeg(ffmpegArgs);
         }
+        return true;
 //        if (verbose) {
 //            echoFfmpegOutput(runFfmpeg(ffmpegArgs));
 //        } else {
