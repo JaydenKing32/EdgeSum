@@ -42,9 +42,14 @@ public class SummariserIntentService extends IntentService {
         Log.i(TAG, video.toString());
         Log.i(TAG, output);
 
-
-
-        Summariser summariser = Summariser.createSummariser(video.getData(), 60, 2, output, false);
+        Summariser summariser = Summariser.createSummariser(
+                video.getData(),
+                Summariser.DEFAULT_NOISE,
+                Summariser.DEFAULT_DURATION,
+                Summariser.DEFAULT_QUALITY,
+                Summariser.DEFAULT_SPEED,
+                output
+        );
         boolean isVideo = summariser.summarise();
 
         if (isVideo) {

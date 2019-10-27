@@ -1,51 +1,50 @@
 package com.example.myfirstapp.util.video.summariser;
 
-import android.content.Context;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
 
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class Summariser {
 
     private final String TAG = Summariser.class.getSimpleName();
+
+    static final double DEFAULT_NOISE = 60.0;
+    static final double DEFAULT_DURATION = 2.0;
+    static final int DEFAULT_QUALITY = 23;
+    static final Speed DEFAULT_SPEED = Speed.medium;
 
     private final String freezeFilePath = "/sdcard/Movies/rawFootage/freeze.txt";
 
     private final String filename;
     private final double noise;
     private final double duration;
-    private final boolean verbose;
+    private final int quality;
+    private final Speed speed;
     private final String outFile;
 
-    public static Summariser createSummariser(String filename, double noise, double duration, String outFile, boolean verbose) {
-        return new Summariser(filename, noise, duration, outFile, verbose);
+    public static Summariser createSummariser(String filename, double noise, double duration, int quality, Speed speed, String outFile) {
+        return new Summariser(filename, noise, duration, quality, speed, outFile);
     }
 
-
-    private Summariser(String filename, double noise, double duration, String outFile, boolean verbose) {
+    private Summariser(String filename, double noise, double duration, int quality, Speed speed, String outFile) {
         this.filename = filename;
         this.noise = noise;
+        this.quality = quality;
+        this.speed = speed;
         this.duration = duration;
         this.outFile = outFile;
-        this.verbose = verbose;
     }
 
     /**
@@ -99,14 +98,11 @@ public class Summariser {
             executeFfmpeg(ffmpegArgs);
         }
         return true;
-//        if (verbose) {
-//            echoFfmpegOutput(runFfmpeg(ffmpegArgs));
-//        } else {
-//            getFfmpegOutput(runFfmpeg(ffmpegArgs));
-//        }
     }
 
     private void executeFfmpeg(ArrayList<String> ffmpegArgs) {
+        ffmpegArgs.add(1, "-hide_banner");
+        System.out.println(String.format("*** Running ffmpeg with: ***\n  %s", String.join(" ", ffmpegArgs)));
         FFmpeg.execute(ffmpegArgs.stream().toArray(String[]::new));
     }
 
@@ -114,9 +110,9 @@ public class Summariser {
         return new ArrayList<>(Arrays.asList(
 //                "ffmpeg",
                 "-y", // Skip prompts
-                "-i", filename,
                 "-ss", start.toString(),
                 "-to", end.toString(),
+                "-i", filename,
                 "-c", "copy",
                 sumFilename()
         ));
@@ -147,7 +143,8 @@ public class Summariser {
                 filter.toString(),
                 "-map", "[outv]",
                 "-map", "[outa]",
-                "-crf", "18", // Set quality
+                "-crf", Integer.toString(quality), // Set quality
+                "-preset", speed.toString(), // Set speed
                 sumFilename()
         )));
 
@@ -155,18 +152,7 @@ public class Summariser {
     }
 
     private ArrayList<Double[]> getActiveTimes() {
-//        Process ffmpegProcess = runFfmpeg(new ArrayList<>(Arrays.asList(
-//                "ffmpeg",
-//                "-i", filename,
-//                "-vf", String.format("freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=freeze.txt", noise, duration),
-//                "-f", "null", "-")));
         detectFreeze();
-//        if (verbose) {
-//            echoFfmpegOutput(ffmpegProcess);
-//        } else {
-//            getFfmpegOutput(ffmpegProcess);
-//        }
-
         File freeze = new File(freezeFilePath);
 
         if (!freeze.exists() || freeze.length() == 0) {  // No inactive sections
@@ -222,50 +208,6 @@ public class Summariser {
         FFmpeg.execute(String.format("-i %s -vf %s -f null -",
                 filename,
                 String.format("freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=%s", noise, duration, freezeFilePath)));
-    }
-
-    private Process runFfmpeg(ArrayList<String> args) {
-        ProcessBuilder build = new ProcessBuilder(args).redirectErrorStream(true);
-
-        try {
-            return build.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        return null;
-    }
-
-    // https://stackoverflow.com/a/13991171/8031185
-    private void echoFfmpegOutput(Process process) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
-
-        try {
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
-
-    private ArrayList<String> getFfmpegOutput(Process process) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        ArrayList<String> output = new ArrayList<>();
-        String line;
-
-        try {
-            while ((line = reader.readLine()) != null) {
-                output.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-        return output;
     }
 
     private Double getVideoDuration() {
