@@ -165,7 +165,7 @@ public class MainActivity
     }
 
     private void setUpBottomNavigation() {
-        BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(bottomNavigationOnNavigationItemSelectedListener);
     }
 
@@ -176,16 +176,16 @@ public class MainActivity
         // Define logic on how to handle each option item selected.
         switch (item.getItemId()) {
             case R.id.action_download:
-                Log.i("Info", "Download button clicked");
+                Log.i(TAG, "Download button clicked");
                 DownloadTask mDownloadTask = new DownloadTask();
                 mDownloadTask.execute("http://192.168.1.254/DCIM/MOVIE/");
                 return true;
             case R.id.action_settings:
-                Log.i("Info", "Setting button clicked");
+                Log.i(TAG, "Setting button clicked");
                 goToSettingsActivity();
                 return true;
             case R.id.action_logout:
-                Log.i("Info", "Logout button clicked");
+                Log.i(TAG, "Logout button clicked");
                 signOut();
                 Intent i = new Intent(MainActivity.this, AuthenticationActivity.class);
                 startActivity(i);
@@ -262,13 +262,14 @@ public class MainActivity
             for (String filename : lastFiles) {
                 downloadVideo(baseUrl, upFolder, rawFootagePath, filename);
             }
-            Log.i("Info", "Completed Downloads");
+            Log.i(TAG, "All downloads complete");
             return lastFiles;
         }
 
         private void downloadVideo(String baseUrl, String upFolder, String downFolder, String filename) {
             try {
                 File videoFile = new File(downFolder + filename);
+                Log.d(TAG, "Started downloading: " + filename);
                 FileUtils.copyURLToFile(
                         new URL(baseUrl + upFolder + filename),
                         videoFile
@@ -298,7 +299,7 @@ public class MainActivity
                             Video video = VideoManager.videoFromCursor(videoCursor);
                             EventBus.getDefault().post(new AddEvent(video, Type.RAW));
                             videoCursor.close();
-                            Log.i("Info", String.format("Downloaded '%s'", filename));
+                            Log.d(TAG, "Finished downloading: " + filename);
                         });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -311,7 +312,7 @@ public class MainActivity
             try {
                 doc = Jsoup.connect(url).get();
             } catch (SocketTimeoutException | ConnectException e) {
-                Log.e("Error", "Could not connect to dashcam");
+                Log.e(TAG, "Could not connect to dashcam");
                 return null;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -334,7 +335,7 @@ public class MainActivity
             try {
                 doc = Jsoup.connect(url + "blackvue_vod.cgi").get();
             } catch (SocketTimeoutException | ConnectException e) {
-                Log.e("Error", "Could not connect to dashcam");
+                Log.e(TAG, "Could not connect to dashcam");
                 return null;
             } catch (IOException e) {
                 e.printStackTrace();
