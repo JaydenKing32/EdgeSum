@@ -49,11 +49,15 @@ import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity
         extends AppCompatActivity
@@ -161,7 +165,7 @@ public class MainActivity
     }
 
     private void setUpBottomNavigation() {
-        BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(bottomNavigationOnNavigationItemSelectedListener);
     }
 
@@ -172,16 +176,16 @@ public class MainActivity
         // Define logic on how to handle each option item selected.
         switch (item.getItemId()) {
             case R.id.action_download:
-                Log.i("Info", "Download button clicked");
+                Log.i(TAG, "Download button clicked");
                 DownloadTask mDownloadTask = new DownloadTask();
                 mDownloadTask.execute("http://192.168.1.254/DCIM/MOVIE/");
                 return true;
             case R.id.action_settings:
-                Log.i("Info", "Setting button clicked");
+                Log.i(TAG, "Setting button clicked");
                 goToSettingsActivity();
                 return true;
             case R.id.action_logout:
-                Log.i("Info", "Logout button clicked");
+                Log.i(TAG, "Logout button clicked");
                 signOut();
                 Intent i = new Intent(MainActivity.this, AuthenticationActivity.class);
                 startActivity(i);
@@ -238,8 +242,15 @@ public class MainActivity
     public class DownloadTask extends AsyncTask<String, Void, List<String>> {
         @Override
         protected List<String> doInBackground(String... strings) {
-            String baseUrl = strings[0];
-            List<String> allFiles = getVideoFilenames(baseUrl);
+            // Dride
+            return downloadAll("http://192.168.1.254/DCIM/MOVIE/", "", this::getDrideFilenames);
+
+            // BlackVue
+//            return downloadAll("http://10.99.77.1/", "Record/", this::getBlackvueFilenames);
+        }
+
+        private List<String> downloadAll(String baseUrl, String upFolder, Function<String, List<String>> getFilenameFunc) {
+            List<String> allFiles = getFilenameFunc.apply(baseUrl);
 
             if (allFiles == null) {
                 return null;
@@ -249,17 +260,18 @@ public class MainActivity
             String rawFootagePath = Environment.getExternalStorageDirectory().getPath() + "/Movies/rawFootage/";
 
             for (String filename : lastFiles) {
-                downloadVideo(baseUrl, rawFootagePath, filename);
+                downloadVideo(baseUrl, upFolder, rawFootagePath, filename);
             }
-            Log.i("Info", "Completed Downloads");
+            Log.i(TAG, "All downloads complete");
             return lastFiles;
         }
 
-        private void downloadVideo(String baseUrl, String directory, String filename) {
+        private void downloadVideo(String baseUrl, String upFolder, String downFolder, String filename) {
             try {
-                File videoFile = new File(directory + filename);
+                File videoFile = new File(downFolder + filename);
+                Log.d(TAG, "Started downloading: " + filename);
                 FileUtils.copyURLToFile(
-                        new URL(baseUrl + filename),
+                        new URL(baseUrl + upFolder + filename),
                         videoFile
                 );
                 /*
@@ -287,20 +299,20 @@ public class MainActivity
                             Video video = VideoManager.videoFromCursor(videoCursor);
                             EventBus.getDefault().post(new AddEvent(video, Type.RAW));
                             videoCursor.close();
-                            Log.i("Info", String.format("Downloaded '%s'", filename));
+                            Log.d(TAG, "Finished downloading: " + filename);
                         });
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        private List<String> getVideoFilenames(String url) {
+        private List<String> getDrideFilenames(String url) {
             Document doc = null;
 
             try {
                 doc = Jsoup.connect(url).get();
-            } catch (SocketTimeoutException e) {
-                Log.e("Error", "Could not connect to dashcam");
+            } catch (SocketTimeoutException | ConnectException e) {
+                Log.e(TAG, "Could not connect to dashcam");
                 return null;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -313,6 +325,32 @@ public class MainActivity
                     allFiles.add(file.text());
                 }
             }
+            allFiles.sort(Comparator.comparing(String::toString));
+            return allFiles;
+        }
+
+        private List<String> getBlackvueFilenames(String url) {
+            Document doc = null;
+
+            try {
+                doc = Jsoup.connect(url + "blackvue_vod.cgi").get();
+            } catch (SocketTimeoutException | ConnectException e) {
+                Log.e(TAG, "Could not connect to dashcam");
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<String> allFiles = new ArrayList<>();
+            assert doc != null;
+
+            String raw = doc.select("body").text();
+            Pattern pat = Pattern.compile(Pattern.quote("Record/") + "(.*?)" + Pattern.quote(",s:"));
+            Matcher match = pat.matcher(raw);
+
+            while (match.find()) {
+                allFiles.add(match.group(1));
+            }
+
             allFiles.sort(Comparator.comparing(String::toString));
             return allFiles;
         }
