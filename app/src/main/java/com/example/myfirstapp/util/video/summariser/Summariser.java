@@ -20,8 +20,8 @@ public class Summariser {
 
     private final String TAG = Summariser.class.getSimpleName();
 
-    static final double DEFAULT_NOISE = 60.0;
-    static final double DEFAULT_DURATION = 2.0;
+    static final float DEFAULT_NOISE = 60;
+    static final float DEFAULT_DURATION = 2;
     static final int DEFAULT_QUALITY = 23;
     static final Speed DEFAULT_SPEED = Speed.medium;
 
@@ -141,7 +141,7 @@ public class Summariser {
                 "-map", "[outv]",
                 "-map", "[outa]",
                 "-crf", Integer.toString(quality), // Set quality
-                "-preset", speed.toString(), // Set speed
+                "-preset", speed.name(), // Set speed
                 sumFilename()
         )));
 

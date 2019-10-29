@@ -3,13 +3,16 @@ package com.example.myfirstapp.util.video.summariser;
 import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 
+import com.example.myfirstapp.R;
 import com.example.myfirstapp.event.AddEvent;
 import com.example.myfirstapp.event.RemoveEvent;
 import com.example.myfirstapp.event.Type;
@@ -42,14 +45,13 @@ public class SummariserIntentService extends IntentService {
         Log.i(TAG, video.toString());
         Log.i(TAG, output);
 
-        Summariser summariser = Summariser.createSummariser(
-                video.getData(),
-                Summariser.DEFAULT_NOISE,
-                Summariser.DEFAULT_DURATION,
-                Summariser.DEFAULT_QUALITY,
-                Summariser.DEFAULT_SPEED,
-                output
-        );
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        double noise = pref.getInt(getString(R.string.noise_key), (int) Summariser.DEFAULT_NOISE);
+        double duration = pref.getInt(getString(R.string.duration_key), (int) Summariser.DEFAULT_DURATION * 10) / 10.0;
+        int quality = pref.getInt(getString(R.string.quality_key), Summariser.DEFAULT_QUALITY);
+        Speed speed = Speed.valueOf(pref.getString(getString(R.string.encoding_speed_key), Summariser.DEFAULT_SPEED.name()));
+
+        Summariser summariser = Summariser.createSummariser(video.getData(), noise, duration, quality, speed, output);
         boolean isVideo = summariser.summarise();
 
         if (isVideo) {

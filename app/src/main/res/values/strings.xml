@@ -26,5 +26,13 @@
     <string name="auto_upload_title">Auto Upload</string>
     <string name="auto_upload_summary_on">Automatically upload summarised video to the Cloud storage</string>
     <string name="auto_upload_summary_off">Only upload summarised video to the Cloud storage when manually requested</string>
+    <string name="noise_tolerance_title">Noise tolerance</string>
+    <string name="quality_title">Quality</string>
+    <string name="encoding_speed_title">Encoding speed</string>
+    <string name="duration_title">Duration (decisecond)</string>
+    <string name="noise_key">noise</string>
+    <string name="duration_key">duration</string>
+    <string name="quality_key">quality</string>
+    <string name="encoding_speed_key">speed</string>
 
 </resources>

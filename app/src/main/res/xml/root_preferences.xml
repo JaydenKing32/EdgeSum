@@ -38,6 +38,44 @@
             app:summaryOff="@string/auto_upload_summary_off"
             app:summaryOn="@string/auto_upload_summary_on"
             app:title="@string/auto_upload_title" />
+        <SeekBarPreference
+            android:id="@+id/noise_tolerence_preference"
+            android:max="100"
+            app:defaultValue="60"
+            app:key="@string/noise_key"
+            app:min="0"
+            app:persistent="true"
+            app:showSeekBarValue="true"
+            app:title="@string/noise_tolerance_title" />
+        <SeekBarPreference
+            android:id="@+id/duration_preference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="100"
+            app:defaultValue="10"
+            app:key="@string/duration_key"
+            app:min="1"
+            app:persistent="true"
+            app:showSeekBarValue="true"
+            app:title="@string/duration_title" />
+        <SeekBarPreference
+            android:id="@+id/quality_preference"
+            android:max="51"
+            app:defaultValue="23"
+            app:key="@string/quality_key"
+            app:min="0"
+            app:persistent="true"
+            app:showSeekBarValue="true"
+            app:title="@string/quality_title" />
+        <ListPreference
+            android:id="@+id/encoding_speed_preference"
+            app:defaultValue="medium"
+            app:entries="@array/speed_values"
+            app:entryValues="@array/speed_values"
+            app:key="@string/encoding_speed_key"
+            app:persistent="true"
+            app:title="@string/encoding_speed_title"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
