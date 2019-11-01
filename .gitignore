@@ -15,13 +15,6 @@
 
 #amplify
 amplify/
-build/
-dist/
-node_modules/
-aws-exports.js
-awsconfiguration.json
-
-#amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
 amplify/mock-data
