@@ -2,7 +2,9 @@ package com.example.myfirstapp.util.video.summariser;
 
 import android.util.Log;
 
+import com.arthenica.mobileffmpeg.Config;
 import com.arthenica.mobileffmpeg.FFmpeg;
+import com.arthenica.mobileffmpeg.Level;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -11,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -51,6 +54,11 @@ public class Summariser {
      * @return true if a summary video is created, false if no video is created
      */
     public boolean summarise() {
+        Instant start = java.time.Instant.now();
+
+        // Suppress ffmpeg-mobile logs
+        Config.setLogLevel(Level.AV_LOG_WARNING);
+
         ArrayList<Double[]> activeTimes = getActiveTimes();
         ArrayList<String> ffmpegArgs = new ArrayList<>();
 
@@ -97,6 +105,20 @@ public class Summariser {
         if (activtySections != ActivtySections.NONE) {
             executeFfmpeg(ffmpegArgs);
         }
+
+        Log.i(TAG, String.format(
+                "Summarisation completed\n" +
+                        "  filename: %s\n" +
+                        "  time: %ds\n" +
+                        "  noise tolerance: %.2f\n" +
+                        "  quality: %d\n" +
+                        "  speed: %s",
+                filename,
+                java.time.Duration.between(start, java.time.Instant.now()).getSeconds(),
+                noise,
+                quality,
+                speed
+        ));
         return true;
     }
 

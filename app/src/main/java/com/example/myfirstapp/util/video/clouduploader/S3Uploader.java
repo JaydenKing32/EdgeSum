@@ -18,10 +18,14 @@ import com.example.myfirstapp.model.Video;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.time.Instant;
 
 public class S3Uploader implements CloudUploader {
+    private static Instant start;
+
     @Override
     public void upload(Context context, String videoPath) {
+        start = Instant.now();
         uploadWithTransferUtility(context, videoPath);
     }
 
@@ -54,6 +58,8 @@ public class S3Uploader implements CloudUploader {
                         // Handle a completed upload.
                         Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post(new RemoveByPathEvent(path, Type.SUMMARISED));
+                        Log.i("UploadToS3", String.format("Uploaded %s in %ds", name,
+                                java.time.Duration.between(start, java.time.Instant.now()).getSeconds()));
                     }
                 }
 
