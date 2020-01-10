@@ -1,7 +1,3 @@
-# Edge-Aware Video Data Archiving Framework
-
-Thesis project for final year unit ENGG411 developed with Android studio and AWS S3 as a Cloud platform for storage.
-
 ## Installation (terminal commands)
 
 Prerequisites:

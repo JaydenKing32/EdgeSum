@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ThesisSummariser</string>
+    <string name="app_name">EdgeSum</string>
     <string name="title_activity_processing">ProcessingActivity</string>
 
     <!-- Bottom Navigation Titles -->
