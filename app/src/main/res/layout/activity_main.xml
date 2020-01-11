@@ -17,8 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBar"
         tools:context=".page.main.MainActivity"
-        tools:showIn="@layout/activity_main">
-    </FrameLayout>
+        tools:showIn="@layout/activity_main" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
