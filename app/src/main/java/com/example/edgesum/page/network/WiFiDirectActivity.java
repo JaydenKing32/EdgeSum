@@ -17,7 +17,6 @@
 package com.example.edgesum.page.network;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -77,7 +76,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
                                            int[] grantResults) {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION:
-                if  (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.e(TAG, "Fine location permission is not granted!");
                     finish();
                 }
@@ -109,6 +108,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
             // onRequestPermissionsResult(int, String[], int[]) overridden method
         }
 
+        // EDIT: need to re-add toolbar due to AppTheme.NoActionBar
         Toolbar toolbar = findViewById(R.id.wifi_toolbar);
 
         if (toolbar != null) {
@@ -117,7 +117,9 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         }
     }
 
-    /** register the BroadcastReceiver with the intent values to be matched */
+    /**
+     * register the BroadcastReceiver with the intent values to be matched
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -219,6 +221,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
             @Override
             public void onSuccess() {
                 // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+                Log.e(TAG, "WiFiDirectActivity connect");
             }
 
             @Override
@@ -302,4 +305,3 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
 
     }
 }
-

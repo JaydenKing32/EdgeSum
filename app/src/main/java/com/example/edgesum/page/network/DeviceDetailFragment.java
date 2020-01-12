@@ -20,6 +20,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -34,7 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.core.content.FileProvider;
+import androidx.preference.PreferenceManager;
 
 import com.example.edgesum.R;
 import com.example.edgesum.util.network.FileTransferService;
@@ -54,6 +55,7 @@ import java.net.Socket;
 public class DeviceDetailFragment extends Fragment implements ConnectionInfoListener {
 
     protected static final int CHOOSE_FILE_RESULT_CODE = 20;
+    protected static final int WIFI_P2P_PORT = 8988;
     private View mContentView = null;
     private WifiP2pDevice device;
     private WifiP2pInfo info;
@@ -132,7 +134,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
         serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
                 info.groupOwnerAddress.getHostAddress());
-        serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988);
+        serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, WIFI_P2P_PORT);
         getActivity().startService(serviceIntent);
     }
 
@@ -170,6 +172,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
         // hide the connect button
         mContentView.findViewById(R.id.btn_connect).setVisibility(View.GONE);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(getString(R.string.group_owner_ip_key), info.groupOwnerAddress.getHostAddress());
+        editor.apply();
     }
 
     /**
@@ -225,10 +232,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         @Override
         protected String doInBackground(Void... params) {
             try {
-                ServerSocket serverSocket = new ServerSocket(8988);
+                ServerSocket serverSocket = new ServerSocket(WIFI_P2P_PORT);
                 Log.d(WiFiDirectActivity.TAG, "Server: Socket opened");
                 Socket client = serverSocket.accept();
                 Log.d(WiFiDirectActivity.TAG, "Server: connection done");
+                // TODO copy video file
                 final File f = new File(context.getExternalFilesDir("received"),
                         "wifip2pshared-" + System.currentTimeMillis()
                                 + ".jpg");
@@ -258,16 +266,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
             if (result != null) {
                 statusText.setText("File copied - " + result);
 
-                File recvFile = new File(result);
-                Uri fileUri = FileProvider.getUriForFile(
-                        context,
-                        "com.example.edgesum.fileprovider",
-                        recvFile);
-                Intent intent = new Intent();
-                intent.setAction(android.content.Intent.ACTION_VIEW);
-                intent.setDataAndType(fileUri, "image/*");
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                context.startActivity(intent);
+                // EDIT: Removed FileProvider, user doesn't need to immediately see transferred file
             }
 
         }
