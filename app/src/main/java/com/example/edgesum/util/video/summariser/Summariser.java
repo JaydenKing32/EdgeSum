@@ -1,5 +1,7 @@
 package com.example.edgesum.util.video.summariser;
 
+import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.arthenica.mobileffmpeg.Config;
@@ -9,10 +11,13 @@ import com.arthenica.mobileffmpeg.Level;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +42,8 @@ public class Summariser {
     private final Speed speed;
     private final String outFile;
 
-    public static Summariser createSummariser(String filename, double noise, double duration, int quality, Speed speed, String outFile) {
+    public static Summariser createSummariser(String filename, double noise, double duration, int quality,
+                                              Speed speed, String outFile) {
         return new Summariser(filename, noise, duration, quality, speed, outFile);
     }
 
@@ -54,7 +60,10 @@ public class Summariser {
      * @return true if a summary video is created, false if no video is created
      */
     public boolean summarise() {
-        Instant start = java.time.Instant.now();
+        Instant start = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            start = Instant.now();
+        }
 
         // Suppress ffmpeg-mobile logs
         Config.setLogLevel(Level.AV_LOG_WARNING);
@@ -66,8 +75,7 @@ public class Summariser {
             // Testing purposes: Video file is completely active, so just copy it
             try {
                 Log.i(TAG, "Whole video is active");
-                Files.copy(new File(filename).toPath(), new File(sumFilename()).toPath(),
-                        StandardCopyOption.REPLACE_EXISTING);
+                copy(new File(filename), new File(sumFilename()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -106,24 +114,38 @@ public class Summariser {
             executeFfmpeg(ffmpegArgs);
         }
 
-        Log.i(TAG, String.format(
-                "Summarisation completed\n" +
-                        "  filename: %s\n" +
-                        "  time: %ds\n" +
-                        "  noise tolerance: %.2f\n" +
-                        "  quality: %d\n" +
-                        "  speed: %s",
-                filename,
-                java.time.Duration.between(start, java.time.Instant.now()).getSeconds(),
-                noise,
-                quality,
-                speed
-        ));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.i(TAG, String.format(
+                    "Summarisation completed\n" +
+                            "  filename: %s\n" +
+                            "  time: %ds\n" +
+                            "  noise tolerance: %.2f\n" +
+                            "  quality: %d\n" +
+                            "  speed: %s",
+                    filename,
+                    Duration.between(start, Instant.now()).getSeconds(),
+                    noise,
+                    quality,
+                    speed
+            ));
+        } else {
+            Log.i(TAG, String.format(
+                    "Summarisation completed\n" +
+                            "  filename: %s\n" +
+                            "  noise tolerance: %.2f\n" +
+                            "  quality: %d\n" +
+                            "  speed: %s",
+                    filename,
+                    noise,
+                    quality,
+                    speed
+            ));
+        }
         return true;
     }
 
     private void executeFfmpeg(ArrayList<String> ffmpegArgs) {
-        Log.i(TAG, String.format("Running ffmpeg with:\n  %s", String.join(" ", ffmpegArgs)));
+        Log.i(TAG, String.format("Running ffmpeg with:\n  %s", TextUtils.join(" ", ffmpegArgs)));
         FFmpeg.execute(ffmpegArgs.stream().toArray(String[]::new));
     }
 
@@ -242,6 +264,20 @@ public class Summariser {
                     FilenameUtils.getExtension(filename));
         } else {
             return outFile;
+        }
+    }
+
+    // https://stackoverflow.com/a/9293885/8031185
+    private static void copy(File source, File dest) throws IOException {
+        try (InputStream in = new FileInputStream(source)) {
+            try (OutputStream out = new FileOutputStream(dest)) {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            }
         }
     }
 

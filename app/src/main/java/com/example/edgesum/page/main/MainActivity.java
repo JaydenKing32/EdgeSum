@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
                 Manifest.permission.ACCESS_FINE_LOCATION
         };
 
-        if (!hasPermissions()) {
+        if (hasPermissions()) {
             requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS);
         }
     }
