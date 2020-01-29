@@ -34,6 +34,5 @@
     <string name="duration_key">duration</string>
     <string name="quality_key">quality</string>
     <string name="encoding_speed_key">speed</string>
-    <string name="title_activity_connect">Connect</string>
 
 </resources>

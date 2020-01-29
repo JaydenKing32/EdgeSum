@@ -4,27 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.edgesum.MainActivity">
     <item
-        android:id="@+id/action_connect"
-        android:icon="@android:drawable/ic_menu_share"
-        android:orderInCategory="100"
-        android:title="Connect"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/action_download"
         android:icon="@android:drawable/stat_sys_download"
-        android:orderInCategory="200"
+        android:orderInCategory="100"
         android:title="Download"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_dark"
-        android:orderInCategory="300"
+        android:orderInCategory="100"
         android:title="Settings"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_settings_dark"
+        app:showAsAction="ifRoom"
+         />
     <item
         android:id="@+id/action_logout"
-        android:icon="@drawable/ic_exit_dark"
-        android:orderInCategory="400"
+        android:orderInCategory="100"
         android:title="Logout"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_exit_dark"
+        app:showAsAction="ifRoom"
+        />
 </menu>

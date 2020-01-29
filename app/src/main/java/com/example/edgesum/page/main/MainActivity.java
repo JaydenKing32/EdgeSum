@@ -29,7 +29,6 @@ import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.page.authentication.AuthenticationActivity;
-import com.example.edgesum.page.connect.ConnectActivity;
 import com.example.edgesum.page.setting.SettingsActivity;
 import com.example.edgesum.util.Injection;
 import com.example.edgesum.util.file.FileManager;
@@ -176,10 +175,6 @@ public class MainActivity
 
         // Define logic on how to handle each option item selected.
         switch (item.getItemId()) {
-            case R.id.action_connect:
-                Log.i(TAG, "Connect button clicked");
-                goToConnectActivity();
-                return true;
             case R.id.action_download:
                 Log.i(TAG, "Download button clicked");
                 DownloadTask mDownloadTask = new DownloadTask();
@@ -207,11 +202,6 @@ public class MainActivity
     private void goToSettingsActivity() {
         Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
         startActivity(settingsIntent);
-    }
-
-    private void goToConnectActivity() {
-        Intent connectIntent = new Intent(getApplicationContext(), ConnectActivity.class);
-        startActivity(connectIntent);
     }
 
     @Override
