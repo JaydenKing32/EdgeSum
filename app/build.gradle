@@ -70,4 +70,7 @@ dependencies {
     implementation('com.amazonaws:aws-android-sdk-mobile-client:2.16.6@aar') { transitive = true }
     implementation('com.amazonaws:aws-android-sdk-auth-userpools:2.16.6@aar') { transitive = true }
     //implementation files('libs/commons-io-2.6.jar')
+
+    implementation 'com.google.android.gms:play-services-nearby:17.0.0'
+    implementation 'com.jaredrummler:android-device-names:1.1.9'
 }

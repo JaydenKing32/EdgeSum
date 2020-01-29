@@ -35,4 +35,10 @@
     <string name="quality_key">quality</string>
     <string name="encoding_speed_key">speed</string>
 
+    <string name="discover_switch_label">Discover nearby devices</string>
+    <string name="advertise_switch_label">Share device information</string>
+    <string name="send">Send</string>
+    <string name="preference_file_key">com.example.edgesum.PREFERENCE_FILE_KEY</string>
+    <string name="video_to_send">video_to_send</string>
+    <string name="connection_status_content_description">connection status</string>
 </resources>
