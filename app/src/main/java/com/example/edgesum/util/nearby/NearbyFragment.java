@@ -185,17 +185,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback 
         connectionsClient.stopDiscovery();
     }
 
-    protected void sendFile(View view) {
-        Log.d(TAG, "Pressed send file button");
-        SharedPreferences sharedPref = view.getContext().getSharedPreferences(getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE);
-        String filename = sharedPref.getString(getString(R.string.video_to_send), null);
-
-        if (filename == null) {
+    protected void sendFile(View view, String videoPath) {
+        if (videoPath == null) {
             Log.e(TAG, "No video file selected");
             return;
         }
-        File fileToSend = new File(filename);
+        File fileToSend = new File(videoPath);
         Uri uri = Uri.fromFile(fileToSend);
         Payload filePayload = null;
 
@@ -209,7 +204,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback 
         }
 
         if (filePayload == null) {
-            Log.e(TAG, String.format("Could not create file payload for %s", filename));
+            Log.e(TAG, String.format("Could not create file payload for %s", videoPath));
             return;
         }
 

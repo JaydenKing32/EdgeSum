@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -32,6 +31,7 @@ import com.example.edgesum.page.authentication.AuthenticationActivity;
 import com.example.edgesum.page.setting.SettingsActivity;
 import com.example.edgesum.util.Injection;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.nearby.NearbyFragment;
 import com.example.edgesum.util.video.VideoManager;
 import com.example.edgesum.util.video.videoeventhandler.ProcessingVideosEventHandler;
 import com.example.edgesum.util.video.videoeventhandler.RawFootageEventHandler;
@@ -59,16 +59,13 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainActivity
-        extends AppCompatActivity
-        implements
-        VideoFragment.OnListFragmentInteractionListener {
-
+public class MainActivity extends AppCompatActivity implements VideoFragment.OnListFragmentInteractionListener, NearbyFragment.OnFragmentInteractionListener {
     private final String TAG = MainActivity.class.getSimpleName();
 
     VideoFragment rawFootageFragment;
     VideoFragment processingFragment;
     VideoFragment summarisedVideoFragment;
+    ConnectionFragment connectionFragment;
 
     final FragmentManager supportFragmentManager = getSupportFragmentManager();
     Fragment activeFragment;
@@ -117,10 +114,11 @@ public class MainActivity
 
         setUpFragments();
 
-        File externalStoragePublicMovieDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        File externalStoragePublicMovieDirectory =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         makeRawFootageDirectory(externalStoragePublicMovieDirectory);
         makeSummarisedVideosDirectory(externalStoragePublicMovieDirectory);
-        verifyStoragePermissions();
+        checkPermissions();
     }
 
     private void startAwsS3TransferService() {
@@ -145,14 +143,21 @@ public class MainActivity
 
 
     private void setUpFragments() {
-        VideosRepository rawFootageRepository = Injection.getExternalVideoRepository(this, "", FileManager.RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath());
+        VideosRepository rawFootageRepository = Injection.getExternalVideoRepository(this, "",
+                FileManager.RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath());
         VideosRepository processingVideosRepository = Injection.getProcessingVideosRespository(this);
-        VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "", FileManager.SUMMARISED_VIDEOS_PATH.getAbsolutePath());
+        VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "",
+                FileManager.SUMMARISED_VIDEOS_PATH.getAbsolutePath());
 
-        rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(), ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository));
-        processingFragment = VideoFragment.newInstance(1, new ProcessingVideosViewHolderProcessor(), ActionButton.REMOVE, new ProcessingVideosEventHandler(processingVideosRepository));
-        summarisedVideoFragment = VideoFragment.newInstance(1, new SummarisedVideosViewHolderProcessor(), ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository));
+        rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(),
+                ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository));
+        processingFragment = VideoFragment.newInstance(1, new ProcessingVideosViewHolderProcessor(),
+                ActionButton.REMOVE, new ProcessingVideosEventHandler(processingVideosRepository));
+        summarisedVideoFragment = VideoFragment.newInstance(1, new SummarisedVideosViewHolderProcessor(),
+                ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository));
+        connectionFragment = ConnectionFragment.newInstance();
 
+        supportFragmentManager.beginTransaction().add(R.id.main_container, connectionFragment, "4").hide(connectionFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, summarisedVideoFragment, "3").hide(summarisedVideoFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, processingFragment, "2").hide(processingFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, rawFootageFragment, "1").commit();
@@ -175,6 +180,10 @@ public class MainActivity
 
         // Define logic on how to handle each option item selected.
         switch (item.getItemId()) {
+            case R.id.action_connect:
+                Log.i(TAG, "Connect button clicked");
+                showNewFragmentAndHideOldFragment(connectionFragment);
+                return true;
             case R.id.action_download:
                 Log.i(TAG, "Download button clicked");
                 DownloadTask mDownloadTask = new DownloadTask();
@@ -216,25 +225,38 @@ public class MainActivity
 
     }
 
-    // https://stackoverflow.com/a/33292700/8031185
-    public void verifyStoragePermissions() {
-        final int REQUEST_EXTERNAL_STORAGE = 1;
-        String[] PERMISSIONS_STORAGE = {
+    private void checkPermissions() {
+        final int REQUEST_PERMISSIONS = 1;
+        String[] PERMISSIONS = {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
         };
 
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    this,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
+        if (!hasPermissions()) {
+            requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS);
         }
+    }
+
+    private boolean hasPermissions(String... permissions) {
+        if (permissions != null) {
+            for (String permission : permissions) {
+                if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(String name) {
+
     }
 
     // Need AsyncTask to perform network operations as they are not permitted in the main thread
@@ -249,7 +271,8 @@ public class MainActivity
 //            return downloadAll("http://10.99.77.1/", "Record/", this::getBlackvueFilenames);
         }
 
-        private List<String> downloadAll(String baseUrl, String upFolder, Function<String, List<String>> getFilenameFunc) {
+        private List<String> downloadAll(String baseUrl, String upFolder,
+                                         Function<String, List<String>> getFilenameFunc) {
             List<String> allFiles = getFilenameFunc.apply(baseUrl);
 
             if (allFiles == null) {

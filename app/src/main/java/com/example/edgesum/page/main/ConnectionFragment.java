@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Switch;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -67,9 +66,6 @@ public class ConnectionFragment extends NearbyFragment {
                 stopDiscovery();
             }
         });
-
-        Button sendButton = rootView.findViewById(R.id.send_file_button);
-        sendButton.setOnClickListener(this::sendFile);
 
         return rootView;
     }
