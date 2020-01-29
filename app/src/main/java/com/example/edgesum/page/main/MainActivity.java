@@ -149,13 +149,13 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
         VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "",
                 FileManager.SUMMARISED_VIDEOS_PATH.getAbsolutePath());
 
-        rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(),
+        connectionFragment = ConnectionFragment.newInstance();
+        rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(connectionFragment),
                 ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository));
         processingFragment = VideoFragment.newInstance(1, new ProcessingVideosViewHolderProcessor(),
                 ActionButton.REMOVE, new ProcessingVideosEventHandler(processingVideosRepository));
         summarisedVideoFragment = VideoFragment.newInstance(1, new SummarisedVideosViewHolderProcessor(),
                 ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository));
-        connectionFragment = ConnectionFragment.newInstance();
 
         supportFragmentManager.beginTransaction().add(R.id.main_container, connectionFragment, "4").hide(connectionFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, summarisedVideoFragment, "3").hide(summarisedVideoFragment).commit();

@@ -12,6 +12,7 @@ import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.page.main.VideoRecyclerViewAdapter;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,9 +20,15 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 
 public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
+    private TransferCallback transferCallback;
+
+    public RawFootageViewHolderProcessor(TransferCallback transferCallback) {
+        this.transferCallback = transferCallback;
+    }
 
     @Override
-    public void process(final Context context, final VideoViewModel vm,  final VideoRecyclerViewAdapter.VideoViewHolder viewHolder, final int position) {
+    public void process(final Context context, final VideoViewModel vm,
+                        final VideoRecyclerViewAdapter.VideoViewHolder viewHolder, final int position) {
         viewHolder.actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,10 +39,13 @@ public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
                 final String output =
                         String.format("%s/%s", FileManager.summarisedVideosFolderPath(), pathName);
 
-                Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                summariseIntent.putExtra("video", video);
-                summariseIntent.putExtra("outputPath", output);
-                context.getApplicationContext().startService(summariseIntent);
+//                Intent summariseIntent = new Intent(context, SummariserIntentService.class);
+//                summariseIntent.putExtra("video", video);
+//                summariseIntent.putExtra("outputPath", output);
+//                context.getApplicationContext().startService(summariseIntent);
+
+                transferCallback.sendFile(view, path);
+
                 EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                 EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 

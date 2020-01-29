@@ -42,7 +42,7 @@ import java.util.Objects;
 import static com.example.edgesum.util.nearby.Endpoint.getConnectedEndpointIds;
 import static com.example.edgesum.util.nearby.Endpoint.getIndexById;
 
-public abstract class NearbyFragment extends Fragment implements DeviceCallback {
+public abstract class NearbyFragment extends Fragment implements DeviceCallback, TransferCallback {
     private static final String TAG = NearbyFragment.class.getSimpleName();
     private static final Strategy STRATEGY = Strategy.P2P_STAR;
     private static final String SERVICE_ID = "com.example.edgesum";
@@ -185,7 +185,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback 
         connectionsClient.stopDiscovery();
     }
 
-    protected void sendFile(View view, String videoPath) {
+    @Override
+    public void sendFile(View view, String videoPath) {
         if (videoPath == null) {
             Log.e(TAG, "No video file selected");
             return;
