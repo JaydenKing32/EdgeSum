@@ -21,34 +21,40 @@
 
     <!-- usesCleartextTraffic is necessary if the dashcam doesn't support HTTPS -->
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity android:name=".page.main.DownloadActivity" />
         <activity android:name=".page.main.LoadingActivity" />
         <activity
             android:name=".page.viewuploadedvideos.ViewUploadedVideosActivity"
-            android:parentActivityName=".page.main.MainActivity">
+            android:configChanges="orientation"
+            android:parentActivityName=".page.main.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.edgesum.page.main.MainActivity" />
         </activity>
         <activity
             android:name=".page.setting.SettingsActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".page.main.MainActivity">
+            android:parentActivityName=".page.main.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.edgesum.page.main.MainActivity" />
         </activity>
         <activity
             android:name=".page.authentication.AuthenticationActivity"
-            android:noHistory="true">
+            android:configChanges="orientation"
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,6 +63,8 @@
         </activity>
         <activity
             android:name=".page.main.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
