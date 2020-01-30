@@ -187,8 +187,15 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     @Override
     public void sendFile(View view, String videoPath) {
+        // Could return boolean based on transfer success
         if (videoPath == null) {
             Log.e(TAG, "No video file selected");
+            return;
+        }
+        ArrayList<String> toEndpointIds = getConnectedEndpointIds(discoveredEndpoints);
+
+        if (toEndpointIds.size() <= 0) {
+            Log.e(TAG, "No connected endpoints");
             return;
         }
         File fileToSend = new File(videoPath);
@@ -212,14 +219,22 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         // Construct a simple message mapping the ID of the file payload to the desired filename.
         String filenameMessage = filePayload.getId() + ":" + uri.getLastPathSegment();
 
-        ArrayList<String> toEndpointIds = getConnectedEndpointIds(discoveredEndpoints);
-
         // Send the filename message as a bytes payload.
         Payload filenameBytesPayload = Payload.fromBytes(filenameMessage.getBytes(StandardCharsets.UTF_8));
         connectionsClient.sendPayload(toEndpointIds, filenameBytesPayload);
 
         // Finally, send the file payload.
         connectionsClient.sendPayload(toEndpointIds, filePayload);
+    }
+
+    @Override
+    public boolean isConnected() {
+        for (Endpoint endpoint : discoveredEndpoints) {
+            if (endpoint.connected) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
