@@ -2,7 +2,6 @@ package com.example.edgesum.util.nearby;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -15,7 +14,6 @@ import androidx.collection.SimpleArrayMap;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.edgesum.R;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
@@ -58,6 +56,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        discoveredEndpoints.add(new Endpoint("testing1", "testing1", true));
+        discoveredEndpoints.add(new Endpoint("testing2", "testing2", false));
         deviceAdapter = new DeviceListAdapter(getContext(), discoveredEndpoints, this);
         connectionsClient = Nearby.getConnectionsClient(getContext());
     }
@@ -238,7 +238,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     @Override
-    public void onDeviceSelection(Endpoint endpoint) {
+    public void connectEndpoint(Endpoint endpoint) {
         Log.d(TAG, String.format("Selected '%s'", endpoint));
         if (!endpoint.connected) {
             connectionsClient.requestConnection(LOCAL_NAME, endpoint.id, connectionLifecycleCallback)
@@ -255,12 +255,28 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                                 e.printStackTrace();
                             });
         } else {
-            Log.d(TAG, String.format("Disconnected from '%s'", endpoint));
-            connectionsClient.disconnectFromEndpoint(endpoint.id);
+            Log.d(TAG, String.format("'%s' is already connected", endpoint));
+        }
+    }
 
-            endpoint.connected = false;
-            int index = getIndexById(discoveredEndpoints, endpoint.id);
-            deviceAdapter.notifyItemChanged(index);
+    @Override
+    public void disconnectEndpoint(Endpoint endpoint) {
+        Log.i(TAG, String.format("Disconnected from '%s'", endpoint));
+
+        connectionsClient.disconnectFromEndpoint(endpoint.id);
+        endpoint.connected = false;
+        int index = getIndexById(discoveredEndpoints, endpoint.id);
+        deviceAdapter.notifyItemChanged(index);
+    }
+
+    @Override
+    public void removeEndpoint(Endpoint endpoint) {
+        Log.i(TAG, String.format("Removed %s", endpoint));
+        int index = getIndexById(discoveredEndpoints, endpoint.id);
+
+        if (index >= 0) {
+            discoveredEndpoints.remove(index);
+            deviceAdapter.notifyItemRemoved(index);
         }
     }
 

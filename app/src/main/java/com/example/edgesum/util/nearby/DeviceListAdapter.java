@@ -1,7 +1,7 @@
 package com.example.edgesum.util.nearby;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,16 +35,25 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
 
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
-        Endpoint current = endpoints.get(position);
+        Endpoint endpoint = endpoints.get(position);
 
-        String deviceName = current.name;
-        holder.deviceName.setText(deviceName);
+        holder.deviceName.setText(endpoint.name);
+        holder.disconnectButton.setEnabled(endpoint.connected);
+        holder.removeButton.setEnabled(!endpoint.connected);
 
-        if (current.connected) {
+        if (endpoint.connected) {
             holder.connectionStatus.setImageResource(R.drawable.connected_status);
+            holder.disconnectButton.clearColorFilter();
+            holder.removeButton.setColorFilter(Color.LTGRAY);
         } else {
             holder.connectionStatus.setImageResource(R.drawable.disconnected_status);
+            holder.disconnectButton.setColorFilter(Color.LTGRAY);
+            holder.removeButton.clearColorFilter();
         }
+
+        holder.deviceName.setOnClickListener(v -> deviceCallback.connectEndpoint(endpoint));
+        holder.disconnectButton.setOnClickListener(v -> deviceCallback.disconnectEndpoint(endpoint));
+        holder.removeButton.setOnClickListener(v -> deviceCallback.removeEndpoint(endpoint));
     }
 
     @Override
@@ -52,25 +61,20 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         return endpoints.size();
     }
 
-    class DeviceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class DeviceViewHolder extends RecyclerView.ViewHolder {
         final DeviceListAdapter adapter;
         final TextView deviceName;
         final ImageView connectionStatus;
+        final ImageView disconnectButton;
+        final ImageView removeButton;
 
         DeviceViewHolder(View itemView, DeviceListAdapter adapter) {
             super(itemView);
+            this.adapter = adapter;
             this.deviceName = itemView.findViewById(R.id.device_item_text);
             this.connectionStatus = itemView.findViewById(R.id.connection_status);
-            this.adapter = adapter;
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int pos = getLayoutPosition();
-            Endpoint device = endpoints.get(pos);
-            Log.d(DeviceViewHolder.class.getSimpleName(), String.format("Clicked on '%s'", device));
-            deviceCallback.onDeviceSelection(device);
+            this.disconnectButton = itemView.findViewById(R.id.disconnect_button);
+            this.removeButton = itemView.findViewById(R.id.remove_device_button);
         }
     }
 }
