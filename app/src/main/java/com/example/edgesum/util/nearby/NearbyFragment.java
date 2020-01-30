@@ -240,19 +240,28 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     @Override
     public void onDeviceSelection(Endpoint endpoint) {
         Log.d(TAG, String.format("Selected '%s'", endpoint));
-        connectionsClient.requestConnection(LOCAL_NAME, endpoint.id, connectionLifecycleCallback)
-                .addOnSuccessListener(
-                        (Void unused) -> {
-                            // We successfully requested a connection. Now both sides
-                            // must accept before the connection is established.
-                            Log.i(TAG, String.format("Requested connection with %s", endpoint));
-                        })
-                .addOnFailureListener(
-                        (Exception e) -> {
-                            // Nearby Connections failed to request the connection.
-                            Log.e(TAG, "Endpoint failure");
-                            e.printStackTrace();
-                        });
+        if (!endpoint.connected) {
+            connectionsClient.requestConnection(LOCAL_NAME, endpoint.id, connectionLifecycleCallback)
+                    .addOnSuccessListener(
+                            (Void unused) -> {
+                                // We successfully requested a connection. Now both sides
+                                // must accept before the connection is established.
+                                Log.i(TAG, String.format("Requested connection with %s", endpoint));
+                            })
+                    .addOnFailureListener(
+                            (Exception e) -> {
+                                // Nearby Connections failed to request the connection.
+                                Log.e(TAG, "Endpoint failure");
+                                e.printStackTrace();
+                            });
+        } else {
+            Log.d(TAG, String.format("Disconnected from '%s'", endpoint));
+            connectionsClient.disconnectFromEndpoint(endpoint.id);
+
+            endpoint.connected = false;
+            int index = getIndexById(discoveredEndpoints, endpoint.id);
+            deviceAdapter.notifyItemChanged(index);
+        }
     }
 
     @Override
