@@ -2,9 +2,13 @@ package com.example.edgesum.util.nearby;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
@@ -14,6 +18,12 @@ import androidx.collection.SimpleArrayMap;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.edgesum.event.AddEvent;
+import com.example.edgesum.event.Type;
+import com.example.edgesum.model.Video;
+import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.video.VideoManager;
+import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
@@ -29,6 +39,8 @@ import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
 import com.jaredrummler.android.device.DeviceName;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,8 +68,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        discoveredEndpoints.add(new Endpoint("testing1", "testing1", true));
-        discoveredEndpoints.add(new Endpoint("testing2", "testing2", false));
+//        discoveredEndpoints.add(new Endpoint("testing1", "testing1", true));
+//        discoveredEndpoints.add(new Endpoint("testing2", "testing2", false));
         deviceAdapter = new DeviceListAdapter(getContext(), discoveredEndpoints, this);
         connectionsClient = Nearby.getConnectionsClient(getContext());
     }
@@ -300,7 +312,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         void onFragmentInteraction(String name);
     }
 
-    static class ReceiveFilePayloadCallback extends PayloadCallback {
+    class ReceiveFilePayloadCallback extends PayloadCallback {
         private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, Payload> completedFilePayloads = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, String> filePayloadFilenames = new SimpleArrayMap<>();
@@ -350,13 +362,44 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
                 if (payloadFile != null) {
                     // Rename the file.
-                    if (!payloadFile.renameTo(new File(payloadFile.getParentFile(), filename))) {
+                    File videoFile = new File(payloadFile.getParentFile(), filename);
+                    if (!payloadFile.renameTo(videoFile)) {
                         Log.e(TAG, String.format("Could not rename received file as %s", filename));
+                    } else {
+                        Log.d(TAG, String.format("Summarising %s", filename));
+                        summarise(NearbyFragment.this.getContext(), videoFile);
                     }
                 } else {
                     Log.e(TAG, String.format("Could not create file payload for %s", filename));
                 }
             }
+        }
+
+        private void summarise(Context context, File videoFile) {
+            MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()}, null,
+                    (path, uri) -> {
+                        String[] projection = {MediaStore.Video.Media._ID,
+                                MediaStore.Video.Media.DATA,
+                                MediaStore.Video.Media.DISPLAY_NAME,
+                                MediaStore.Video.Media.SIZE,
+                                MediaStore.Video.Media.MIME_TYPE
+                        };
+                        String selection = MediaStore.Video.Media.DATA + "=?";
+                        String[] selectionArgs = new String[]{videoFile.getAbsolutePath()};
+                        Cursor videoCursor = context.getContentResolver().query(
+                                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                                projection, selection, selectionArgs, null);
+                        videoCursor.moveToFirst();
+                        Video video = VideoManager.videoFromCursor(videoCursor);
+                        EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                        videoCursor.close();
+                        final String output = String.format("%s/%s",
+                                FileManager.summarisedVideosFolderPath(), videoFile.getName());
+                        Intent summariseIntent = new Intent(context, SummariserIntentService.class);
+                        summariseIntent.putExtra("video", video);
+                        summariseIntent.putExtra("outputPath", output);
+                        context.startService(summariseIntent);
+                    });
         }
 
         @Override

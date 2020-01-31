@@ -7,16 +7,13 @@ import android.util.Log;
 import com.arthenica.mobileffmpeg.Config;
 import com.arthenica.mobileffmpeg.FFmpeg;
 import com.arthenica.mobileffmpeg.Level;
+import com.example.edgesum.util.file.FileManager;
 
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -75,7 +72,7 @@ public class Summariser {
             // Testing purposes: Video file is completely active, so just copy it
             try {
                 Log.i(TAG, "Whole video is active");
-                copy(new File(filename), new File(sumFilename()));
+                FileManager.copy(new File(filename), new File(sumFilename()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -264,20 +261,6 @@ public class Summariser {
                     FilenameUtils.getExtension(filename));
         } else {
             return outFile;
-        }
-    }
-
-    // https://stackoverflow.com/a/9293885/8031185
-    private static void copy(File source, File dest) throws IOException {
-        try (InputStream in = new FileInputStream(source)) {
-            try (OutputStream out = new FileOutputStream(dest)) {
-                // Transfer bytes from in to out
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-            }
         }
     }
 
