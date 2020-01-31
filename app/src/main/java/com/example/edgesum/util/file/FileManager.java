@@ -31,6 +31,10 @@ public class FileManager {
         return strWithQuotes;
     }
 
+    public static String rawFootageFolderPath() {
+        return RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath();
+    }
+
     public static String summarisedVideosFolderPath() {
         return SUMMARISED_VIDEOS_PATH.getAbsolutePath();
     }

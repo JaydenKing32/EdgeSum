@@ -12,6 +12,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class VideoManager {
@@ -37,6 +38,23 @@ public class VideoManager {
             return getVideosFromExternalStorage(context, projection, selection, selectionArgs, null);
         }
         return new ArrayList<>();
+    }
+
+    public static Video getVideoFromFile(Context context, File file) {
+        String[] projection = {MediaStore.Video.Media._ID,
+                MediaStore.Video.Media.DATA,
+                MediaStore.Video.Media.DISPLAY_NAME,
+                MediaStore.Video.Media.SIZE,
+                MediaStore.Video.Media.MIME_TYPE
+        };
+        String selection = MediaStore.Video.Media.DATA + "=?";
+        String[] selectionArgs = new String[]{file.getAbsolutePath()};
+        Cursor videoCursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                projection, selection, selectionArgs, null);
+        Objects.requireNonNull(videoCursor).moveToFirst();
+        Video video = videoFromCursor(videoCursor);
+        videoCursor.close();
+        return video;
     }
 
 

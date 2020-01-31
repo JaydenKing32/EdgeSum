@@ -3,12 +3,10 @@ package com.example.edgesum.util.nearby;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
@@ -19,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edgesum.event.AddEvent;
+import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
@@ -44,13 +43,13 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static com.example.edgesum.util.nearby.Endpoint.getConnectedEndpointIds;
 import static com.example.edgesum.util.nearby.Endpoint.getIndexById;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public abstract class NearbyFragment extends Fragment implements DeviceCallback, TransferCallback {
     private static final String TAG = NearbyFragment.class.getSimpleName();
@@ -198,7 +197,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     @Override
-    public void sendFile(View view, String videoPath) {
+    public void sendFile(View view, String videoPath, Command command) {
         // Could return boolean based on transfer success
         if (videoPath == null) {
             Log.e(TAG, "No video file selected");
@@ -227,16 +226,23 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             Log.e(TAG, String.format("Could not create file payload for %s", videoPath));
             return;
         }
-
         // Construct a simple message mapping the ID of the file payload to the desired filename.
-        String filenameMessage = filePayload.getId() + ":" + uri.getLastPathSegment();
+        String filenameMessage = String.format("%s:%s:%s", command, filePayload.getId(), uri.getLastPathSegment());
 
         // Send the filename message as a bytes payload.
-        Payload filenameBytesPayload = Payload.fromBytes(filenameMessage.getBytes(StandardCharsets.UTF_8));
+        // Master will send to all workers, workers will just send to master
+        Payload filenameBytesPayload = Payload.fromBytes(filenameMessage.getBytes(UTF_8));
         connectionsClient.sendPayload(toEndpointIds, filenameBytesPayload);
 
         // Finally, send the file payload.
         connectionsClient.sendPayload(toEndpointIds, filePayload);
+    }
+
+    private void sendCompleteMessage(String filename) {
+        // Currently just works for worker responding to master, could make it work as a master response
+        String filenameMessage = String.format("%s:%s", Command.COM, filename);
+        Payload filenameBytesPayload = Payload.fromBytes(filenameMessage.getBytes(UTF_8));
+        connectionsClient.sendPayload(getConnectedEndpointIds(discoveredEndpoints), filenameBytesPayload);
     }
 
     @Override
@@ -316,17 +322,37 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, Payload> completedFilePayloads = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, String> filePayloadFilenames = new SimpleArrayMap<>();
+        private final SimpleArrayMap<Long, Command> filePayloadTypes = new SimpleArrayMap<>();
 
         @Override
         public void onPayloadReceived(@NonNull String endpointId, @NonNull Payload payload) {
             Log.d(TAG, String.format("onPayloadReceived(endpointId=%s, payload=%s)", endpointId, payload));
 
             if (payload.getType() == Payload.Type.BYTES) {
-                String payloadFilenameMessage = new String(Objects.requireNonNull(payload.asBytes()),
-                        StandardCharsets.UTF_8);
-                Log.i(TAG, String.format("Started downloading %s", payloadFilenameMessage));
-                long payloadId = addPayloadFilename(payloadFilenameMessage);
-                processFilePayload(payloadId);
+                String message = new String(Objects.requireNonNull(payload.asBytes()), UTF_8);
+                String[] parts = message.split(":");
+                long payloadId;
+
+                switch (Command.valueOf(parts[0])) {
+                    case ERR:
+                        //
+                        break;
+                    case SUM:
+                    case RET:
+                        Log.i(TAG, String.format("Started downloading %s", message));
+                        payloadId = addPayloadFilename(message);
+                        processFilePayload(payloadId);
+                        break;
+                    case COM:
+                        String videoName = parts[1];
+                        Log.d(TAG, String.format("Endpoint %s has finished downloading %s", endpointId, videoName));
+                        String videoPath = String.format("%s/%s", FileManager.rawFootageFolderPath(), videoName);
+                        Video video =
+                                VideoManager.getVideoFromFile(NearbyFragment.this.getContext(), new File(videoPath));
+                        EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+                        EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+                        break;
+                }
             } else if (payload.getType() == Payload.Type.FILE) {
                 // Add this to our tracking map, so that we can retrieve the payload later.
                 incomingFilePayloads.put(payload.getId(), payload);
@@ -339,9 +365,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
          */
         private long addPayloadFilename(String payloadFilenameMessage) {
             String[] parts = payloadFilenameMessage.split(":");
-            long payloadId = Long.parseLong(parts[0]);
-            String filename = parts[1];
+            Command type = Command.valueOf(parts[0]);
+            long payloadId = Long.parseLong(parts[1]);
+            String filename = parts[2];
             filePayloadFilenames.put(payloadId, filename);
+            filePayloadTypes.put(payloadId, type);
             return payloadId;
         }
 
@@ -351,12 +379,17 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             // been received.
             Payload filePayload = completedFilePayloads.get(payloadId);
             String filename = filePayloadFilenames.get(payloadId);
+            Command type = filePayloadTypes.get(payloadId);
 
-            if (filePayload != null && filename != null) {
+            if (filePayload != null && filename != null && type != null) {
                 Log.i(TAG, String.format("Completed downloading %s", filename));
                 completedFilePayloads.remove(payloadId);
                 filePayloadFilenames.remove(payloadId);
+                filePayloadTypes.remove(payloadId);
 
+                if (type.equals(Command.SUM)) {
+                    NearbyFragment.this.sendCompleteMessage(filename);
+                }
                 // Get the received file (which will be in the Downloads folder)
                 File payloadFile = Objects.requireNonNull(filePayload.asFile()).asJavaFile();
 
@@ -366,8 +399,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     if (!payloadFile.renameTo(videoFile)) {
                         Log.e(TAG, String.format("Could not rename received file as %s", filename));
                     } else {
-                        Log.d(TAG, String.format("Summarising %s", filename));
-                        summarise(NearbyFragment.this.getContext(), videoFile);
+                        if (type.equals(Command.SUM)) {
+                            Log.d(TAG, String.format("Summarising %s", filename));
+                            summarise(NearbyFragment.this.getContext(), videoFile);
+                        } else {
+                            Log.e(TAG, String.format("Could not summarise %s", filename));
+                        }
                     }
                 } else {
                     Log.e(TAG, String.format("Could not create file payload for %s", filename));
@@ -378,21 +415,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         private void summarise(Context context, File videoFile) {
             MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()}, null,
                     (path, uri) -> {
-                        String[] projection = {MediaStore.Video.Media._ID,
-                                MediaStore.Video.Media.DATA,
-                                MediaStore.Video.Media.DISPLAY_NAME,
-                                MediaStore.Video.Media.SIZE,
-                                MediaStore.Video.Media.MIME_TYPE
-                        };
-                        String selection = MediaStore.Video.Media.DATA + "=?";
-                        String[] selectionArgs = new String[]{videoFile.getAbsolutePath()};
-                        Cursor videoCursor = context.getContentResolver().query(
-                                MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                                projection, selection, selectionArgs, null);
-                        videoCursor.moveToFirst();
-                        Video video = VideoManager.videoFromCursor(videoCursor);
-                        EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                        videoCursor.close();
+                        Video video = VideoManager.getVideoFromFile(context, videoFile);
+                        EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+                        EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+
                         final String output = String.format("%s/%s",
                                 FileManager.summarisedVideosFolderPath(), videoFile.getName());
                         Intent summariseIntent = new Intent(context, SummariserIntentService.class);

@@ -12,6 +12,7 @@ import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.page.main.VideoRecyclerViewAdapter;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.nearby.Command;
 import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
@@ -44,14 +45,15 @@ public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
                     summariseIntent.putExtra("outputPath", output);
                     context.getApplicationContext().startService(summariseIntent);
 
+                    EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+                    EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+
                     Toast.makeText(context, "Add to processing queue", Toast.LENGTH_SHORT).show();
                 } else {
-                    transferCallback.sendFile(view, path);
+                    transferCallback.sendFile(view, path, Command.SUM);
 
                     Toast.makeText(context, "Transferring to connected devices", Toast.LENGTH_SHORT).show();
                 }
-                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
-                EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
             }
         });
     }
