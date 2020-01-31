@@ -2,10 +2,10 @@ package com.example.edgesum.util.video.videoeventhandler;
 
 import android.util.Log;
 
-import com.example.edgesum.data.ProcessingVideosRepository;
 import com.example.edgesum.data.VideosRepository;
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.RemoveEvent;
+import com.example.edgesum.event.RemoveFirstEvent;
 import com.example.edgesum.event.Type;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -34,9 +34,16 @@ public class ProcessingVideosEventHandler implements VideoEventHandler {
     @Override
     public void onRemove(RemoveEvent event) {
         if (event.type == Type.PROCESSING) {
-            Log.i(TAG, "onAdd");
+            Log.i(TAG, "onRemove");
             repository.delete(event.video.getData());
         }
     }
 
+    @Subscribe
+    public void removeFirst(RemoveFirstEvent event) {
+        if (event.type == Type.PROCESSING) {
+            Log.i(TAG, "removeFirst");
+            repository.delete(0);
+        }
+    }
 }

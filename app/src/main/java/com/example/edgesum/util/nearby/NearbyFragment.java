@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.RemoveEvent;
+import com.example.edgesum.event.RemoveFirstEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
@@ -43,6 +43,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -401,7 +402,21 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     } else {
                         if (type.equals(Command.SUM)) {
                             Log.d(TAG, String.format("Summarising %s", filename));
-                            summarise(NearbyFragment.this.getContext(), videoFile);
+                            summarise(getContext(), videoFile);
+                        } else if (type.equals(Command.RET)) {
+                            File videoDest = new File(String.format("%s/%s",
+                                    FileManager.summarisedVideosFolderPath(), videoFile.getName()));
+                            try {
+                                FileManager.copy(videoFile, videoDest);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            MediaScannerConnection.scanFile(getContext(),
+                                    new String[]{videoDest.getAbsolutePath()}, null, (path, uri) -> {
+                                        Video video = VideoManager.getVideoFromFile(getContext(), videoDest);
+                                        EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
+                                        EventBus.getDefault().post(new RemoveFirstEvent(Type.PROCESSING));
+                                    });
                         }
                     }
                 } else {
@@ -421,7 +436,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                                 FileManager.summarisedVideosFolderPath(), videoFile.getName());
                         Intent summariseIntent = new Intent(context, SummariserIntentService.class);
                         summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                        summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY,output);
+                        summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
                         summariseIntent.putExtra(SummariserIntentService.TYPE_KEY,
                                 SummariserIntentService.NETWORK_TYPE);
                         context.startService(summariseIntent);
