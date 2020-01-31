@@ -53,7 +53,7 @@ public class ConnectionFragment extends NearbyFragment {
                 startDiscovery();
             } else {
                 Log.d(TAG, "Discovery switch unchecked");
-                stopAdvertising();
+                stopDiscovery();
             }
         });
 
@@ -63,7 +63,7 @@ public class ConnectionFragment extends NearbyFragment {
                 startAdvertising();
             } else {
                 Log.d(TAG, "Advertisement switch unchecked");
-                stopDiscovery();
+                stopAdvertising();
             }
         });
 
