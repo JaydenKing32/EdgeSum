@@ -197,7 +197,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     @Override
-    public void sendFile(View view, String videoPath, Command command) {
+    public void sendFile(String videoPath, Command command) {
         // Could return boolean based on transfer success
         if (videoPath == null) {
             Log.e(TAG, "No video file selected");
@@ -214,7 +214,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         Payload filePayload = null;
 
         try {
-            ParcelFileDescriptor pfd = view.getContext().getContentResolver().openFileDescriptor(uri, "r");
+            ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(uri, "r");
             if (pfd != null) {
                 filePayload = Payload.fromFile(pfd);
             }
@@ -402,8 +402,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         if (type.equals(Command.SUM)) {
                             Log.d(TAG, String.format("Summarising %s", filename));
                             summarise(NearbyFragment.this.getContext(), videoFile);
-                        } else {
-                            Log.e(TAG, String.format("Could not summarise %s", filename));
                         }
                     }
                 } else {
@@ -422,8 +420,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         final String output = String.format("%s/%s",
                                 FileManager.summarisedVideosFolderPath(), videoFile.getName());
                         Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                        summariseIntent.putExtra("video", video);
-                        summariseIntent.putExtra("outputPath", output);
+                        summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                        summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY,output);
+                        summariseIntent.putExtra(SummariserIntentService.TYPE_KEY,
+                                SummariserIntentService.NETWORK_TYPE);
                         context.startService(summariseIntent);
                     });
         }

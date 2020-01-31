@@ -33,6 +33,7 @@ import com.example.edgesum.util.Injection;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.NearbyFragment;
 import com.example.edgesum.util.video.VideoManager;
+import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.videoeventhandler.ProcessingVideosEventHandler;
 import com.example.edgesum.util.video.videoeventhandler.RawFootageEventHandler;
 import com.example.edgesum.util.video.videoeventhandler.SummarisedVideosEventHandler;
@@ -59,7 +60,8 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity implements VideoFragment.OnListFragmentInteractionListener, NearbyFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements VideoFragment.OnListFragmentInteractionListener,
+        NearbyFragment.OnFragmentInteractionListener {
     private final String TAG = MainActivity.class.getSimpleName();
 
     VideoFragment rawFootageFragment;
@@ -150,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
                 FileManager.SUMMARISED_VIDEOS_PATH.getAbsolutePath());
 
         connectionFragment = ConnectionFragment.newInstance();
+        SummariserIntentService.transferCallback = connectionFragment;
         rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(connectionFragment),
                 ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository));
         processingFragment = VideoFragment.newInstance(1, new ProcessingVideosViewHolderProcessor(),

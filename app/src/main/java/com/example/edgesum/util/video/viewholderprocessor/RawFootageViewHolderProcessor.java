@@ -41,8 +41,9 @@ public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
 
                 if (!transferCallback.isConnected()) {
                     Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                    summariseIntent.putExtra("video", video);
-                    summariseIntent.putExtra("outputPath", output);
+                    summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                    summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                    summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
                     context.getApplicationContext().startService(summariseIntent);
 
                     EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
@@ -50,7 +51,7 @@ public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
 
                     Toast.makeText(context, "Add to processing queue", Toast.LENGTH_SHORT).show();
                 } else {
-                    transferCallback.sendFile(view, path, Command.SUM);
+                    transferCallback.sendFile(path, Command.SUM);
 
                     Toast.makeText(context, "Transferring to connected devices", Toast.LENGTH_SHORT).show();
                 }
