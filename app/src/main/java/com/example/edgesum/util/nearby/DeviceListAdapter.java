@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         Endpoint endpoint = endpoints.get(position);
 
         holder.deviceName.setText(endpoint.name);
+        holder.deviceName.setClickable(!endpoint.connected);
         holder.disconnectButton.setEnabled(endpoint.connected);
         holder.removeButton.setEnabled(!endpoint.connected);
 
@@ -51,7 +53,12 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
             holder.removeButton.clearColorFilter();
         }
 
-        holder.deviceName.setOnClickListener(v -> deviceCallback.connectEndpoint(endpoint));
+        holder.deviceName.setOnClickListener(v -> {
+            if (!endpoint.connected) {
+                Toast.makeText(v.getContext(), String.format("Connecting to %s", endpoint.name), Toast.LENGTH_LONG).show();
+                deviceCallback.connectEndpoint(endpoint);
+            }
+        });
         holder.disconnectButton.setOnClickListener(v -> deviceCallback.disconnectEndpoint(endpoint));
         holder.removeButton.setOnClickListener(v -> deviceCallback.removeEndpoint(endpoint));
     }

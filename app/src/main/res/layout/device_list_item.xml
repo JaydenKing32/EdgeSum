@@ -9,6 +9,7 @@
     <TextView
         android:id="@+id/device_item_text"
         style="@style/device_item"
+        android:background="@drawable/device_item_background"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,6 +33,7 @@
         android:layout_width="@dimen/device_icon_size"
         android:layout_height="@dimen/device_icon_size"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/device_item_background"
         android:clickable="true"
         android:contentDescription="@string/disconnect_button_content_description"
         android:focusable="true"
@@ -44,6 +46,7 @@
         android:id="@+id/remove_device_button"
         android:layout_width="@dimen/device_icon_size"
         android:layout_height="@dimen/device_icon_size"
+        android:background="@drawable/device_item_background"
         android:clickable="true"
         android:contentDescription="@string/remove_device_button_content_description"
         android:focusable="true"
