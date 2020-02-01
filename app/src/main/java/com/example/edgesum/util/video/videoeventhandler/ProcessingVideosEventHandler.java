@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.example.edgesum.data.VideosRepository;
 import com.example.edgesum.event.AddEvent;
+import com.example.edgesum.event.RemoveByNameEvent;
 import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.RemoveFirstEvent;
 import com.example.edgesum.event.Type;
+import com.example.edgesum.util.file.FileManager;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -44,6 +46,15 @@ public class ProcessingVideosEventHandler implements VideoEventHandler {
         if (event.type == Type.PROCESSING) {
             Log.i(TAG, "removeFirst");
             repository.delete(0);
+        }
+    }
+
+    @Subscribe
+    public void removeByName(RemoveByNameEvent event) {
+        if (event.type == Type.PROCESSING) {
+            Log.i(TAG, "removeByName");
+            String path = String.format("%s/%s", FileManager.rawFootageFolderPath(), event.name);
+            repository.delete(path);
         }
     }
 }

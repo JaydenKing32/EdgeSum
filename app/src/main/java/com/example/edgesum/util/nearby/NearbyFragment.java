@@ -16,8 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edgesum.event.AddEvent;
+import com.example.edgesum.event.RemoveByNameEvent;
 import com.example.edgesum.event.RemoveEvent;
-import com.example.edgesum.event.RemoveFirstEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
@@ -405,7 +405,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             summarise(getContext(), videoFile);
                         } else if (type.equals(Command.RET)) {
                             File videoDest = new File(String.format("%s/%s",
-                                    FileManager.summarisedVideosFolderPath(), videoFile.getName()));
+                                    FileManager.summarisedVideosFolderPath(), filename));
                             try {
                                 FileManager.copy(videoFile, videoDest);
                             } catch (IOException e) {
@@ -415,7 +415,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                                     new String[]{videoDest.getAbsolutePath()}, null, (path, uri) -> {
                                         Video video = VideoManager.getVideoFromFile(getContext(), videoDest);
                                         EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
-                                        EventBus.getDefault().post(new RemoveFirstEvent(Type.PROCESSING));
+                                        EventBus.getDefault().post(new RemoveByNameEvent(filename, Type.PROCESSING));
                                     });
                         }
                     }
