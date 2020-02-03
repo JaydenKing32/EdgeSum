@@ -239,7 +239,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         connectionsClient.sendPayload(toEndpointIds, filePayload);
     }
 
-    private void sendCompleteMessage(String filename) {
+    private void sendCompletedDownloadMessage(String filename) {
         // Currently just works for worker responding to master, could make it work as a master response
         String filenameMessage = String.format("%s:%s", Command.COM, filename);
         Payload filenameBytesPayload = Payload.fromBytes(filenameMessage.getBytes(UTF_8));
@@ -389,7 +389,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 filePayloadTypes.remove(payloadId);
 
                 if (type.equals(Command.SUM)) {
-                    NearbyFragment.this.sendCompleteMessage(filename);
+                    NearbyFragment.this.sendCompletedDownloadMessage(filename);
                 }
                 // Get the received file (which will be in the Downloads folder)
                 File payloadFile = Objects.requireNonNull(filePayload.asFile()).asJavaFile();
