@@ -154,11 +154,11 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
         connectionFragment = ConnectionFragment.newInstance();
         SummariserIntentService.transferCallback = connectionFragment;
         rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(connectionFragment),
-                ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository));
+                ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository), connectionFragment);
         processingFragment = VideoFragment.newInstance(1, new ProcessingVideosViewHolderProcessor(),
-                ActionButton.REMOVE, new ProcessingVideosEventHandler(processingVideosRepository));
+                ActionButton.REMOVE, new ProcessingVideosEventHandler(processingVideosRepository), connectionFragment);
         summarisedVideoFragment = VideoFragment.newInstance(1, new SummarisedVideosViewHolderProcessor(),
-                ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository));
+                ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository), connectionFragment);
 
         supportFragmentManager.beginTransaction().add(R.id.main_container, connectionFragment, "4").hide(connectionFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, summarisedVideoFragment, "3").hide(summarisedVideoFragment).commit();

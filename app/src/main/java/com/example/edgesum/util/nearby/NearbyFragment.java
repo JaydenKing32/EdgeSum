@@ -3,6 +3,7 @@ package com.example.edgesum.util.nearby;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,14 +40,17 @@ import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
 import com.jaredrummler.android.device.DeviceName;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 
 import static com.example.edgesum.util.nearby.Endpoint.getConnectedEndpointIds;
 import static com.example.edgesum.util.nearby.Endpoint.getIndexById;
@@ -56,12 +60,15 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     private static final String TAG = NearbyFragment.class.getSimpleName();
     private static final Strategy STRATEGY = Strategy.P2P_STAR;
     private static final String SERVICE_ID = "com.example.edgesum";
-    private static final String LOCAL_NAME = DeviceName.getDeviceName();
+    private static final String LOCAL_NAME_KEY = "LOCAL_NAME";
+    private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
+    private final Queue<Message> transferQueue = new LinkedList<>();
 
-    protected RecyclerView.Adapter deviceAdapter;
     private List<Endpoint> discoveredEndpoints = new ArrayList<>();
     private ConnectionsClient connectionsClient;
-    private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
+    private int transferCounter = 0;
+    protected RecyclerView.Adapter deviceAdapter;
+    protected String localName = null;
 
     OnFragmentInteractionListener listener;
 
@@ -72,6 +79,21 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 //        discoveredEndpoints.add(new Endpoint("testing2", "testing2", false));
         deviceAdapter = new DeviceListAdapter(getContext(), discoveredEndpoints, this);
         connectionsClient = Nearby.getConnectionsClient(getContext());
+        setLocalName(getContext());
+    }
+
+    private void setLocalName(Context context) {
+        if (localName == null) {
+            SharedPreferences sharedPrefs = context.getSharedPreferences(LOCAL_NAME_KEY, Context.MODE_PRIVATE);
+            String uniqueId = sharedPrefs.getString(LOCAL_NAME_KEY, null);
+            if (uniqueId == null) {
+                uniqueId = RandomStringUtils.randomAlphanumeric(8);
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+                editor.putString(LOCAL_NAME_KEY, uniqueId);
+                editor.apply();
+            }
+            localName = String.format("%s [%s]", DeviceName.getDeviceName(), uniqueId);
+        }
     }
 
     private final EndpointDiscoveryCallback endpointDiscoveryCallback =
@@ -79,8 +101,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 @Override
                 public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo info) {
                     Log.i(TAG, String.format("Found endpoint %s: %s", endpointId, info.getEndpointName()));
-                    discoveredEndpoints.add(new Endpoint(endpointId, info.getEndpointName()));
-                    deviceAdapter.notifyItemInserted(discoveredEndpoints.size() - 1);
+                    if (getIndexById(discoveredEndpoints, endpointId) == -1) {
+                        discoveredEndpoints.add(new Endpoint(endpointId, info.getEndpointName()));
+                        deviceAdapter.notifyItemInserted(discoveredEndpoints.size() - 1);
+                    }
                 }
 
                 @Override
@@ -165,7 +189,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     protected void startAdvertising() {
         AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(STRATEGY).build();
-        connectionsClient.startAdvertising(LOCAL_NAME, SERVICE_ID, connectionLifecycleCallback, advertisingOptions)
+        connectionsClient.startAdvertising(localName, SERVICE_ID, connectionLifecycleCallback, advertisingOptions)
                 .addOnSuccessListener((Void unused) -> {
                     Log.i(TAG, "Started advertising");
                 })
@@ -197,9 +221,39 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         connectionsClient.stopDiscovery();
     }
 
+    private List<Endpoint> getConnectedEndpoints() {
+        ArrayList<Endpoint> endpoints = new ArrayList<>();
+        for (Endpoint endpoint : discoveredEndpoints) {
+            if (endpoint.connected) {
+                endpoints.add(endpoint);
+            }
+        }
+        return endpoints;
+    }
+
     @Override
-    public void sendFile(String videoPath, Command command) {
-        // Could return boolean based on transfer success
+    public void addToTransferQueue(Video video, Command command) {
+        transferQueue.add(new Message(video, command));
+    }
+
+    @Override
+    public void nextTransfer() {
+        if (!transferQueue.isEmpty()) {
+            Message message = transferQueue.remove();
+
+            if (message != null) {
+                List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+                Endpoint toEndpoint = connectedEndpoints.get(transferCounter % connectedEndpoints.size());
+                sendFile(message, toEndpoint);
+                transferCounter++;
+            }
+        } else {
+            Log.i(TAG, "Transfer queue is empty");
+        }
+    }
+
+    @Override
+    public void sendFileToAll(String videoPath, Command command) {
         if (videoPath == null) {
             Log.e(TAG, "No video file selected");
             return;
@@ -239,6 +293,38 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         connectionsClient.sendPayload(toEndpointIds, filePayload);
     }
 
+    @Override
+    public void sendFile(Message message, Endpoint toEndpoint) {
+        File fileToSend = new File(message.video.getData());
+        Uri uri = Uri.fromFile(fileToSend);
+        Payload filePayload = null;
+
+        try {
+            ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(uri, "r");
+            if (pfd != null) {
+                filePayload = Payload.fromFile(pfd);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (filePayload == null) {
+            Log.e(TAG, String.format("Could not create file payload for %s", message.video));
+            return;
+        }
+        // Construct a simple message mapping the ID of the file payload to the desired filename.
+        String filenameMessage = String.format("%s:%s:%s",
+                message.command, filePayload.getId(), uri.getLastPathSegment());
+
+        // Send the filename message as a bytes payload.
+        // Master will send to all workers, workers will just send to master
+        Payload filenameBytesPayload = Payload.fromBytes(filenameMessage.getBytes(UTF_8));
+        connectionsClient.sendPayload(toEndpoint.id, filenameBytesPayload);
+
+        // Finally, send the file payload.
+        connectionsClient.sendPayload(toEndpoint.id, filePayload);
+    }
+
     private void sendCompletedDownloadMessage(String filename) {
         // Currently just works for worker responding to master, could make it work as a master response
         String filenameMessage = String.format("%s:%s", Command.COM, filename);
@@ -260,7 +346,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     public void connectEndpoint(Endpoint endpoint) {
         Log.d(TAG, String.format("Selected '%s'", endpoint));
         if (!endpoint.connected) {
-            connectionsClient.requestConnection(LOCAL_NAME, endpoint.id, connectionLifecycleCallback)
+            connectionsClient.requestConnection(localName, endpoint.id, connectionLifecycleCallback)
                     .addOnSuccessListener(
                             (Void unused) -> {
                                 // We successfully requested a connection. Now both sides

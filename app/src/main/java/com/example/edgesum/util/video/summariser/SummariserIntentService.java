@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -83,7 +82,7 @@ public class SummariserIntentService extends IntentService {
             EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
 
             if (type.equals(NETWORK_TYPE)) {
-                transferCallback.sendFile(sumOut, Command.RET);
+                transferCallback.sendFileToAll(sumOut, Command.RET);
             }
         }
         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));

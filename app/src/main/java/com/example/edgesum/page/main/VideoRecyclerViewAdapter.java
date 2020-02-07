@@ -9,9 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.selection.ItemDetailsLookup;
+import androidx.recyclerview.selection.Selection;
+import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
@@ -24,7 +30,8 @@ import com.example.edgesum.R;
 import com.example.edgesum.data.VideoViewModel;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.page.main.VideoFragment.OnListFragmentInteractionListener;
-import com.example.edgesum.util.video.viewholderprocessor.NullVideoViewHolderProcess;
+import com.example.edgesum.util.nearby.Command;
+import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.viewholderprocessor.VideoViewHolderProcessor;
 
 import java.io.File;
@@ -36,44 +43,42 @@ import java.util.List;
  * TODO: Replace the implementation with code for your data type.
  */
 public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecyclerViewAdapter.VideoViewHolder> {
-    private String TAG = VideoRecyclerViewAdapter.class.getSimpleName();
-    private List<Video> videos;
+    private static final String TAG = VideoRecyclerViewAdapter.class.getSimpleName();
     private final OnListFragmentInteractionListener listFragmentInteractionListener;
-    private Context context;
     private final String BUTTON_ACTION_TEXT;
+    private final TransferCallback transferCallback;
 
+    private Context context;
+    private List<Video> videos;
+    private SelectionTracker<Long> tracker;
     private VideoViewHolderProcessor videoViewHolderProcessor;
-
     private VideoViewModel viewModel;
 
-    public VideoRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context, String buttonText) {
+    VideoRecyclerViewAdapter(OnListFragmentInteractionListener listener,
+                             Context context,
+                             String buttonText,
+                             VideoViewHolderProcessor videoViewHolderProcessor,
+                             VideoViewModel videoViewModel,
+                             TransferCallback transferCallback) {
         this.listFragmentInteractionListener = listener;
         this.context = context;
         this.BUTTON_ACTION_TEXT = buttonText;
-        this.videoViewHolderProcessor = new NullVideoViewHolderProcess();
-    }
-
-    public VideoRecyclerViewAdapter(
-            OnListFragmentInteractionListener listener,
-            Context context,
-            String buttonText,
-            VideoViewHolderProcessor videoViewHolderProcessor) {
-        this(listener, context, buttonText);
-        this.videoViewHolderProcessor = videoViewHolderProcessor;
-    }
-
-    public VideoRecyclerViewAdapter(
-            OnListFragmentInteractionListener listener,
-            Context context,
-            String buttonText,
-            VideoViewHolderProcessor videoViewHolderProcessor,
-            VideoViewModel videoViewModel) {
-        this(listener, context, buttonText);
         this.videoViewHolderProcessor = videoViewHolderProcessor;
         this.viewModel = videoViewModel;
+        this.transferCallback = transferCallback;
+        setHasStableIds(true);
     }
 
+    public void setTracker(SelectionTracker<Long> tracker) {
+        this.tracker = tracker;
+    }
 
+    void sendVideos(Selection<Long> positions) {
+        for (Long pos : positions) {
+            transferCallback.addToTransferQueue(videos.get(pos.intValue()), Command.SUM);
+        }
+        transferCallback.nextTransfer();
+    }
 
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -91,21 +96,19 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
 
         videoViewHolderProcessor.process(context, viewModel, holder, position);
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listFragmentInteractionListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    listFragmentInteractionListener.onListFragmentInteraction(holder.video);
-                }
-                System.out.println("View onClick");
-                System.out.println(position);
+        holder.view.setOnClickListener(v -> {
+            if (null != listFragmentInteractionListener) {
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                listFragmentInteractionListener.onListFragmentInteraction(holder.video);
             }
         });
-        final VideoRecyclerViewAdapter a = this;
 
-
+        if (tracker.isSelected(getItemId(position))) {
+            holder.layout.setBackgroundResource(android.R.color.darker_gray);
+        } else {
+            holder.layout.setBackgroundResource(android.R.color.transparent);
+        }
     }
 
     public void uploadWithTransferUtility(String path) {
@@ -173,6 +176,11 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         return videos.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     private Bitmap getThumbnail(String id) {
         Bitmap thumbnail = MediaStore.Video.Thumbnails.getThumbnail(
                 this.context.getContentResolver(),
@@ -194,6 +202,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         public final TextView videoFileNameView;
         public final Button actionButton;
         public Video video;
+        final LinearLayout layout;
 
         public VideoViewHolder(View view) {
             super(view);
@@ -201,13 +210,28 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
             thumbnailView = (ImageView) view.findViewById(R.id.thumbnail);
             videoFileNameView = (TextView) view.findViewById(R.id.content);
             actionButton = (Button) view.findViewById(R.id.actionButton);
+            layout = itemView.findViewById(R.id.video_row);
+        }
+
+        public ItemDetailsLookup.ItemDetails<Long> getItemDetails() {
+            return new ItemDetailsLookup.ItemDetails<Long>() {
+                @Override
+                public int getPosition() {
+                    return getAdapterPosition();
+                }
+
+                @Nullable
+                @Override
+                public Long getSelectionKey() {
+                    return getItemId();
+                }
+            };
         }
 
         @Override
+        @NonNull
         public String toString() {
             return super.toString() + " '" + videoFileNameView.getText() + "'";
         }
     }
-
-
 }
