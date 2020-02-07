@@ -1,18 +1,16 @@
 package com.example.edgesum.data;
 
 import android.content.Context;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.edgesum.model.Video;
-import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.video.VideoManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,8 +41,8 @@ public class ExternalStorageVideosRepository implements VideosRepository {
 
     @Override
     public MutableLiveData<List<Video>> getVideos() {
-
         videos = VideoManager.getAllVideoFromExternalStorageFolder(context.getApplicationContext(), videoDirectory);
+        Collections.sort(videos, (v1, v2) -> v1.getName().compareTo(v2.getName()));
         result.setValue(videos);
         return result;
     }
