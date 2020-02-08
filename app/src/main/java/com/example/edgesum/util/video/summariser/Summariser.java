@@ -4,9 +4,8 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.arthenica.mobileffmpeg.Config;
 import com.arthenica.mobileffmpeg.FFmpeg;
-import com.arthenica.mobileffmpeg.Level;
+import com.arthenica.mobileffmpeg.MediaInformation;
 import com.example.edgesum.util.file.FileManager;
 
 import org.apache.commons.io.FilenameUtils;
@@ -62,8 +61,8 @@ public class Summariser {
             start = Instant.now();
         }
 
-        // Suppress ffmpeg-mobile logs
-        Config.setLogLevel(Level.AV_LOG_WARNING);
+        // Don't suppress ffmpeg-mobile logs, seems to interfere with FFmpeg.getMediaInformation
+        // Config.setLogLevel(Level.AV_LOG_WARNING);
 
         ArrayList<Double[]> activeTimes = getActiveTimes();
         ArrayList<String> ffmpegArgs = new ArrayList<>();
@@ -250,8 +249,14 @@ public class Summariser {
     }
 
     private Double getVideoDuration() {
-        Long ms = FFmpeg.getMediaInformation(filename).getDuration();
-        return ms / 1000.0;
+        MediaInformation info = FFmpeg.getMediaInformation(filename);
+
+        if (info != null && info.getDuration() != null) {
+            return info.getDuration() / 1000.0;
+        } else {
+            Log.e(TAG , String.format("ffmpeg-mobile error, could not retrieve duration of %s", filename));
+            return 0.0;
+        }
     }
 
     private String sumFilename() {

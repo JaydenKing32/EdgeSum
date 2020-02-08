@@ -438,6 +438,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                                 VideoManager.getVideoFromFile(NearbyFragment.this.getContext(), new File(videoPath));
                         EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                         EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+                        nextTransfer();
                         break;
                 }
             } else if (payload.getType() == Payload.Type.FILE) {
