@@ -1,15 +1,10 @@
 package com.example.edgesum.page.main;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.media.MediaScannerConnection;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,15 +19,13 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService;
 import com.example.edgesum.R;
 import com.example.edgesum.data.VideosRepository;
-import com.example.edgesum.event.AddEvent;
-import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.page.authentication.AuthenticationActivity;
 import com.example.edgesum.page.setting.SettingsActivity;
 import com.example.edgesum.util.Injection;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.NearbyFragment;
-import com.example.edgesum.util.video.VideoManager;
+import com.example.edgesum.util.video.DownloadTask;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.videoeventhandler.ProcessingVideosEventHandler;
 import com.example.edgesum.util.video.videoeventhandler.RawFootageEventHandler;
@@ -42,23 +35,7 @@ import com.example.edgesum.util.video.viewholderprocessor.RawFootageViewHolderPr
 import com.example.edgesum.util.video.viewholderprocessor.SummarisedVideosViewHolderProcessor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.apache.commons.io.FileUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
 import java.io.File;
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity implements VideoFragment.OnListFragmentInteractionListener,
         NearbyFragment.OnFragmentInteractionListener {
@@ -189,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
                 return true;
             case R.id.action_download:
                 Log.i(TAG, "Download button clicked");
-                DownloadTask mDownloadTask = new DownloadTask();
-                mDownloadTask.execute("http://192.168.1.254/DCIM/MOVIE/");
+                DownloadTask mDownloadTask = new DownloadTask(this);
+                mDownloadTask.execute();
                 return true;
             case R.id.action_settings:
                 Log.i(TAG, "Setting button clicked");
@@ -260,125 +237,5 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     @Override
     public void onFragmentInteraction(String name) {
 
-    }
-
-    // Need AsyncTask to perform network operations as they are not permitted in the main thread
-    @SuppressLint("StaticFieldLeak")
-    public class DownloadTask extends AsyncTask<String, Void, List<String>> {
-        @Override
-        protected List<String> doInBackground(String... strings) {
-            // Dride
-            return downloadAll("http://192.168.1.254/DCIM/MOVIE/", "", this::getDrideFilenames);
-
-            // BlackVue
-//            return downloadAll("http://10.99.77.1/", "Record/", this::getBlackvueFilenames);
-        }
-
-        private List<String> downloadAll(String baseUrl, String upFolder,
-                                         Function<String, List<String>> getFilenameFunc) {
-            List<String> allFiles = getFilenameFunc.apply(baseUrl);
-
-            if (allFiles == null) {
-                return null;
-            }
-            int last_n = 2;
-            List<String> lastFiles = allFiles.subList(Math.max(allFiles.size(), 0) - last_n, allFiles.size());
-            String rawFootagePath = Environment.getExternalStorageDirectory().getPath() + "/Movies/rawFootage/";
-
-            for (String filename : lastFiles) {
-                downloadVideo(baseUrl, upFolder, rawFootagePath, filename);
-            }
-            Log.i(TAG, "All downloads complete");
-            return lastFiles;
-        }
-
-        private void downloadVideo(String baseUrl, String upFolder, String downFolder, String filename) {
-            try {
-                File videoFile = new File(downFolder + filename);
-                Log.d(TAG, "Started downloading: " + filename);
-                FileUtils.copyURLToFile(
-                        new URL(baseUrl + upFolder + filename),
-                        videoFile
-                );
-                /*
-                New files aren't immediately added to the MediaStore database, so it's necessary manually trigger it
-                Tried using sendBroadcast, but that doesn't guarantee that it will be immediately added.
-                Using MediaScannerConnection does ensure that the new file is added to the database before it is queried
-                 */
-                // https://stackoverflow.com/a/5814533/8031185
-                MediaScannerConnection.scanFile(MainActivity.this,
-                        new String[]{videoFile.getAbsolutePath()}, null,
-                        (path, uri) -> {
-                            String[] projection = {MediaStore.Video.Media._ID,
-                                    MediaStore.Video.Media.DATA,
-                                    MediaStore.Video.Media.DISPLAY_NAME,
-                                    MediaStore.Video.Media.SIZE,
-                                    MediaStore.Video.Media.MIME_TYPE
-                            };
-                            String selection = MediaStore.Video.Media.DATA + "=?";
-                            String[] selectionArgs = new String[]{videoFile.getAbsolutePath()};
-                            Cursor videoCursor = getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                                    projection, selection, selectionArgs, null);
-
-                            assert videoCursor != null;
-                            videoCursor.moveToFirst();
-                            Video video = VideoManager.videoFromCursor(videoCursor);
-                            EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                            videoCursor.close();
-                            Log.d(TAG, "Finished downloading: " + filename);
-                        });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private List<String> getDrideFilenames(String url) {
-            Document doc = null;
-
-            try {
-                doc = Jsoup.connect(url).get();
-            } catch (SocketTimeoutException | ConnectException e) {
-                Log.e(TAG, "Could not connect to dashcam");
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            List<String> allFiles = new ArrayList<>();
-            assert doc != null;
-
-            for (Element file : doc.select("td:eq(0) > a")) {
-                if (file.text().endsWith("MP4")) {
-                    allFiles.add(file.text());
-                }
-            }
-            allFiles.sort(Comparator.comparing(String::toString));
-            return allFiles;
-        }
-
-        private List<String> getBlackvueFilenames(String url) {
-            Document doc = null;
-
-            try {
-                doc = Jsoup.connect(url + "blackvue_vod.cgi").get();
-            } catch (SocketTimeoutException | ConnectException e) {
-                Log.e(TAG, "Could not connect to dashcam");
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            List<String> allFiles = new ArrayList<>();
-            assert doc != null;
-
-            String raw = doc.select("body").text();
-            Pattern pat = Pattern.compile(Pattern.quote("Record/") + "(.*?)" + Pattern.quote(",s:"));
-            Matcher match = pat.matcher(raw);
-
-            while (match.find()) {
-                allFiles.add(match.group(1));
-            }
-
-            allFiles.sort(Comparator.comparing(String::toString));
-            return allFiles;
-        }
     }
 }
