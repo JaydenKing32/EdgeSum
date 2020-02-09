@@ -10,11 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.selection.ItemKeyProvider;
 import androidx.recyclerview.selection.SelectionPredicates;
 import androidx.recyclerview.selection.SelectionTracker;
-import androidx.recyclerview.selection.StableIdKeyProvider;
 import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -158,10 +159,24 @@ public class VideoFragment extends Fragment {
                     transferCallback);
             recyclerView.setAdapter(adapter);
             videoViewModel.getVideos().observe(getActivity(), videos -> adapter.setVideos(videos));
+
+            ItemKeyProvider<Long> videoKeyProvider = new ItemKeyProvider<Long>(ItemKeyProvider.SCOPE_MAPPED) {
+                @Override
+                public Long getKey(int position) {
+                    return adapter.getItemId(position);
+                }
+
+                @Override
+                public int getPosition(@NonNull Long key) {
+                    RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForItemId(key);
+                    return viewHolder == null ? RecyclerView.NO_POSITION : viewHolder.getLayoutPosition();
+                }
+            };
+
             tracker = new SelectionTracker.Builder<>(
                     "video_selection",
                     recyclerView,
-                    new StableIdKeyProvider(recyclerView),
+                    videoKeyProvider,
                     new VideoDetailsLookup(recyclerView),
                     StorageStrategy.createLongStorage())
                     .withSelectionPredicate(SelectionPredicates.createSelectAnything())
