@@ -1,0 +1,80 @@
+PS E:\User> .\logging.ps1 "ce12171c8a14c72802" "W"
+2020-02-10 18:20:08.781 com.example.edgesum W/LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+2020-02-10 18:20:08.784 com.example.edgesum W/LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+2020-02-10 18:20:09.013 com.example.edgesum W/LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+2020-02-10 18:20:10.900 com.example.edgesum W/LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+2020-02-10 18:20:10.927 com.example.edgesum E/TransferService: No notification is passed in the intent. Unable to transition to foreground.
+2020-02-10 18:23:27.824 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test00.mp4
+      time: 193s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 18:27:29.469 com.example.edgesum W/Summariser: No activity detected
+2020-02-10 18:27:29.472 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test01.mp4
+      time: 48s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 18:29:21.154 com.example.edgesum W/Summariser: Whole video is active
+2020-02-10 18:29:26.422 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test02.mp4
+      time: 116s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 18:30:13.979 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test04.mp4
+      time: 47s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 18:38:05.097 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test03.mp4
+      time: 471s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 18:39:02.732 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test05.mp4
+      time: 57s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 18:53:10.174 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test06.mp4
+      time: 847s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 19:13:23.126 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test07.mp4
+      time: 1212s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 19:14:54.303 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test08.mp4
+      time: 91s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 19:16:26.377 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test09.mp4
+      time: 91s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 19:17:59.789 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test10.mp4
+      time: 93s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
+2020-02-10 19:19:49.375 com.example.edgesum W/Summariser: Summarisation completed
+      filename: /storage/emulated/0/Movies/rawFootage/test11.mp4
+      time: 109s
+      noise tolerance: 60.00
+      quality: 23
+      speed: medium
