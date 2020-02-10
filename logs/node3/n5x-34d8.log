@@ -1,0 +1,28 @@
+PS E:\User> adb -s $n5x_d8 logcat --pid ((adb -s $n5x_d8 shell ps | findstr com.example.edgesum) -split "\s+")[1] *:W
+02-10 19:29:09.081  6026  6075 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 19:29:09.082  6026  6075 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 19:29:09.290  6026  6075 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 19:29:11.128  6026  6026 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 19:29:11.158  6026  6026 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
+02-10 19:33:17.016  6026  6026 W NearbyFragment: Started downloading RET:-6341453790529311580:test00.mp4
+02-10 19:33:17.404  6026  6026 W NearbyFragment: Completed downloading test00.mp4
+02-10 19:35:19.553  6026  6026 W NearbyFragment: Started downloading RET:-4821892589380005530:test02.mp4
+02-10 19:35:45.638  6026  6026 W NearbyFragment: Completed downloading test02.mp4
+02-10 19:38:15.672  6026  6026 W NearbyFragment: Started downloading RET:-8243828339435516002:test03.mp4
+02-10 19:38:19.117  6026  6026 W NearbyFragment: Completed downloading test03.mp4
+02-10 19:39:29.889  6026  6026 W NearbyFragment: Started downloading RET:-8595670043479336469:test05.mp4
+02-10 19:39:32.930  6026  6026 W NearbyFragment: Started downloading RET:-6600333469723465168:test04.mp4
+02-10 19:39:34.265  6026  6026 W NearbyFragment: Completed downloading test04.mp4
+02-10 19:39:34.675  6026  6026 W NearbyFragment: Completed downloading test05.mp4
+02-10 19:53:26.187  6026  6026 W NearbyFragment: Started downloading RET:-7394341313513075622:test06.mp4
+02-10 19:53:31.709  6026  6026 W NearbyFragment: Completed downloading test06.mp4
+02-10 19:54:57.681  6026  6026 W NearbyFragment: Started downloading RET:-8630474466110568992:test08.mp4
+02-10 19:55:00.626  6026  6026 W NearbyFragment: Completed downloading test08.mp4
+02-10 19:56:31.286  6026  6026 W NearbyFragment: Started downloading RET:-8374637188629513233:test10.mp4
+02-10 19:56:32.618  6026  6026 W NearbyFragment: Completed downloading test10.mp4
+02-10 19:57:10.672  6026  6026 W NearbyFragment: Started downloading RET:-4649586508571662670:test07.mp4
+02-10 19:57:18.956  6026  6026 W NearbyFragment: Completed downloading test07.mp4
+02-10 19:59:04.840  6026  6026 W NearbyFragment: Started downloading RET:-7480412960202218101:test09.mp4
+02-10 19:59:10.919  6026  6026 W NearbyFragment: Completed downloading test09.mp4
+02-10 20:00:56.351  6026  6026 W NearbyFragment: Started downloading RET:-5013688343777826010:test11.mp4
+02-10 20:01:05.276  6026  6026 W NearbyFragment: Completed downloading test11.mp4

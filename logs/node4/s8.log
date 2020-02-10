@@ -1,0 +1,62 @@
+PS E:\User> .\logging.ps1 "ce12171c8a14c72802" "W"
+--------- beginning of main
+02-10 20:35:39.053 28599 28599 E Zygote  : isWhitelistProcess - Process is Whitelisted
+02-10 20:35:39.054 28599 28599 E Zygote  : accessInfo : 1
+--------- beginning of system
+02-10 20:35:41.059 28599 28599 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 20:35:47.348 28599 28599 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@3f79cb8
+02-10 20:35:47.454 28599 28599 W example.edgesu: Accessing hidden method Landroid/graphics/drawable/Drawable;->getOpticalInsets()Landroid/graphics/Insets; (light greylist, linking)
+02-10 20:35:47.454 28599 28599 W example.edgesu: Accessing hidden field Landroid/graphics/Insets;->left:I (light greylist, linking)
+02-10 20:35:47.454 28599 28599 W example.edgesu: Accessing hidden field Landroid/graphics/Insets;->right:I (light greylist, linking)
+02-10 20:35:47.454 28599 28599 W example.edgesu: Accessing hidden field Landroid/graphics/Insets;->top:I (light greylist, linking)
+02-10 20:35:47.454 28599 28599 W example.edgesu: Accessing hidden field Landroid/graphics/Insets;->bottom:I (light greylist, linking)
+02-10 20:35:47.539 28599 28599 W example.edgesu: Accessing hidden method Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (light greylist, reflection)
+02-10 20:35:47.540 28599 28599 W example.edgesu: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (light greylist, reflection)
+02-10 20:35:47.554 28599 28599 W example.edgesu: Accessing hidden method Landroid/widget/TextView;->getTextDirectionHeuristic()Landroid/text/TextDirectionHeuristic; (light greylist, linking)
+02-10 20:35:47.693 28599 28651 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 20:35:47.694 28599 28651 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 20:35:47.795 28599 28651 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 20:35:47.924 28599 28599 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@8ed9bd5
+02-10 20:35:48.051 28599 28599 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@986ff69
+02-10 20:35:48.553 28599 28599 W example.edgesu: Accessing hidden field Landroid/view/View;->mAccessibilityDelegate:Landroid/view/View$AccessibilityDelegate; (light greylist, reflection)
+02-10 20:35:48.825 28599 28599 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
+02-10 20:35:49.132 28599 28656 W libEGL  : EGLNativeWindowType 0x7504766010 disconnect failed
+02-10 20:35:49.351 28599 28656 W libEGL  : EGLNativeWindowType 0x751cca4010 disconnect failed
+02-10 20:36:23.976 28599 28599 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;-><init>()V (light greylist, reflection)
+02-10 20:36:23.976 28599 28599 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->addFontFromAssetManager(Landroid/content/res/AssetManager;Ljava/lang/String;IZIII[Landroid/graphics/fonts/FontVariationAxis;)Z (light greylist, reflection)
+02-10 20:36:23.976 28599 28599 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->addFontFromBuffer(Ljava/nio/ByteBuffer;I[Landroid/graphics/fonts/FontVariationAxis;II)Z (light greylist, reflection)
+02-10 20:36:23.976 28599 28599 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->freeze()Z (light greylist, reflection)
+02-10 20:36:23.976 28599 28599 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->abortCreation()V (light greylist, reflection)
+02-10 20:36:23.977 28599 28599 W example.edgesu: Accessing hidden method Landroid/graphics/Typeface;->createFromFamiliesWithDefault([Landroid/graphics/FontFamily;Ljava/lang/String;II)Landroid/graphics/Typeface; (light greylist, reflection)
+02-10 20:36:24.991 28599 28656 W libEGL  : EGLNativeWindowType 0x750491c010 disconnect failed
+02-10 20:36:25.018 28599 28599 E ViewRootImpl: sendUserActionEvent() returned.
+02-10 20:36:34.258 28599 28656 W libEGL  : EGLNativeWindowType 0x7504031010 disconnect failed
+02-10 20:36:34.289 28599 28599 E ViewRootImpl: sendUserActionEvent() returned.
+02-10 20:36:46.001 28599 28656 W libEGL  : EGLNativeWindowType 0x75040b9010 disconnect failed
+02-10 20:36:46.026 28599 28599 E ViewRootImpl: sendUserActionEvent() returned.
+02-10 20:39:38.382 28599 28608 W System  : A resource failed to call close.
+02-10 20:39:38.396 28599 28608 W System  : A resource failed to call close.
+02-10 20:41:42.110 28599 28599 W NearbyFragment: Started downloading RET:-8699083995043316895:test02.mp4
+02-10 20:41:49.093 28599 28599 W NearbyFragment: Started downloading RET:-5348980983105654241:test00.mp4
+02-10 20:41:49.645 28599 28599 W NearbyFragment: Completed downloading test00.mp4
+02-10 20:42:10.107 28599 28599 W NearbyFragment: Completed downloading test02.mp4
+02-10 20:42:47.515 28599 28599 W NearbyFragment: Started downloading RET:-7876374659368334265:test05.mp4
+02-10 20:42:52.435 28599 28608 W System  : A resource failed to call close.
+02-10 20:42:52.437 28599 28608 W System  : A resource failed to call close.
+02-10 20:42:52.890 28599 28599 W NearbyFragment: Completed downloading test05.mp4
+02-10 20:43:31.348 28599 28599 W NearbyFragment: Started downloading RET:-5040814129472704612:test04.mp4
+02-10 20:43:33.649 28599 28599 W NearbyFragment: Completed downloading test04.mp4
+02-10 20:44:28.722 28599 28599 W NearbyFragment: Started downloading RET:-7070299496280174741:test08.mp4
+02-10 20:44:33.602 28599 28599 W NearbyFragment: Completed downloading test08.mp4
+02-10 20:46:17.881 28599 28599 W NearbyFragment: Started downloading RET:-6589846091039456551:test11.mp4
+02-10 20:46:27.892 28599 28599 W NearbyFragment: Completed downloading test11.mp4
+02-10 20:49:43.131 28599 28599 W NearbyFragment: Started downloading RET:-5498804428222795372:test03.mp4
+02-10 20:49:45.315 28599 28599 W NearbyFragment: Completed downloading test03.mp4
+02-10 21:03:43.259 28599 28599 W NearbyFragment: Started downloading RET:-9079655245709606317:test07.mp4
+02-10 21:03:51.734 28599 28599 W NearbyFragment: Completed downloading test07.mp4
+02-10 21:03:58.654 28599 28599 W NearbyFragment: Started downloading RET:-7157382754500540808:test06.mp4
+02-10 21:04:03.913 28599 28599 W NearbyFragment: Completed downloading test06.mp4
+02-10 21:05:18.309 28599 28599 W NearbyFragment: Started downloading RET:-7866459615267608388:test10.mp4
+02-10 21:05:21.554 28599 28599 W NearbyFragment: Completed downloading test10.mp4
+02-10 21:05:33.377 28599 28599 W NearbyFragment: Started downloading RET:-6689722356740986635:test09.mp4
+02-10 21:05:35.052 28599 28599 W NearbyFragment: Completed downloading test09.mp4
