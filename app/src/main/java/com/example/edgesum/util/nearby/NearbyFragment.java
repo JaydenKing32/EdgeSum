@@ -509,6 +509,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 } else {
                     Log.e(TAG, String.format("Could not create file payload for %s", filename));
                 }
+                nextTransfer();
             }
         }
 
