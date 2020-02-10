@@ -111,7 +111,7 @@ public class Summariser {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.i(TAG, String.format(
+            Log.w(TAG, String.format(
                     "Summarisation completed\n" +
                             "  filename: %s\n" +
                             "  time: %ds\n" +
@@ -125,7 +125,7 @@ public class Summariser {
                     speed
             ));
         } else {
-            Log.i(TAG, String.format(
+            Log.w(TAG, String.format(
                     "Summarisation completed\n" +
                             "  filename: %s\n" +
                             "  noise tolerance: %.2f\n" +

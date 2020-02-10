@@ -426,7 +426,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         break;
                     case SUM:
                     case RET:
-                        Log.i(TAG, String.format("Started downloading %s", message));
+                        Log.w(TAG, String.format("Started downloading %s", message));
                         payloadId = addPayloadFilename(message);
                         processFilePayload(payloadId);
                         break;
@@ -470,7 +470,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             Command type = filePayloadTypes.get(payloadId);
 
             if (filePayload != null && filename != null && type != null) {
-                Log.i(TAG, String.format("Completed downloading %s", filename));
+                Log.w(TAG, String.format("Completed downloading %s", filename));
                 completedFilePayloads.remove(payloadId);
                 filePayloadFilenames.remove(payloadId);
                 filePayloadTypes.remove(payloadId);
