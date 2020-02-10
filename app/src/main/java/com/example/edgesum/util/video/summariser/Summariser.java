@@ -72,6 +72,7 @@ public class Summariser {
             try {
                 Log.i(TAG, "Whole video is active");
                 FileManager.copy(new File(filename), new File(sumFilename()));
+                printResult(start);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -92,6 +93,7 @@ public class Summariser {
 //                    e.printStackTrace();
 //                }
                 activtySections = ActivtySections.NONE;
+                printResult(start);
                 return false;
             case 1:
                 // One active scene found, extract that scene and copy it
@@ -110,6 +112,11 @@ public class Summariser {
             executeFfmpeg(ffmpegArgs);
         }
 
+        printResult(start);
+        return true;
+    }
+
+    private void printResult(Instant start) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Log.w(TAG, String.format(
                     "Summarisation completed\n" +
@@ -137,7 +144,6 @@ public class Summariser {
                     speed
             ));
         }
-        return true;
     }
 
     private void executeFfmpeg(ArrayList<String> ffmpegArgs) {
@@ -254,7 +260,7 @@ public class Summariser {
         if (info != null && info.getDuration() != null) {
             return info.getDuration() / 1000.0;
         } else {
-            Log.e(TAG , String.format("ffmpeg-mobile error, could not retrieve duration of %s", filename));
+            Log.e(TAG, String.format("ffmpeg-mobile error, could not retrieve duration of %s", filename));
             return 0.0;
         }
     }
