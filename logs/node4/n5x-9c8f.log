@@ -1,37 +1,38 @@
 PS E:\User> .\logging.ps1 "00b7a59265959c8f" "W"
-02-10 20:35:54.427  9829  9863 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 20:35:54.428  9829  9863 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 20:35:54.580  9829  9863 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 20:35:55.372  9829  9829 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
-02-10 20:38:59.536  9829  9829 W NearbyFragment: Started downloading SUM:-6240211491009918837:test01.mp4
-02-10 20:39:00.783  9829  9829 W NearbyFragment: Completed downloading test01.mp4
-02-10 20:39:22.436  9829  9829 W NearbyFragment: Started downloading SUM:-6182345861367343906:test04.mp4
-02-10 20:39:24.868  9829  9829 W NearbyFragment: Completed downloading test04.mp4
-02-10 20:39:36.159  9829  9829 W NearbyFragment: Started downloading SUM:-6737641043396913698:test07.mp4
-02-10 20:39:38.484  9829 10300 W Summariser: Summarisation completed
-02-10 20:39:38.484  9829 10300 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test01.mp4
-02-10 20:39:38.484  9829 10300 W Summariser:   time: 37s
-02-10 20:39:38.484  9829 10300 W Summariser:   noise tolerance: 60.00
-02-10 20:39:38.484  9829 10300 W Summariser:   quality: 23
-02-10 20:39:38.484  9829 10300 W Summariser:   speed: medium
-02-10 20:39:51.415  9829  9829 W NearbyFragment: Completed downloading test07.mp4
-02-10 20:40:00.193  9829  9829 W NearbyFragment: Started downloading SUM:-6755441529649151794:test10.mp4
-02-10 20:40:04.256  9829  9829 W NearbyFragment: Completed downloading test10.mp4
-02-10 20:43:32.958  9829 10300 W Summariser: Summarisation completed
-02-10 20:43:32.958  9829 10300 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test04.mp4
-02-10 20:43:32.958  9829 10300 W Summariser:   time: 234s
-02-10 20:43:32.958  9829 10300 W Summariser:   noise tolerance: 60.00
-02-10 20:43:32.958  9829 10300 W Summariser:   quality: 23
-02-10 20:43:32.958  9829 10300 W Summariser:   speed: medium
-02-10 21:03:44.819  9829 10300 W Summariser: Summarisation completed
-02-10 21:03:44.819  9829 10300 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test07.mp4
-02-10 21:03:44.819  9829 10300 W Summariser:   time: 1211s
-02-10 21:03:44.819  9829 10300 W Summariser:   noise tolerance: 60.00
-02-10 21:03:44.819  9829 10300 W Summariser:   quality: 23
-02-10 21:03:44.819  9829 10300 W Summariser:   speed: medium
-02-10 21:05:19.946  9829 10300 W Summariser: Summarisation completed
-02-10 21:05:19.946  9829 10300 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test10.mp4
-02-10 21:05:19.946  9829 10300 W Summariser:   time: 95s
-02-10 21:05:19.946  9829 10300 W Summariser:   noise tolerance: 60.00
-02-10 21:05:19.946  9829 10300 W Summariser:   quality: 23
-02-10 21:05:19.946  9829 10300 W Summariser:   speed: medium
+--------- beginning of system
+02-10 21:45:26.536 11990 12100 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 21:45:26.538 11990 12100 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 21:45:26.719 11990 12100 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 21:45:27.501 11990 11990 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
+02-10 21:46:52.430 11990 11990 W NearbyFragment: Started downloading SUM:-4972248898962308228:test01.mp4
+02-10 21:46:53.183 11990 11990 W NearbyFragment: Completed downloading test01.mp4
+02-10 21:47:16.654 11990 11990 W NearbyFragment: Started downloading SUM:-7068668672974027152:test04.mp4
+02-10 21:47:18.802 11990 11990 W NearbyFragment: Completed downloading test04.mp4
+02-10 21:47:29.832 11990 12442 W Summariser: Summarisation completed
+02-10 21:47:29.832 11990 12442 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test01.mp4
+02-10 21:47:29.832 11990 12442 W Summariser:   time: 36s
+02-10 21:47:29.832 11990 12442 W Summariser:   noise tolerance: 60.00
+02-10 21:47:29.832 11990 12442 W Summariser:   quality: 23
+02-10 21:47:29.832 11990 12442 W Summariser:   speed: medium
+02-10 21:47:30.648 11990 11990 W NearbyFragment: Started downloading SUM:-5431698788981070216:test07.mp4
+02-10 21:47:45.512 11990 11990 W NearbyFragment: Completed downloading test07.mp4
+02-10 21:47:54.167 11990 11990 W NearbyFragment: Started downloading SUM:-7343063599722665151:test10.mp4
+02-10 21:47:57.715 11990 11990 W NearbyFragment: Completed downloading test10.mp4
+02-10 21:51:13.007 11990 12442 W Summariser: Summarisation completed
+02-10 21:51:13.007 11990 12442 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test04.mp4
+02-10 21:51:13.007 11990 12442 W Summariser:   time: 223s
+02-10 21:51:13.007 11990 12442 W Summariser:   noise tolerance: 60.00
+02-10 21:51:13.007 11990 12442 W Summariser:   quality: 23
+02-10 21:51:13.007 11990 12442 W Summariser:   speed: medium
+02-10 22:11:14.323 11990 12442 W Summariser: Summarisation completed
+02-10 22:11:14.323 11990 12442 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test07.mp4
+02-10 22:11:14.323 11990 12442 W Summariser:   time: 1201s
+02-10 22:11:14.323 11990 12442 W Summariser:   noise tolerance: 60.00
+02-10 22:11:14.323 11990 12442 W Summariser:   quality: 23
+02-10 22:11:14.323 11990 12442 W Summariser:   speed: medium
+02-10 22:12:49.992 11990 12442 W Summariser: Summarisation completed
+02-10 22:12:49.992 11990 12442 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test10.mp4
+02-10 22:12:49.992 11990 12442 W Summariser:   time: 95s
+02-10 22:12:49.992 11990 12442 W Summariser:   noise tolerance: 60.00
+02-10 22:12:49.992 11990 12442 W Summariser:   quality: 23
+02-10 22:12:49.992 11990 12442 W Summariser:   speed: medium

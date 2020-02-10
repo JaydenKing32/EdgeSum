@@ -1,43 +1,44 @@
 PS E:\User> .\logging.ps1 "0b3b6fd50c371825" "W"
-02-10 20:35:59.560  7964  8011 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
-02-10 20:35:59.568  7964  8011 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
-02-10 20:35:59.675  7964  8008 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 20:35:59.678  7964  8008 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 20:35:59.798  7964  8008 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 20:36:00.132  7964  8011 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
-02-10 20:36:00.899  7964  8011 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
-02-10 20:36:00.969  7964  7964 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
-02-10 20:36:41.145  7964  8011 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
-02-10 20:36:46.626  7964  8011 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
-02-10 20:39:00.956  7964  7964 W NearbyFragment: Started downloading SUM:-8657507496002536269:test02.mp4
-02-10 20:39:17.567  7964  7964 W NearbyFragment: Completed downloading test02.mp4
-02-10 20:39:24.866  7964  7964 W NearbyFragment: Started downloading SUM:-8983433226310164942:test05.mp4
-02-10 20:39:28.048  7964  7964 W NearbyFragment: Completed downloading test05.mp4
-02-10 20:39:51.706  7964  7964 W NearbyFragment: Started downloading SUM:-6073099542964074972:test08.mp4
-02-10 20:39:56.194  7964  7964 W NearbyFragment: Completed downloading test08.mp4
-02-10 20:40:04.392  7964  7964 W NearbyFragment: Started downloading SUM:-8261866819330837519:test11.mp4
-02-10 20:40:17.773  7964  7964 W NearbyFragment: Completed downloading test11.mp4
-02-10 20:41:43.593  7964  8479 W Summariser: Summarisation completed
-02-10 20:41:43.593  7964  8479 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test02.mp4
-02-10 20:41:43.593  7964  8479 W Summariser:   time: 145s
-02-10 20:41:43.593  7964  8479 W Summariser:   noise tolerance: 60.00
-02-10 20:41:43.593  7964  8479 W Summariser:   quality: 23
-02-10 20:41:43.593  7964  8479 W Summariser:   speed: medium
-02-10 20:42:48.843  7964  8479 W Summariser: Summarisation completed
-02-10 20:42:48.843  7964  8479 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test05.mp4
-02-10 20:42:48.843  7964  8479 W Summariser:   time: 65s
-02-10 20:42:48.843  7964  8479 W Summariser:   noise tolerance: 60.00
-02-10 20:42:48.843  7964  8479 W Summariser:   quality: 23
-02-10 20:42:48.843  7964  8479 W Summariser:   speed: medium
-02-10 20:44:30.126  7964  8479 W Summariser: Summarisation completed
-02-10 20:44:30.126  7964  8479 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test08.mp4
-02-10 20:44:30.126  7964  8479 W Summariser:   time: 101s
-02-10 20:44:30.126  7964  8479 W Summariser:   noise tolerance: 60.00
-02-10 20:44:30.126  7964  8479 W Summariser:   quality: 23
-02-10 20:44:30.126  7964  8479 W Summariser:   speed: medium
-02-10 20:46:19.004  7964  8479 W Summariser: Summarisation completed
-02-10 20:46:19.004  7964  8479 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test11.mp4
-02-10 20:46:19.004  7964  8479 W Summariser:   time: 108s
-02-10 20:46:19.004  7964  8479 W Summariser:   noise tolerance: 60.00
-02-10 20:46:19.004  7964  8479 W Summariser:   quality: 23
-02-10 20:46:19.004  7964  8479 W Summariser:   speed: medium
+--------- beginning of system
+02-10 21:45:30.332 11810 11970 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
+02-10 21:45:30.334 11810 11970 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
+02-10 21:45:30.362 11810 11967 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 21:45:30.363 11810 11967 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 21:45:30.486 11810 11967 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
+02-10 21:45:30.808 11810 11970 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
+02-10 21:45:31.546 11810 11970 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
+02-10 21:45:31.605 11810 11810 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
+02-10 21:46:03.168 11810 11970 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
+02-10 21:46:07.469 11810 11970 W Adreno-EGL: <qeglDrvAPI_eglGetConfigAttrib:607>: EGL_BAD_ATTRIBUTE
+02-10 21:46:53.370 11810 11810 W NearbyFragment: Started downloading SUM:-7170495985660213839:test02.mp4
+02-10 21:47:12.180 11810 11810 W NearbyFragment: Completed downloading test02.mp4
+02-10 21:47:18.884 11810 11810 W NearbyFragment: Started downloading SUM:-8755575598062631976:test05.mp4
+02-10 21:47:22.664 11810 11810 W NearbyFragment: Completed downloading test05.mp4
+02-10 21:47:45.715 11810 11810 W NearbyFragment: Started downloading SUM:-5655145527264302375:test08.mp4
+02-10 21:47:49.881 11810 11810 W NearbyFragment: Completed downloading test08.mp4
+02-10 21:47:57.627 11810 11810 W NearbyFragment: Started downloading SUM:-9107366170294439997:test11.mp4
+02-10 21:48:09.776 11810 11810 W NearbyFragment: Completed downloading test11.mp4
+02-10 21:49:32.224 11810 12321 W Summariser: Summarisation completed
+02-10 21:49:32.224 11810 12321 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test02.mp4
+02-10 21:49:32.224 11810 12321 W Summariser:   time: 139s
+02-10 21:49:32.224 11810 12321 W Summariser:   noise tolerance: 60.00
+02-10 21:49:32.224 11810 12321 W Summariser:   quality: 23
+02-10 21:49:32.224 11810 12321 W Summariser:   speed: medium
+02-10 21:50:39.011 11810 12321 W Summariser: Summarisation completed
+02-10 21:50:39.011 11810 12321 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test05.mp4
+02-10 21:50:39.011 11810 12321 W Summariser:   time: 66s
+02-10 21:50:39.011 11810 12321 W Summariser:   noise tolerance: 60.00
+02-10 21:50:39.011 11810 12321 W Summariser:   quality: 23
+02-10 21:50:39.011 11810 12321 W Summariser:   speed: medium
+02-10 21:52:28.896 11810 12321 W Summariser: Summarisation completed
+02-10 21:52:28.896 11810 12321 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test08.mp4
+02-10 21:52:28.896 11810 12321 W Summariser:   time: 109s
+02-10 21:52:28.896 11810 12321 W Summariser:   noise tolerance: 60.00
+02-10 21:52:28.896 11810 12321 W Summariser:   quality: 23
+02-10 21:52:28.896 11810 12321 W Summariser:   speed: medium
+02-10 21:54:26.069 11810 12321 W Summariser: Summarisation completed
+02-10 21:54:26.069 11810 12321 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test11.mp4
+02-10 21:54:26.069 11810 12321 W Summariser:   time: 116s
+02-10 21:54:26.069 11810 12321 W Summariser:   noise tolerance: 60.00
+02-10 21:54:26.069 11810 12321 W Summariser:   quality: 23
+02-10 21:54:26.069 11810 12321 W Summariser:   speed: medium
