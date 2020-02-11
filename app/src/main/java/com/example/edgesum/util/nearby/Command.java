@@ -1,8 +1,9 @@
 package com.example.edgesum.util.nearby;
 
 public enum Command {
-    ERR, // Error during transfer
-    SUM, // Summarise the transferred file
-    COM, // Completed file transfer
-    RET // Returning summarised file
+    ERROR, // Error during transfer
+    SUMMARISE, // Summarise the transferred file
+    COMPLETE, // Completed file transfer
+    RETURN, // Returning summarised file
+    NO_ACTIVITY
 }

@@ -24,12 +24,12 @@ public class Summariser {
 
     private final String TAG = Summariser.class.getSimpleName();
 
-    static final float DEFAULT_NOISE = 60;
-    static final float DEFAULT_DURATION = 2;
-    static final int DEFAULT_QUALITY = 23;
-    static final Speed DEFAULT_SPEED = Speed.medium;
+    public static final float DEFAULT_NOISE = 60;
+    public static final float DEFAULT_DURATION = 2;
+    public static final int DEFAULT_QUALITY = 23;
+    public static final Speed DEFAULT_SPEED = Speed.medium;
 
-    private final String freezeFilePath = "/sdcard/Movies/rawFootage/freeze.txt";
+    private final String freezeFilePath = String.format("%s/freeze.txt", FileManager.rawFootageFolderPath());
 
     private final String filename;
     private final double noise;

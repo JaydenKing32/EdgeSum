@@ -51,7 +51,7 @@ public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
 
                     Toast.makeText(context, "Add to processing queue", Toast.LENGTH_SHORT).show();
                 } else {
-                    transferCallback.sendFileToAll(path, Command.SUM);
+                    transferCallback.sendFileToAll(path, Command.SUMMARISE);
 
                     Toast.makeText(context, "Transferring to connected devices", Toast.LENGTH_SHORT).show();
                 }

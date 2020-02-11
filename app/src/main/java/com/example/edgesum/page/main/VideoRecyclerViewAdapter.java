@@ -84,7 +84,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     void sendVideos(Selection<Long> positions) {
         if (transferCallback.isConnected()) {
             for (Long pos : positions) {
-                transferCallback.addToTransferQueue(videos.get(pos.intValue()), Command.SUM);
+                transferCallback.addToTransferQueue(videos.get(pos.intValue()), Command.SUMMARISE);
             }
             transferCallback.nextTransfer();
         } else {
