@@ -11,5 +11,7 @@ public interface TransferCallback {
 
     void sendFile(Message message, Endpoint toEndpoint);
 
+    void sendCommandMessage(Command command, String filename);
+
     boolean isConnected();
 }

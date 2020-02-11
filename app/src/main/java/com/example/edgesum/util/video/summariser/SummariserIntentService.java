@@ -84,6 +84,8 @@ public class SummariserIntentService extends IntentService {
             if (type.equals(NETWORK_TYPE)) {
                 transferCallback.sendFileToAll(sumOut, Command.RETURN);
             }
+        } else if (type.equals(NETWORK_TYPE)) {
+            transferCallback.sendCommandMessage(Command.NO_ACTIVITY, video.getName());
         }
         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
 

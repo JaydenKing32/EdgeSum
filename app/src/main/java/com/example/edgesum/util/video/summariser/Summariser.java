@@ -20,15 +20,12 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-public class Summariser {
-
+class Summariser {
     private final String TAG = Summariser.class.getSimpleName();
-
-    public static final float DEFAULT_NOISE = 60;
-    public static final float DEFAULT_DURATION = 2;
-    public static final int DEFAULT_QUALITY = 23;
-    public static final Speed DEFAULT_SPEED = Speed.medium;
-
+    static final float DEFAULT_NOISE = 60;
+    static final float DEFAULT_DURATION = 2;
+    static final int DEFAULT_QUALITY = 23;
+    static final Speed DEFAULT_SPEED = Speed.medium;
     private final String freezeFilePath = String.format("%s/freeze.txt", FileManager.rawFootageFolderPath());
 
     private final String filename;
@@ -38,8 +35,8 @@ public class Summariser {
     private final Speed speed;
     private final String outFile;
 
-    public static Summariser createSummariser(String filename, double noise, double duration, int quality,
-                                              Speed speed, String outFile) {
+    static Summariser createSummariser(String filename, double noise, double duration, int quality,
+                                       Speed speed, String outFile) {
         return new Summariser(filename, noise, duration, quality, speed, outFile);
     }
 
@@ -55,7 +52,7 @@ public class Summariser {
     /**
      * @return true if a summary video is created, false if no video is created
      */
-    public boolean summarise() {
+    boolean summarise() {
         Instant start = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             start = Instant.now();
@@ -70,7 +67,7 @@ public class Summariser {
         if (activeTimes == null) {
             // Testing purposes: Video file is completely active, so just copy it
             try {
-                Log.i(TAG, "Whole video is active");
+                Log.w(TAG, "Whole video is active");
                 FileManager.copy(new File(filename), new File(sumFilename()));
                 printResult(start);
             } catch (IOException e) {
@@ -79,12 +76,12 @@ public class Summariser {
             return true;
         }
 
-        ActivtySections activtySections;
+        ActivitySections activitySections;
 
         switch (activeTimes.size()) {
             case 0:
                 // Video file is completely inactive, so ignore it, don't copy it
-                Log.i(TAG, "No activity detected");
+                Log.w(TAG, "No activity detected");
 //                System.exit(0);
 //                try {
 //                    Files.copy(new File(filename).toPath(), new File(sumFilename()).toPath(),
@@ -92,23 +89,23 @@ public class Summariser {
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
-                activtySections = ActivtySections.NONE;
+                activitySections = ActivitySections.NONE;
                 printResult(start);
                 return false;
             case 1:
                 // One active scene found, extract that scene and copy it
                 Double[] times = activeTimes.get(0);
                 ffmpegArgs = getArgumentsOneScene(times[0], times[1]);
-                Log.i(TAG, "One active section found");
-                activtySections = ActivtySections.ONE;
+                Log.w(TAG, "One active section found");
+                activitySections = ActivitySections.ONE;
                 break;
             default:
                 // Multiple active scenes found, extract them and combine them into a summarised video
                 ffmpegArgs = getArgumentsMultipleScenes(activeTimes);
-                Log.i(TAG, String.format("%d active sections found", activeTimes.size()));
-                activtySections = ActivtySections.MANY;
+                Log.w(TAG, String.format("%d active sections found", activeTimes.size()));
+                activitySections = ActivitySections.MANY;
         }
-        if (activtySections != ActivtySections.NONE) {
+        if (activitySections != ActivitySections.NONE) {
             executeFfmpeg(ffmpegArgs);
         }
 
@@ -275,9 +272,9 @@ public class Summariser {
         }
     }
 
-    private enum ActivtySections {
-        NONE, ONE, MANY;
+    private enum ActivitySections {
+        NONE,
+        ONE,
+        MANY
     }
 }
-
-
