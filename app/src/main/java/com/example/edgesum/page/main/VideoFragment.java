@@ -72,13 +72,19 @@ public class VideoFragment extends Fragment {
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            if (item.getItemId() == R.id.send) {
-                adapter.sendVideos(tracker.getSelection());
+            switch (item.getItemId()) {
+                case R.id.send:
+                    adapter.sendVideos(tracker.getSelection());
 
-                mode.finish();
-                return true;
-            } else {
-                return false;
+                    mode.finish();
+                    return true;
+                case R.id.select_all:
+                    for (Long i = 0L; i < adapter.getItemCount(); i++) {
+                        tracker.select(i);
+                    }
+                    return true;
+                default:
+                    return false;
             }
         }
 
