@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -41,11 +42,14 @@ import com.google.android.gms.nearby.connection.Strategy;
 import com.jaredrummler.android.device.DeviceName;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -411,6 +415,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         private final SimpleArrayMap<Long, Payload> completedFilePayloads = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, String> filePayloadFilenames = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, Command> filePayloadTypes = new SimpleArrayMap<>();
+        private final SimpleArrayMap<Long, Instant> startTimes = new SimpleArrayMap<>();
 
         @Override
         public void onPayloadReceived(@NonNull String endpointId, @NonNull Payload payload) {
@@ -430,8 +435,13 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         break;
                     case SUMMARISE:
                     case RETURN:
-                        Log.w(TAG, String.format("Started downloading %s", message));
+                        Log.i(TAG, String.format("Started downloading %s", message));
                         payloadId = addPayloadFilename(message);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            startTimes.put(payloadId, Instant.now());
+                        }
+
                         processFilePayload(payloadId);
                         break;
                     case COMPLETE:
@@ -480,7 +490,13 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             Command type = filePayloadTypes.get(payloadId);
 
             if (filePayload != null && filename != null && type != null) {
-                Log.w(TAG, String.format("Completed downloading %s", filename));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    long duration = Duration.between(startTimes.remove(payloadId), Instant.now()).toMillis();
+                    String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
+                    Log.w(TAG, String.format("Completed downloading %s in %ss", filename, time));
+                } else {
+                    Log.w(TAG, String.format("Completed downloading %s", filename));
+                }
                 completedFilePayloads.remove(payloadId);
                 filePayloadFilenames.remove(payloadId);
                 filePayloadTypes.remove(payloadId);

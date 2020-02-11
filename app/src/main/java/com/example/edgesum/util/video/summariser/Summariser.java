@@ -9,6 +9,7 @@ import com.arthenica.mobileffmpeg.MediaInformation;
 import com.example.edgesum.util.file.FileManager;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -118,12 +119,12 @@ class Summariser {
             Log.w(TAG, String.format(
                     "Summarisation completed\n" +
                             "  filename: %s\n" +
-                            "  time: %ds\n" +
+                            "  time: %ss\n" +
                             "  noise tolerance: %.2f\n" +
                             "  quality: %d\n" +
                             "  speed: %s",
                     filename,
-                    Duration.between(start, Instant.now()).getSeconds(),
+                    DurationFormatUtils.formatDuration(Duration.between(start, Instant.now()).toMillis(), "ss.SSS"),
                     noise,
                     quality,
                     speed
