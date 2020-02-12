@@ -1,80 +1,87 @@
-PS E:\User> .\logging.ps1 "ce12171c8a14c72802" "W"
-2020-02-10 18:20:08.781 com.example.edgesum W/LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-2020-02-10 18:20:08.784 com.example.edgesum W/LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-2020-02-10 18:20:09.013 com.example.edgesum W/LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-2020-02-10 18:20:10.900 com.example.edgesum W/LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-2020-02-10 18:20:10.927 com.example.edgesum E/TransferService: No notification is passed in the intent. Unable to transition to foreground.
-2020-02-10 18:23:27.824 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test00.mp4
-      time: 193s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 18:27:29.469 com.example.edgesum W/Summariser: No activity detected
-2020-02-10 18:27:29.472 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test01.mp4
-      time: 48s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 18:29:21.154 com.example.edgesum W/Summariser: Whole video is active
-2020-02-10 18:29:26.422 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test02.mp4
-      time: 116s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 18:30:13.979 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test04.mp4
-      time: 47s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 18:38:05.097 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test03.mp4
-      time: 471s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 18:39:02.732 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test05.mp4
-      time: 57s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 18:53:10.174 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test06.mp4
-      time: 847s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 19:13:23.126 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test07.mp4
-      time: 1212s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 19:14:54.303 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test08.mp4
-      time: 91s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 19:16:26.377 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test09.mp4
-      time: 91s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 19:17:59.789 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test10.mp4
-      time: 93s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
-2020-02-10 19:19:49.375 com.example.edgesum W/Summariser: Summarisation completed
-      filename: /storage/emulated/0/Movies/rawFootage/test11.mp4
-      time: 109s
-      noise tolerance: 60.00
-      quality: 23
-      speed: medium
+02-12 18:58:01.029 30340 30340 W example.edgesu: Accessing hidden method Landroid/view/View;->setLeftTopRightBottom(IIII)V (light greylist, reflection)
+02-12 18:58:05.694 30340 31807 W Summariser: 2 active sections found
+02-12 18:58:42.036 30340 31807 W Summariser: Summarisation completed
+02-12 18:58:42.036 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test00.mp4
+02-12 18:58:42.036 30340 31807 W Summariser:   time: 47.845s
+02-12 18:58:42.036 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 18:58:42.036 30340 31807 W Summariser:   quality: 23
+02-12 18:58:42.036 30340 31807 W Summariser:   speed: medium
+02-12 18:58:56.743 30340 31807 W Summariser: No activity detected
+02-12 18:58:56.744 30340 31807 W Summariser: Summarisation completed
+02-12 18:58:56.744 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test01.mp4
+02-12 18:58:56.744 30340 31807 W Summariser:   time: 14.635s
+02-12 18:58:56.744 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 18:58:56.744 30340 31807 W Summariser:   quality: 23
+02-12 18:58:56.744 30340 31807 W Summariser:   speed: medium
+02-12 18:59:24.758 30340 31807 W Summariser: Whole video is active
+02-12 18:59:26.699 30340 31807 W Summariser: Summarisation completed
+02-12 18:59:26.699 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test02.mp4
+02-12 18:59:26.699 30340 31807 W Summariser:   time: 29.945s
+02-12 18:59:26.699 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 18:59:26.699 30340 31807 W Summariser:   quality: 23
+02-12 18:59:26.699 30340 31807 W Summariser:   speed: medium
+02-12 18:59:44.065 30340 31807 W Summariser: 2 active sections found
+02-12 19:01:36.569 30340 31807 W Summariser: Summarisation completed
+02-12 19:01:36.569 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test03.mp4
+02-12 19:01:36.569 30340 31807 W Summariser:   time: 129.781s
+02-12 19:01:36.569 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 19:01:36.569 30340 31807 W Summariser:   quality: 23
+02-12 19:01:36.569 30340 31807 W Summariser:   speed: medium
+02-12 19:01:50.728 30340 31807 W Summariser: One active section found
+02-12 19:01:50.833 30340 31807 W Summariser: Summarisation completed
+02-12 19:01:50.833 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test04.mp4
+02-12 19:01:50.833 30340 31807 W Summariser:   time: 13.934s
+02-12 19:01:50.833 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 19:01:50.833 30340 31807 W Summariser:   quality: 23
+02-12 19:01:50.833 30340 31807 W Summariser:   speed: medium
+02-12 19:02:07.166 30340 31807 W Summariser: One active section found
+02-12 19:02:07.290 30340 31807 W Summariser: Summarisation completed
+02-12 19:02:07.290 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test05.mp4
+02-12 19:02:07.290 30340 31807 W Summariser:   time: 16.396s
+02-12 19:02:07.290 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 19:02:07.290 30340 31807 W Summariser:   quality: 23
+02-12 19:02:07.290 30340 31807 W Summariser:   speed: medium
+02-12 19:02:34.484 30340 31807 W Summariser: 3 active sections found
+02-12 19:06:13.930 30340 31807 W Summariser: Summarisation completed
+02-12 19:06:13.930 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test06.mp4
+02-12 19:06:13.930 30340 31807 W Summariser:   time: 246.535s
+02-12 19:06:13.930 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 19:06:13.930 30340 31807 W Summariser:   quality: 23
+02-12 19:06:13.930 30340 31807 W Summariser:   speed: medium
+02-12 19:06:54.295 30340 31807 W Summariser: 5 active sections found
+02-12 19:06:54.334 30340 30350 W System  : A resource failed to call close.
+02-12 19:06:54.337 30340 30350 W System  : A resource failed to call close.
+02-12 19:12:02.963 30340 31807 W Summariser: Summarisation completed
+02-12 19:12:02.963 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test07.mp4
+02-12 19:12:02.963 30340 31807 W Summariser:   time: 348.773s
+02-12 19:12:02.963 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 19:12:02.963 30340 31807 W Summariser:   quality: 23
+02-12 19:12:02.963 30340 31807 W Summariser:   speed: medium
+02-12 19:12:29.435 30340 31807 W Summariser: One active section found
+02-12 19:12:29.572 30340 31807 W Summariser: Summarisation completed
+02-12 19:12:29.572 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test08.mp4
+02-12 19:12:29.572 30340 31807 W Summariser:   time: 26.332s
+02-12 19:12:29.572 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 19:12:29.572 30340 31807 W Summariser:   quality: 23
+02-12 19:12:29.572 30340 31807 W Summariser:   speed: medium
+02-12 19:12:55.792 30340 31807 W Summariser: One active section found
+02-12 19:12:55.927 30340 31807 W Summariser: Summarisation completed
+02-12 19:12:55.927 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test09.mp4
+02-12 19:12:55.927 30340 31807 W Summariser:   time: 26.290s
+02-12 19:12:55.927 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 19:12:55.927 30340 31807 W Summariser:   quality: 23
+02-12 19:12:55.927 30340 31807 W Summariser:   speed: medium
+02-12 19:13:22.253 30340 31807 W Summariser: One active section found
+02-12 19:13:22.389 30340 31807 W Summariser: Summarisation completed
+02-12 19:13:22.389 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test10.mp4
+02-12 19:13:22.389 30340 31807 W Summariser:   time: 26.382s
+02-12 19:13:22.389 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 19:13:22.389 30340 31807 W Summariser:   quality: 23
+02-12 19:13:22.389 30340 31807 W Summariser:   speed: medium
+02-12 19:13:54.689 30340 31807 W Summariser: One active section found
+02-12 19:13:54.975 30340 31807 W Summariser: Summarisation completed
+02-12 19:13:54.975 30340 31807 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test11.mp4
+02-12 19:13:54.975 30340 31807 W Summariser:   time: 32.527s
+02-12 19:13:54.975 30340 31807 W Summariser:   noise tolerance: 60.00
+02-12 19:13:54.975 30340 31807 W Summariser:   quality: 23
+02-12 19:13:54.975 30340 31807 W Summariser:   speed: medium

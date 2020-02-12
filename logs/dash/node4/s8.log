@@ -1,160 +1,70 @@
-02-12 17:19:01.922 21229 21229 E Zygote  : isWhitelistProcess - Process is Whitelisted
-02-12 17:19:01.923 21229 21229 E Zygote  : accessInfo : 1
-02-12 17:19:02.212 21229 21229 W example.edgesu: Accessing hidden method Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (light greylist, reflection)
-02-12 17:19:02.213 21229 21229 W example.edgesu: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (light greylist, reflection)
-02-12 17:19:02.225 21229 21229 W example.edgesu: Accessing hidden method Landroid/widget/TextView;->getTextDirectionHeuristic()Landroid/text/TextDirectionHeuristic; (light greylist, linking)
-02-12 17:19:02.308 21229 21247 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-12 17:19:02.309 21229 21247 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-12 17:19:02.423 21229 21247 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-12 17:19:02.528 21229 21229 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@7e71710
-02-12 17:19:02.653 21229 21229 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@2b05a07
-02-12 17:19:03.050 21229 21229 W example.edgesu: Accessing hidden field Landroid/view/View;->mAccessibilityDelegate:Landroid/view/View$AccessibilityDelegate; (light greylist, reflection)
-02-12 17:19:03.286 21229 21229 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-12 17:19:03.300 21229 21229 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
-02-12 17:19:03.586 21229 21252 W libEGL  : EGLNativeWindowType 0x7177cbc010 disconnect failed
-02-12 17:19:03.883 21229 21252 W libEGL  : EGLNativeWindowType 0x718ce26010 disconnect failed
-02-12 17:20:50.871 21229 21229 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;-><init>()V (light greylist, reflection)
-02-12 17:20:50.871 21229 21229 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->addFontFromAssetManager(Landroid/content/res/AssetManager;Ljava/lang/String;IZIII[Landroid/graphics/fonts/FontVariationAxis;)Z (light greylist, reflection)
-02-12 17:20:50.872 21229 21229 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->addFontFromBuffer(Ljava/nio/ByteBuffer;I[Landroid/graphics/fonts/FontVariationAxis;II)Z (light greylist, reflection)
-02-12 17:20:50.872 21229 21229 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->freeze()Z (light greylist, reflection)
-02-12 17:20:50.872 21229 21229 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->abortCreation()V (light greylist, reflection)
-02-12 17:20:50.872 21229 21229 W example.edgesu: Accessing hidden method Landroid/graphics/Typeface;->createFromFamiliesWithDefault([Landroid/graphics/FontFamily;Ljava/lang/String;II)Landroid/graphics/Typeface; (light greylist, reflection)
-02-12 17:20:51.795 21229 21252 W libEGL  : EGLNativeWindowType 0x717575f010 disconnect failed
-02-12 17:20:51.831 21229 21229 E ViewRootImpl: sendUserActionEvent() returned.
-02-12 17:21:02.953 21229 21252 W libEGL  : EGLNativeWindowType 0x7168de9010 disconnect failed
-02-12 17:21:03.037 21229 21229 E ViewRootImpl: sendUserActionEvent() returned.
-02-12 17:21:12.922 21229 21252 W libEGL  : EGLNativeWindowType 0x716b228010 disconnect failed
-02-12 17:21:12.955 21229 21229 E ViewRootImpl: sendUserActionEvent() returned.
-02-12 17:21:25.548 21229 21229 W EventsRelays: Item change notification received for unknown item: 12
-02-12 17:21:25.549 21229 21229 W EventsRelays: Item change notification received for unknown item: 13
-02-12 17:21:25.549 21229 21229 W EventsRelays: Item change notification received for unknown item: 14
-02-12 17:21:25.549 21229 21229 W EventsRelays: Item change notification received for unknown item: 15
-02-12 17:21:25.549 21229 21229 W EventsRelays: Item change notification received for unknown item: 16
-02-12 17:21:25.550 21229 21229 W EventsRelays: Item change notification received for unknown item: 17
-02-12 17:21:25.550 21229 21229 W EventsRelays: Item change notification received for unknown item: 18
-02-12 17:21:25.550 21229 21229 W EventsRelays: Item change notification received for unknown item: 19
-02-12 17:21:25.551 21229 21229 W EventsRelays: Item change notification received for unknown item: 20
-02-12 17:21:25.551 21229 21229 W EventsRelays: Item change notification received for unknown item: 21
-02-12 17:21:25.551 21229 21229 W EventsRelays: Item change notification received for unknown item: 22
-02-12 17:21:25.551 21229 21229 W EventsRelays: Item change notification received for unknown item: 23
-02-12 17:21:25.552 21229 21229 W EventsRelays: Item change notification received for unknown item: 24
-02-12 17:21:25.552 21229 21229 W EventsRelays: Item change notification received for unknown item: 25
-02-12 17:21:41.041 21229 21229 W NearbyFragment: Sending 20191028_171616_NF.mp4 to Nexus 5X [94nVACwb]
-02-12 17:21:41.048 21229 21229 W EventsRelays: Item change notification received for unknown item: 12
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 13
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 14
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 15
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 16
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 17
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 18
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 19
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 20
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 21
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 22
-02-12 17:21:41.049 21229 21229 W EventsRelays: Item change notification received for unknown item: 23
-02-12 17:21:41.050 21229 21229 W EventsRelays: Item change notification received for unknown item: 24
-02-12 17:21:41.050 21229 21229 W EventsRelays: Item change notification received for unknown item: 25
-02-12 17:21:47.585 21229 21239 W System  : A resource failed to call close.
-02-12 17:21:53.666 21229 21229 W NearbyFragment: Sending 20191028_171716_NF.mp4 to Nexus 5X [Li7XCB6a]
-02-12 17:22:09.115 21229 21229 W NearbyFragment: Sending 20191028_171746_EF.mp4 to Nexus 5 [X4i7JHzi]
-02-12 17:22:30.405 21229 21239 W System  : A resource failed to call close.
-02-12 17:22:30.406 21229 21239 W System  : A resource failed to call close.
-02-12 17:22:33.683 21229 21229 W NearbyFragment: Sending 20191028_171846_NF.mp4 to Nexus 5X [94nVACwb]
-02-12 17:23:03.589 21229 21229 W NearbyFragment: Sending 20191028_180605_NF.mp4 to Nexus 5X [Li7XCB6a]
-02-12 17:23:07.682 21229 21229 W NearbyFragment: Completed downloading 20191028_171716_NF.mp4 in 25.598s
-02-12 17:23:09.456 21229 21229 W NearbyFragment: Sending 20191028_180615_EF.mp4 to Nexus 5 [X4i7JHzi]
-02-12 17:23:12.367 21229 21239 W System  : A resource failed to call close.
-02-12 17:23:12.368 21229 21239 W System  : A resource failed to call close.
-02-12 17:23:12.371 21229 21239 W System  : A resource failed to call close.
-02-12 17:23:28.483 21229 21229 W NearbyFragment: Sending 20191028_180715_NF.mp4 to Nexus 5X [94nVACwb]
-02-12 17:23:48.078 21229 21229 W NearbyFragment: Completed downloading 20191028_171616_NF.mp4 in 43.897s
-02-12 17:23:50.597 21229 21229 W NearbyFragment: Sending 20191028_180815_NF.mp4 to Nexus 5X [Li7XCB6a]
-02-12 17:23:57.125 21229 21229 W NearbyFragment: Sending 20191028_180915_NF.mp4 to Nexus 5 [X4i7JHzi]
-02-12 17:23:57.177 21229 21239 W System  : A resource failed to call close.
-02-12 17:23:57.179 21229 21239 W System  : A resource failed to call close.
-02-12 17:24:03.953 21229 21229 W NearbyFragment: Completed downloading 20191028_180605_NF.mp4 in 13.353s
-02-12 17:24:04.669 21229 21229 W NearbyFragment: Sending 20191028_181015_NF.mp4 to Nexus 5X [94nVACwb]
-02-12 17:24:43.264 21229 21239 W System  : A resource failed to call close.
-02-12 17:24:43.267 21229 21239 W System  : A resource failed to call close.
-02-12 17:24:46.634 21229 21229 W NearbyFragment: Sending 20191028_181115_NF.mp4 to Nexus 5X [Li7XCB6a]
-02-12 17:24:48.890 21229 21229 W NearbyFragment: Completed downloading 20191028_171746_EF.mp4 in 38.345s
-02-12 17:24:51.491 21229 21229 W NearbyFragment: Sending 20191028_181159_PF.mp4 to Nexus 5 [X4i7JHzi]
-02-12 17:25:17.166 21229 21229 W NearbyFragment: Sending 20191028_181359_PF.mp4 to Nexus 5X [94nVACwb]
-02-12 17:25:29.233 21229 21239 W System  : A resource failed to call close.
-02-12 17:25:29.236 21229 21239 W System  : A resource failed to call close.
-02-12 17:25:44.055 21229 21229 W NearbyFragment: Completed downloading 20191028_171846_NF.mp4 in 41.436s
-02-12 17:25:46.667 21229 21229 W NearbyFragment: Sending 20191030_161051_NF.mp4 to Nexus 5X [Li7XCB6a]
-02-12 17:25:59.029 21229 21229 W NearbyFragment: Sending 20191030_165129_NF.mp4 to Nexus 5 [X4i7JHzi]
-02-12 17:26:26.768 21229 21239 W System  : A resource failed to call close.
-02-12 17:26:26.770 21229 21239 W System  : A resource failed to call close.
-02-12 17:26:26.775 21229 21239 W System  : A resource failed to call close.
-02-12 17:26:42.743 21229 21229 W NearbyFragment: Sending 20191030_165229_NF.mp4 to Nexus 5X [94nVACwb]
-02-12 17:27:13.894 21229 21239 W System  : A resource failed to call close.
-02-12 17:27:13.896 21229 21239 W System  : A resource failed to call close.
-02-12 17:27:34.722 21229 21229 W NearbyFragment: Completed downloading 20191028_180815_NF.mp4 in 59.932s
-02-12 17:27:37.820 21229 21229 W NearbyFragment: Sending 20191030_165329_NF.mp4 to Nexus 5X [Li7XCB6a]
-02-12 17:27:43.601 21229 21229 W NearbyFragment: Completed downloading 20191028_180715_NF.mp4 in 37.102s
-02-12 17:27:46.115 21229 21229 W NearbyFragment: Sending 20191030_165429_NF.mp4 to Nexus 5 [X4i7JHzi]
-02-12 17:27:49.078 21229 21229 W NearbyFragment: Completed downloading 20191028_180615_EF.mp4 in 92.040s
-02-12 17:27:51.907 21229 21229 W NearbyFragment: Sending 20191030_165530_NF.mp4 to Nexus 5X [94nVACwb]
-02-12 17:27:51.941 21229 21229 W NearbyFragment: Sending 20191030_212910_NF.mp4 to Nexus 5X [Li7XCB6a]
-02-12 17:27:58.490 21229 21239 W System  : A resource failed to call close.
-02-12 17:27:58.492 21229 21239 W System  : A resource failed to call close.
-02-12 17:28:23.339 21229 21229 W NearbyFragment: Sending 20191030_213010_NF.mp4 to Nexus 5 [X4i7JHzi]
-02-12 17:28:48.967 21229 21239 W System  : A resource failed to call close.
-02-12 17:28:48.968 21229 21239 W System  : A resource failed to call close.
-02-12 17:29:02.789 21229 21229 W NearbyFragment: Sending 20191030_220901_NF.mp4 to Nexus 5X [94nVACwb]
-02-12 17:29:10.543 21229 21229 W NearbyFragment: Completed downloading 20191028_180915_NF.mp4 in 47.912s
-02-12 17:29:13.269 21229 21229 W NearbyFragment: Sending 20191030_221001_NF.mp4 to Nexus 5X [Li7XCB6a]
-02-12 17:29:33.841 21229 21239 W System  : A resource failed to call close.
-02-12 17:29:33.842 21229 21239 W System  : A resource failed to call close.
-02-12 17:29:33.845 21229 21239 W System  : A resource failed to call close.
-02-12 17:29:33.846 21229 21239 W System  : A resource failed to call close.
-02-12 17:29:46.733 21229 21229 W NearbyFragment: Completed downloading 20191028_181115_NF.mp4 in 33.452s
-02-12 17:29:48.887 21229 21229 W NearbyFragment: Sending 20191030_221101_NF.mp4 to Nexus 5 [X4i7JHzi]
-02-12 17:29:55.634 21229 21229 W NearbyFragment: Completed downloading 20191028_181015_NF.mp4 in 46.831s
-02-12 17:29:58.171 21229 21229 W NearbyFragment: Sending 20191030_221201_NF.mp4 to Nexus 5X [94nVACwb]
-02-12 17:30:12.349 21229 21229 W NearbyFragment: Sending 20191030_221302_NF.mp4 to Nexus 5X [Li7XCB6a]
-02-12 17:30:28.834 21229 21239 W System  : A resource failed to call close.
-02-12 17:30:28.836 21229 21239 W System  : A resource failed to call close.
-02-12 17:31:11.438 21229 21239 W System  : A resource failed to call close.
-02-12 17:31:11.439 21229 21239 W System  : A resource failed to call close.
-02-12 17:31:39.482 21229 21229 W NearbyFragment: Completed downloading 20191028_181159_PF.mp4 in 62.035s
-02-12 17:31:55.232 21229 21239 W System  : A resource failed to call close.
-02-12 17:32:10.762 21229 21229 W NearbyFragment: Completed downloading 20191028_181359_PF.mp4 in 59.769s
-02-12 17:32:44.576 21229 21239 W System  : A resource failed to call close.
-02-12 17:32:44.577 21229 21239 W System  : A resource failed to call close.
-02-12 17:33:02.000 21229 21229 W NearbyFragment: Completed downloading 20191030_161051_NF.mp4 in 52.923s
-02-12 17:33:31.504 21229 21239 W System  : A resource failed to call close.
-02-12 17:33:31.506 21229 21239 W System  : A resource failed to call close.
-02-12 17:34:03.052 21229 21229 W NearbyFragment: Completed downloading 20191030_165229_NF.mp4 in 43.780s
-02-12 17:34:11.112 21229 21229 W NearbyFragment: Completed downloading 20191030_165530_NF.mp4 in 08.299s
-02-12 17:34:12.034 21229 21239 W System  : A resource failed to call close.
-02-12 17:34:12.035 21229 21239 W System  : A resource failed to call close.
-02-12 17:34:38.268 21229 21229 W NearbyFragment: Completed downloading 20191030_165129_NF.mp4 in 97.354s
-02-12 17:35:00.944 21229 21239 W System  : A resource failed to call close.
-02-12 17:35:00.945 21229 21239 W System  : A resource failed to call close.
-02-12 17:35:07.188 21229 21229 W NearbyFragment: Completed downloading 20191030_165329_NF.mp4 in 47.597s
-02-12 17:35:44.371 21229 21239 W System  : A resource failed to call close.
-02-12 17:35:44.372 21229 21239 W System  : A resource failed to call close.
-02-12 17:36:01.730 21229 21229 W NearbyFragment: Completed downloading 20191030_165429_NF.mp4 in 56.175s
-02-12 17:36:54.389 21229 21239 W System  : A resource failed to call close.
-02-12 17:36:54.391 21229 21239 W System  : A resource failed to call close.
-02-12 17:37:26.581 21229 21229 W NearbyFragment: Completed downloading 20191030_212910_NF.mp4 in 52.608s
-02-12 17:37:34.478 21229 21239 W System  : A resource failed to call close.
-02-12 17:37:34.481 21229 21239 W System  : A resource failed to call close.
-02-12 17:38:27.946 21229 21229 W NearbyFragment: Completed downloading 20191030_213010_NF.mp4 in 63.110s
-02-12 17:38:30.415 21229 21229 W NearbyFragment: Completed downloading 20191030_220901_NF.mp4 in 77.521s
-02-12 17:39:28.861 21229 21229 W NearbyFragment: Completed downloading 20191030_221001_NF.mp4 in 47.265s
-02-12 17:39:40.434 21229 21239 W System  : A resource failed to call close.
-02-12 17:39:40.437 21229 21239 W System  : A resource failed to call close.
-02-12 17:39:45.994 21229 21229 W NearbyFragment: Completed downloading 20191030_221201_NF.mp4 in 12.749s
-02-12 17:40:29.015 21229 21229 W NearbyFragment: Completed downloading 20191030_221101_NF.mp4 in 28.957s
-02-12 17:40:59.612 21229 21229 W example.edgesu: Accessing hidden method Landroid/view/View;->getTransitionAlpha()F (light greylist, reflection)
-02-12 17:40:59.664 21229 21229 W example.edgesu: Accessing hidden field Landroid/view/View;->mViewFlags:I (light greylist, reflection)
-02-12 17:40:59.673 21229 21229 W example.edgesu: Accessing hidden method Landroid/view/View;->setTransitionAlpha(F)V (light greylist, reflection)
-02-12 17:40:59.674 21229 21229 W example.edgesu: Accessing hidden method Landroid/view/ViewGroup;->suppressLayout(Z)V (light greylist, reflection)
-02-12 17:40:59.677 21229 21229 W example.edgesu: Accessing hidden method Landroid/view/View;->setLeftTopRightBottom(IIII)V (light greylist, reflection)
-02-12 17:41:03.505 21229 21239 W System  : A resource failed to call close.
-02-12 17:41:03.511 21229 21239 W System  : A resource failed to call close.
-02-12 17:41:13.769 21229 21229 W NearbyFragment: Completed downloading 20191030_221302_NF.mp4 in 27.326s
+02-12 20:05:35.498  7143  7143 W NearbyFragment: Sending 20191028_171616_NF.mp4 to Nexus 5X [94nVACwb]
+02-12 20:05:47.023  7143  7155 W System  : A resource failed to call close.
+02-12 20:05:50.334  7143  7143 W NearbyFragment: Sending 20191028_171716_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-12 20:06:04.377  7143  7143 W NearbyFragment: Sending 20191028_171746_EF.mp4 to Nexus 5 [X4i7JHzi]
+02-12 20:06:29.060  7143  7143 W NearbyFragment: Sending 20191028_171846_NF.mp4 to Nexus 5X [94nVACwb]
+02-12 20:06:30.728  7143  7155 W System  : A resource failed to call close.
+02-12 20:06:30.729  7143  7155 W System  : A resource failed to call close.
+02-12 20:06:58.048  7143  7143 W NearbyFragment: Sending 20191028_180605_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-12 20:07:18.570  7143  7155 W System  : A resource failed to call close.
+02-12 20:07:18.571  7143  7155 W System  : A resource failed to call close.
+02-12 20:07:18.571  7143  7155 W System  : A resource failed to call close.
+02-12 20:07:20.406  7143  7143 W NearbyFragment: Completed downloading 20191028_171716_NF.mp4 in 37.995s
+02-12 20:07:24.134  7143  7143 W NearbyFragment: Sending 20191028_180615_EF.mp4 to Nexus 5 [X4i7JHzi]
+02-12 20:07:26.044  7143  7143 W NearbyFragment: Sending 20191028_180715_NF.mp4 to Nexus 5X [94nVACwb]
+02-12 20:07:51.105  7143  7143 W NearbyFragment: Completed downloading 20191028_171616_NF.mp4 in 43.660s
+02-12 20:07:56.489  7143  7143 W NearbyFragment: Sending 20191028_180815_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-12 20:08:03.583  7143  7143 W NearbyFragment: Sending 20191028_180915_NF.mp4 to Nexus 5 [X4i7JHzi]
+02-12 20:08:06.067  7143  7155 W System  : A resource failed to call close.
+02-12 20:08:06.069  7143  7155 W System  : A resource failed to call close.
+02-12 20:08:08.937  7143  7143 W NearbyFragment: Completed downloading 20191028_180605_NF.mp4 in 23.371s
+02-12 20:08:10.246  7143  7143 W NearbyFragment: Sending 20191028_181015_NF.mp4 to Nexus 5X [94nVACwb]
+02-12 20:08:55.544  7143  7143 W NearbyFragment: Sending 20191028_181115_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-12 20:09:11.543  7143  7155 W System  : A resource failed to call close.
+02-12 20:09:11.546  7143  7155 W System  : A resource failed to call close.
+02-12 20:09:33.014  7143  7143 W NearbyFragment: Completed downloading 20191028_171746_EF.mp4 in 59.479s
+02-12 20:09:38.177  7143  7143 W NearbyFragment: Sending 20191028_181159_PF.mp4 to Nexus 5 [X4i7JHzi]
+02-12 20:09:48.786  7143  7143 W NearbyFragment: Completed downloading 20191028_171846_NF.mp4 in 40.194s
+02-12 20:09:54.121  7143  7143 W NearbyFragment: Sending 20191028_181359_PF.mp4 to Nexus 5X [94nVACwb]
+02-12 20:09:55.960  7143  7143 W NearbyFragment: Sending 20191030_161051_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-12 20:09:56.099  7143  7155 W System  : A resource failed to call close.
+02-12 20:09:56.100  7143  7155 W System  : A resource failed to call close.
+02-12 20:10:36.869  7143  7143 W NearbyFragment: Sending 20191030_165129_NF.mp4 to Nexus 5 [X4i7JHzi]
+02-12 20:11:04.217  7143  7155 W System  : A resource failed to call close.
+02-12 20:11:04.218  7143  7155 W System  : A resource failed to call close.
+02-12 20:11:08.728  7143  7143 W NearbyFragment: Sending 20191030_165229_NF.mp4 to Nexus 5X [94nVACwb]
+02-12 20:11:12.898  7143  7143 W NearbyFragment: Completed downloading 20191028_180715_NF.mp4 in 12.573s
+02-12 20:11:13.691  7143  7143 W NearbyFragment: Sending 20191030_165329_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-12 20:11:27.339  7143  7143 W NearbyFragment: Sending 20191030_165429_NF.mp4 to Nexus 5 [X4i7JHzi]
+02-12 20:12:03.283  7143  7143 W NearbyFragment: Sending 20191030_165530_NF.mp4 to Nexus 5X [94nVACwb]
+02-12 20:12:04.567  7143  7155 W System  : A resource failed to call close.
+02-12 20:12:04.569  7143  7155 W System  : A resource failed to call close.
+02-12 20:12:45.452  7143  7143 W NearbyFragment: Sending 20191030_212910_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-12 20:13:10.645  7143  7143 W NearbyFragment: Sending 20191030_213010_NF.mp4 to Nexus 5 [X4i7JHzi]
+02-12 20:13:10.866  7143  7155 W System  : A resource failed to call close.
+02-12 20:13:10.867  7143  7155 W System  : A resource failed to call close.
+02-12 20:13:48.462  7143  7143 W NearbyFragment: Sending 20191030_220901_NF.mp4 to Nexus 5X [94nVACwb]
+02-12 20:14:28.011  7143  7155 W System  : A resource failed to call close.
+02-12 20:14:29.223  7143  7143 W NearbyFragment: Sending 20191030_221001_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-12 20:14:51.447  7143  7143 W NearbyFragment: Sending 20191030_221101_NF.mp4 to Nexus 5 [X4i7JHzi]
+02-12 20:15:25.464  7143  7143 W NearbyFragment: Sending 20191030_221201_NF.mp4 to Nexus 5X [94nVACwb]
+02-12 20:15:25.839  7143  7155 W System  : A resource failed to call close.
+02-12 20:15:25.840  7143  7155 W System  : A resource failed to call close.
+02-12 20:15:41.562  7143  7143 W NearbyFragment: Sending 20191030_221302_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-12 20:16:31.944  7143  7155 W System  : A resource failed to call close.
+02-12 20:19:50.046  7143  7143 W example.edgesu: Accessing hidden method Landroid/view/View;->getTransitionAlpha()F (light greylist, reflection)
+02-12 20:19:50.096  7143  7143 W example.edgesu: Accessing hidden field Landroid/view/View;->mViewFlags:I (light greylist, reflection)
+02-12 20:19:50.102  7143  7143 W example.edgesu: Accessing hidden method Landroid/view/View;->setTransitionAlpha(F)V (light greylist, reflection)
+02-12 20:19:50.104  7143  7143 W example.edgesu: Accessing hidden method Landroid/view/ViewGroup;->suppressLayout(Z)V (light greylist, reflection)
+02-12 20:19:50.109  7143  7143 W example.edgesu: Accessing hidden method Landroid/view/View;->setLeftTopRightBottom(IIII)V (light greylist, reflection)
+02-12 20:19:56.624  7143  7143 W NearbyFragment: Completed downloading 20191030_220901_NF.mp4 in 46.171s
+02-12 20:23:40.511  7143  7155 W System  : A resource failed to call close.
+02-12 20:23:40.514  7143  7155 W System  : A resource failed to call close.
+02-12 20:23:55.714  7143  7143 W NearbyFragment: Completed downloading 20191030_161051_NF.mp4 in 19.653s
+02-12 20:30:25.507  7143  7143 W NearbyFragment: Completed downloading 20191028_180615_EF.mp4 in 42.430s
+02-12 20:39:19.985  7143  7143 W NearbyFragment: Completed downloading 20191030_221001_NF.mp4 in 10.496s
+02-12 20:40:27.105  7143  7143 W NearbyFragment: Completed downloading 20191030_165129_NF.mp4 in 06.482s
+02-12 20:42:04.322  7143  7143 W NearbyFragment: Completed downloading 20191030_165429_NF.mp4 in 03.264s
+02-12 20:52:28.935  7143  7155 W System  : A resource failed to call close.
+02-12 20:52:28.943  7143  7155 W System  : A resource failed to call close.
+02-12 20:52:30.770  7143  7143 W NearbyFragment: Completed downloading 20191030_221302_NF.mp4 in 08.617s
