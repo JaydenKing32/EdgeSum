@@ -247,9 +247,15 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
             if (message != null) {
                 List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+
+                // Round robin scheduling
                 Endpoint toEndpoint = connectedEndpoints.get(transferCounter % connectedEndpoints.size());
-                sendFile(message, toEndpoint);
                 transferCounter++;
+
+                // TODO Create more scheduling algorithms.
+                //  Should use worker's incomingFilePayloads.size() as a metric.
+
+                sendFile(message, toEndpoint);
             }
         } else {
             Log.i(TAG, "Transfer queue is empty");
