@@ -179,8 +179,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
                 @Override
                 public void onDisconnected(@NonNull String endpointId) {
-                    // We've been disconnected from this endpoint. No more data can be
-                    // sent or received.
+                    // We've been disconnected from this endpoint. No more data can be sent or received.
                     Log.i(TAG, String.format("Disconnected from %s", endpointId));
                     int index = getIndexById(discoveredEndpoints, endpointId);
 
@@ -242,12 +241,19 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     @Override
     public void nextTransfer() {
+        // TODO currently only sends one file at a time, should make it one concurrent transfer per device
         if (!transferQueue.isEmpty()) {
             Message message = transferQueue.remove();
 
             if (message != null) {
                 List<Endpoint> connectedEndpoints = getConnectedEndpoints();
 
+                // FIXME Oversight, moves onto the next device upon receiving COMPLETE, regardless of workload.
+                //  E.g. device 0 could complete processing within 30 seconds, while devices 1, 2, and 3 take over 2
+                //  minutes. Device 0 will have to wait for the transfers to cycle through 1, 2, and 3 before it
+                //  receives another transfer.
+                //  Should fix this by initially sending a video to every device round-robin, then respond to RETURN
+                //  commands by sending a video to the device that sent the RETURN command.
                 // Round robin scheduling
                 Endpoint toEndpoint = connectedEndpoints.get(transferCounter % connectedEndpoints.size());
                 transferCounter++;
@@ -340,6 +346,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     public void sendCommandMessage(Command command, String filename) {
         String commandMessage = String.format("%s:%s", command, filename);
         Payload filenameBytesPayload = Payload.fromBytes(commandMessage.getBytes(UTF_8));
+
+        // Only sent from worker to master, might be better to make bidirectional
         connectionsClient.sendPayload(getConnectedEndpointIds(discoveredEndpoints), filenameBytesPayload);
     }
 
@@ -420,7 +428,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, Payload> completedFilePayloads = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, String> filePayloadFilenames = new SimpleArrayMap<>();
-        private final SimpleArrayMap<Long, Command> filePayloadTypes = new SimpleArrayMap<>();
+        private final SimpleArrayMap<Long, Command> filePayloadCommands = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, Instant> startTimes = new SimpleArrayMap<>();
 
         @Override
@@ -475,15 +483,15 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         /**
          * Extracts the payloadId and filename from the message and stores it in the
-         * filePayloadFilenames map. The format is payloadId:filename.
+         * filePayloadFilenames map. The format is command:payloadId:filename.
          */
         private long addPayloadFilename(String payloadFilenameMessage) {
             String[] parts = payloadFilenameMessage.split(":");
-            Command type = Command.valueOf(parts[0]);
+            Command command = Command.valueOf(parts[0]);
             long payloadId = Long.parseLong(parts[1]);
             String filename = parts[2];
             filePayloadFilenames.put(payloadId, filename);
-            filePayloadTypes.put(payloadId, type);
+            filePayloadCommands.put(payloadId, command);
             return payloadId;
         }
 
@@ -493,9 +501,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             // been received.
             Payload filePayload = completedFilePayloads.get(payloadId);
             String filename = filePayloadFilenames.get(payloadId);
-            Command type = filePayloadTypes.get(payloadId);
+            Command command = filePayloadCommands.get(payloadId);
 
-            if (filePayload != null && filename != null && type != null) {
+            if (filePayload != null && filename != null && command != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     long duration = Duration.between(startTimes.remove(payloadId), Instant.now()).toMillis();
                     String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
@@ -505,9 +513,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 }
                 completedFilePayloads.remove(payloadId);
                 filePayloadFilenames.remove(payloadId);
-                filePayloadTypes.remove(payloadId);
+                filePayloadCommands.remove(payloadId);
 
-                if (type.equals(Command.SUMMARISE)) {
+                // Currently only workers inform the master that the download has completed
+                if (command.equals(Command.SUMMARISE)) {
                     sendCommandMessage(Command.COMPLETE, filename);
                 }
                 // Get the received file (which will be in the Downloads folder)
@@ -519,10 +528,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     if (!payloadFile.renameTo(videoFile)) {
                         Log.e(TAG, String.format("Could not rename received file as %s", filename));
                     } else {
-                        if (type.equals(Command.SUMMARISE)) {
+                        if (command.equals(Command.SUMMARISE)) {
                             Log.d(TAG, String.format("Summarising %s", filename));
                             summarise(getContext(), videoFile);
-                        } else if (type.equals(Command.RETURN)) {
+                        } else if (command.equals(Command.RETURN)) {
                             File videoDest = new File(String.format("%s/%s",
                                     FileManager.summarisedVideosFolderPath(), filename));
                             try {
@@ -571,8 +580,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
                 long payloadId = update.getPayloadId();
                 Payload payload = incomingFilePayloads.remove(payloadId);
-
                 completedFilePayloads.put(payloadId, payload);
+
                 if (payload != null && payload.getType() == Payload.Type.FILE) {
                     processFilePayload(payloadId);
                 }
