@@ -1,10 +1,8 @@
 package com.example.edgesum.util.video;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import com.example.edgesum.event.AddEvent;
@@ -80,24 +78,9 @@ public class DownloadTask extends AsyncTask<String, Void, List<String>> {
                 // MediaScannerConnection ensures that the new file is added to the database before it is queried
                 // https://stackoverflow.com/a/5814533/8031185
                 MediaScannerConnection.scanFile(context,
-                        new String[]{videoFile.getAbsolutePath()}, null,
-                        (path, uri) -> {
-                            String[] projection = {MediaStore.Video.Media._ID,
-                                    MediaStore.Video.Media.DATA,
-                                    MediaStore.Video.Media.DISPLAY_NAME,
-                                    MediaStore.Video.Media.SIZE,
-                                    MediaStore.Video.Media.MIME_TYPE
-                            };
-                            String selection = MediaStore.Video.Media.DATA + "=?";
-                            String[] selectionArgs = new String[]{videoFile.getAbsolutePath()};
-                            Cursor videoCursor = context.getContentResolver().query(
-                                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                                    projection, selection, selectionArgs, null);
-
-                            videoCursor.moveToFirst();
-                            Video video = VideoManager.videoFromCursor(videoCursor);
+                        new String[]{videoFile.getAbsolutePath()}, null, (path, uri) -> {
+                            Video video = VideoManager.getVideoFromFile(context, new File(path));
                             EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                            videoCursor.close();
                             Log.d(TAG, "Finished downloading: " + filename);
                         });
             }
