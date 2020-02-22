@@ -47,24 +47,35 @@ public class ConnectionFragment extends NearbyFragment {
 
         Switch discoverSwitch = rootView.findViewById(R.id.discover_switch);
         Switch advertiseSwitch = rootView.findViewById(R.id.advertise_switch);
+        Switch autoSendSwitch = rootView.findViewById(R.id.auto_send_switch);
 
         discoverSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                Log.d(TAG, "Discovery switch checked");
+                Log.v(TAG, "Discovery switch checked");
                 startDiscovery();
             } else {
-                Log.d(TAG, "Discovery switch unchecked");
+                Log.v(TAG, "Discovery switch unchecked");
                 stopDiscovery();
             }
         });
 
         advertiseSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                Log.d(TAG, "Advertisement switch checked");
+                Log.v(TAG, "Advertisement switch checked");
                 startAdvertising();
             } else {
-                Log.d(TAG, "Advertisement switch unchecked");
+                Log.v(TAG, "Advertisement switch unchecked");
                 stopAdvertising();
+            }
+        });
+
+        autoSendSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                Log.v(TAG, "Auto-send switch checked");
+                startDashDownload();
+            } else {
+                Log.v(TAG, "Auto-send switch unchecked");
+                stopDashDownload();
             }
         });
 

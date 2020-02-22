@@ -23,6 +23,7 @@ import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.dashcam.DownloadLatestTask;
 import com.example.edgesum.util.video.VideoManager;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.google.android.gms.nearby.Nearby;
@@ -55,6 +56,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.edgesum.util.nearby.Endpoint.getConnectedEndpointIds;
 import static com.example.edgesum.util.nearby.Endpoint.getIndexById;
@@ -67,6 +71,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     private static final String LOCAL_NAME_KEY = "LOCAL_NAME";
     private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
     private final Queue<Message> transferQueue = new LinkedList<>();
+    // Dashcam isn't able to handle concurrent downloads, leads to a very high rate of download errors.
+    // Just use a single thread for downloading
+    private final ScheduledExecutorService downloadTaskExecutor = Executors.newSingleThreadScheduledExecutor();
 
     private List<Endpoint> discoveredEndpoints = new ArrayList<>();
     private ConnectionsClient connectionsClient;
@@ -104,7 +111,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             new EndpointDiscoveryCallback() {
                 @Override
                 public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo info) {
-                    Log.i(TAG, String.format("Found endpoint %s: %s", endpointId, info.getEndpointName()));
+                    Log.d(TAG, String.format("Found endpoint %s: %s", endpointId, info.getEndpointName()));
                     if (getIndexById(discoveredEndpoints, endpointId) == -1) {
                         discoveredEndpoints.add(new Endpoint(endpointId, info.getEndpointName()));
                         deviceAdapter.notifyItemInserted(discoveredEndpoints.size() - 1);
@@ -114,7 +121,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 @Override
                 public void onEndpointLost(@NonNull String endpointId) {
                     // A previously discovered endpoint has gone away.
-                    Log.i(TAG, String.format("Lost endpoint %s", endpointId));
+                    Log.d(TAG, String.format("Lost endpoint %s", endpointId));
                     int index = getIndexById(discoveredEndpoints, endpointId);
 
                     if (index >= 0) {
@@ -180,7 +187,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 @Override
                 public void onDisconnected(@NonNull String endpointId) {
                     // We've been disconnected from this endpoint. No more data can be sent or received.
-                    Log.i(TAG, String.format("Disconnected from %s", endpointId));
+                    Log.d(TAG, String.format("Disconnected from %s", endpointId));
                     int index = getIndexById(discoveredEndpoints, endpointId);
 
                     if (index >= 0) {
@@ -194,7 +201,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(STRATEGY).build();
         connectionsClient.startAdvertising(localName, SERVICE_ID, connectionLifecycleCallback, advertisingOptions)
                 .addOnSuccessListener((Void unused) -> {
-                    Log.i(TAG, "Started advertising");
+                    Log.d(TAG, "Started advertising");
                 })
                 .addOnFailureListener((Exception e) -> {
                     Log.e(TAG, "Advertisement failure");
@@ -206,7 +213,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(STRATEGY).build();
         connectionsClient.startDiscovery(SERVICE_ID, endpointDiscoveryCallback, discoveryOptions)
                 .addOnSuccessListener((Void unused) -> {
-                    Log.i(TAG, "Started discovering");
+                    Log.d(TAG, "Started discovering");
                 })
                 .addOnFailureListener((Exception e) -> {
                     Log.e(TAG, "Discovery failure");
@@ -215,13 +222,23 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     protected void stopAdvertising() {
-        Log.i(TAG, "Stopped advertising");
+        Log.d(TAG, "Stopped advertising");
         connectionsClient.stopAdvertising();
     }
 
     protected void stopDiscovery() {
-        Log.i(TAG, "Stopped discovering");
+        Log.d(TAG, "Stopped discovering");
         connectionsClient.stopDiscovery();
+    }
+
+    // https://stackoverflow.com/a/8232889/8031185
+    protected void startDashDownload() {
+        downloadTaskExecutor.scheduleAtFixedRate(() ->
+                new DownloadLatestTask(this, getContext()).execute(), 0, 1, TimeUnit.MINUTES);
+    }
+
+    protected void stopDashDownload() {
+        downloadTaskExecutor.shutdownNow();
     }
 
     private List<Endpoint> getConnectedEndpoints() {
@@ -370,7 +387,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             (Void unused) -> {
                                 // We successfully requested a connection. Now both sides
                                 // must accept before the connection is established.
-                                Log.i(TAG, String.format("Requested connection with %s", endpoint));
+                                Log.d(TAG, String.format("Requested connection with %s", endpoint));
                             })
                     .addOnFailureListener(
                             (Exception e) -> {
@@ -385,7 +402,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     @Override
     public void disconnectEndpoint(Endpoint endpoint) {
-        Log.i(TAG, String.format("Disconnected from '%s'", endpoint));
+        Log.d(TAG, String.format("Disconnected from '%s'", endpoint));
 
         connectionsClient.disconnectFromEndpoint(endpoint.id);
         endpoint.connected = false;
@@ -395,7 +412,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     @Override
     public void removeEndpoint(Endpoint endpoint) {
-        Log.i(TAG, String.format("Removed %s", endpoint));
+        Log.d(TAG, String.format("Removed %s", endpoint));
         int index = getIndexById(discoveredEndpoints, endpoint.id);
 
         if (index >= 0) {

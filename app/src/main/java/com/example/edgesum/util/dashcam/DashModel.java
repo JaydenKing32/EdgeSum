@@ -8,6 +8,8 @@ import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.nearby.Command;
+import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.VideoManager;
 
 import org.apache.commons.io.FileUtils;
@@ -73,6 +75,30 @@ class DashModel {
                             Video video = VideoManager.getVideoFromFile(context, new File(path));
                             EventBus.getDefault().post(new AddEvent(video, Type.RAW));
                             Log.d(TAG, "Finished downloading: " + filename);
+                        });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void downloadAndSend(String downloadDir, String filename, TransferCallback transferCallback, Context context) {
+        try {
+            File videoFile = new File(String.format("%s/%s", downloadDir, filename));
+            Log.d(TAG, "Started downloading: " + filename);
+            FileUtils.copyURLToFile(
+                    new URL(videoDirUrl + filename),
+                    videoFile
+            );
+
+            if (context != null) {
+                MediaScannerConnection.scanFile(context,
+                        new String[]{videoFile.getAbsolutePath()}, null, (path, uri) -> {
+                            Video video = VideoManager.getVideoFromFile(context, new File(path));
+                            Log.d(TAG, "Finished downloading: " + filename);
+                            EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                            transferCallback.addToTransferQueue(video, Command.SUMMARISE);
+                            transferCallback.nextTransfer();
                         });
             }
         } catch (IOException e) {

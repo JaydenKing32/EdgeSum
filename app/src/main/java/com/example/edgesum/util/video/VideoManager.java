@@ -97,7 +97,6 @@ public class VideoManager {
         try {
             String id = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID));
             String name = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-            Log.i(TAG, name);
             String data = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
             BigInteger size = new BigInteger(cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE)));
             String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
