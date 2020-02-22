@@ -31,7 +31,7 @@ class DashTools {
     private static final String TAG = DashTools.class.getSimpleName();
 
     static List<String> downloadAll(DashModel dash, Context context) {
-        List<String> allFiles = dash.getFilenameFunc.apply(dash.baseUrl);
+        List<String> allFiles = dash.getFilenameFunc.get();
 
         if (allFiles == null) {
             return null;
@@ -72,11 +72,11 @@ class DashTools {
         }
     }
 
-    static List<String> getDrideFilenames(String url) {
+    static List<String> getDrideFilenames() {
         Document doc = null;
 
         try {
-            doc = Jsoup.connect(url).get();
+            doc = Jsoup.connect(DashModel.drideBaseUrl).get();
         } catch (SocketTimeoutException | ConnectException e) {
             Log.e(TAG, "Could not connect to dashcam");
             return null;
@@ -94,11 +94,11 @@ class DashTools {
         return allFiles;
     }
 
-    static List<String> getBlackvueFilenames(String url) {
+    static List<String> getBlackvueFilenames() {
         Document doc = null;
 
         try {
-            doc = Jsoup.connect(url + "blackvue_vod.cgi").get();
+            doc = Jsoup.connect(DashModel.blackvueBaseUrl + "blackvue_vod.cgi").get();
         } catch (SocketTimeoutException | ConnectException e) {
             Log.e(TAG, "Could not connect to dashcam");
             return null;

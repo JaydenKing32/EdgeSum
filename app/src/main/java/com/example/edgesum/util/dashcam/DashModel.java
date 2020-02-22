@@ -1,7 +1,7 @@
 package com.example.edgesum.util.dashcam;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 class DashModel {
     static final String drideBaseUrl = "http://192.168.1.254/DCIM/MOVIE/";
@@ -11,9 +11,9 @@ class DashModel {
     final DashName dashName;
     final String baseUrl;
     final String videoDirUrl;
-    final Function<String, List<String>> getFilenameFunc;
+    final Supplier<List<String>> getFilenameFunc;
 
-    DashModel(DashName dashName, String baseUrl, String videoDirUrl, Function<String, List<String>> getFilenameFunc) {
+    DashModel(DashName dashName, String baseUrl, String videoDirUrl, Supplier<List<String>> getFilenameFunc) {
         this.dashName = dashName;
         this.baseUrl = baseUrl;
         this.videoDirUrl = videoDirUrl;
