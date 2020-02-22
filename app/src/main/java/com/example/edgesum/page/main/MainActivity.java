@@ -25,7 +25,7 @@ import com.example.edgesum.page.setting.SettingsActivity;
 import com.example.edgesum.util.Injection;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.NearbyFragment;
-import com.example.edgesum.util.video.DownloadTask;
+import com.example.edgesum.util.dashcam.DownloadTask;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.videoeventhandler.ProcessingVideosEventHandler;
 import com.example.edgesum.util.video.videoeventhandler.RawFootageEventHandler;

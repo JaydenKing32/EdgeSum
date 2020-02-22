@@ -1,4 +1,4 @@
-package com.example.edgesum.util.video;
+package com.example.edgesum.util.dashcam;
 
 import android.content.Context;
 import android.media.MediaScannerConnection;
@@ -9,6 +9,7 @@ import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.video.VideoManager;
 
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
