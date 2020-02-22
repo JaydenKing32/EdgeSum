@@ -23,6 +23,7 @@ import com.example.edgesum.model.Video;
 import com.example.edgesum.page.authentication.AuthenticationActivity;
 import com.example.edgesum.page.setting.SettingsActivity;
 import com.example.edgesum.util.Injection;
+import com.example.edgesum.util.dashcam.DashName;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.NearbyFragment;
 import com.example.edgesum.util.dashcam.DownloadTask;
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
             case R.id.action_download:
                 Log.i(TAG, "Download button clicked");
                 DownloadTask mDownloadTask = new DownloadTask(this);
-                mDownloadTask.execute();
+                mDownloadTask.execute(DashName.DRIDE);
                 return true;
             case R.id.action_settings:
                 Log.i(TAG, "Setting button clicked");

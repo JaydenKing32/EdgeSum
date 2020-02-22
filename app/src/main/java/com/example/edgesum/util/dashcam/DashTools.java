@@ -24,16 +24,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class DashTools {
     private static final String TAG = DashTools.class.getSimpleName();
 
-    static List<String> downloadAll(String baseUrl, String upFolder, Function<String, List<String>> getFilenameFunc,
-                                    Context context) {
-        List<String> allFiles = getFilenameFunc.apply(baseUrl);
+    static List<String> downloadAll(DashModel dash, Context context) {
+        List<String> allFiles = dash.getFilenameFunc.apply(dash.baseUrl);
 
         if (allFiles == null) {
             return null;
@@ -42,18 +40,18 @@ class DashTools {
         List<String> lastFiles = allFiles.subList(Math.max(allFiles.size(), 0) - last_n, allFiles.size());
 
         for (String filename : lastFiles) {
-            downloadVideo(baseUrl, upFolder, FileManager.RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath(), filename, context);
+            downloadVideo(dash.videoDirUrl, FileManager.RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath(), filename, context);
         }
         Log.i(TAG, "All downloads complete");
         return lastFiles;
     }
 
-    static void downloadVideo(String baseUrl, String upFolder, String downFolder, String filename, Context context) {
+    static void downloadVideo(String videoDirUrl, String downloadDir, String filename, Context context) {
         try {
-            File videoFile = new File(String.format("%s/%s", downFolder, filename));
+            File videoFile = new File(String.format("%s/%s", downloadDir, filename));
             Log.d(TAG, "Started downloading: " + filename);
             FileUtils.copyURLToFile(
-                    new URL(baseUrl + upFolder + filename),
+                    new URL(videoDirUrl + filename),
                     videoFile
             );
 

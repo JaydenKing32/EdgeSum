@@ -2,11 +2,13 @@ package com.example.edgesum.util.dashcam;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class DownloadTask extends AsyncTask<String, Void, List<String>> {
+public class DownloadTask extends AsyncTask<DashName, Void, List<String>> {
+    private static final String TAG = DownloadTask.class.getSimpleName();
     private final WeakReference<Context> weakReference;
 
     public DownloadTask(Context context) {
@@ -14,12 +16,24 @@ public class DownloadTask extends AsyncTask<String, Void, List<String>> {
     }
 
     @Override
-    protected List<String> doInBackground(String... strings) {
-        // Dride
-        return DashTools.downloadAll("http://192.168.1.254/DCIM/MOVIE/", "", DashTools::getDrideFilenames,
-                weakReference.get());
+    protected List<String> doInBackground(DashName... dashNames) {
+        DashName name = dashNames[0];
+        DashModel dash;
 
-        // BlackVue
-//        return downloadAll("http://10.99.77.1/", "Record/", this::getBlackvueFilenames, weakReference.get());
+        switch (name) {
+            case DRIDE:
+                dash = new DashModel(DashName.DRIDE, DashModel.drideBaseUrl, DashModel.drideBaseUrl,
+                        DashTools::getDrideFilenames);
+                break;
+            case BLACKVUE:
+                dash = new DashModel(DashName.BLACKVUE, DashModel.blackvueBaseUrl, DashModel.blackvueVideoUrl,
+                        DashTools::getBlackvueFilenames);
+                break;
+            default:
+                Log.e(TAG, "Dashcam model not specified");
+                return null;
+        }
+
+        return DashTools.downloadAll(dash, weakReference.get());
     }
 }
