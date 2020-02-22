@@ -34,6 +34,6 @@ public class DownloadTask extends AsyncTask<DashName, Void, List<String>> {
                 return null;
         }
 
-        return DashTools.downloadAll(dash, weakReference.get());
+        return dash.downloadAll(weakReference.get());
     }
 }
