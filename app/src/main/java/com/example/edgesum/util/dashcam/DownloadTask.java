@@ -38,12 +38,10 @@ public class DownloadTask extends AsyncTask<DashName, Void, List<String>> {
 
         switch (name) {
             case DRIDE:
-                dash = new DashModel(DashName.DRIDE, DashModel.drideBaseUrl, DashModel.drideBaseUrl,
-                        DashTools::getDrideFilenames);
+                dash = DashModel.dride();
                 break;
             case BLACKVUE:
-                dash = new DashModel(DashName.BLACKVUE, DashModel.blackvueBaseUrl, DashModel.blackvueVideoUrl,
-                        DashTools::getBlackvueFilenames);
+                dash = DashModel.blackvue();
                 break;
             default:
                 Log.e(TAG, "Dashcam model not specified");

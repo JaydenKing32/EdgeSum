@@ -39,8 +39,7 @@ public class DownloadLatestTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... voids) {
         Log.v(TAG, "Starting DownloadLatestTask");
-        DashModel dash = new DashModel(DashName.BLACKVUE, DashModel.blackvueBaseUrl, DashModel.blackvueVideoUrl,
-                DashTools::getBlackvueFilenames);
+        DashModel dash = DashModel.blackvue();
         List<String> videos = dash.getFilenames();
 
         // TODO very basic, improve to account for recording speed being faster than download speed.

@@ -15,11 +15,19 @@ class DashModel {
     private final String videoDirUrl;
     private final Supplier<List<String>> getFilenameFunc;
 
-    DashModel(DashName dashName, String baseUrl, String videoDirUrl, Supplier<List<String>> getFilenameFunc) {
+    private DashModel(DashName dashName, String baseUrl, String videoDirUrl, Supplier<List<String>> getFilenameFunc) {
         this.dashName = dashName;
         this.baseUrl = baseUrl;
         this.videoDirUrl = videoDirUrl;
         this.getFilenameFunc = getFilenameFunc;
+    }
+
+    static DashModel dride() {
+        return new DashModel(DashName.DRIDE, drideBaseUrl, drideBaseUrl, DashTools::getDrideFilenames);
+    }
+
+    static DashModel blackvue() {
+        return new DashModel(DashName.BLACKVUE, blackvueBaseUrl, blackvueVideoUrl, DashTools::getBlackvueFilenames);
     }
 
     List<String> downloadAll(DashDownloadManager downloadManager, Context context) {
