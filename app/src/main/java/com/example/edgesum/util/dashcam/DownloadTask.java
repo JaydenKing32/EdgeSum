@@ -1,20 +1,34 @@
 package com.example.edgesum.util.dashcam;
 
 import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.edgesum.event.AddEvent;
+import com.example.edgesum.event.Type;
+import com.example.edgesum.model.Video;
+import com.example.edgesum.util.video.VideoManager;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.List;
-
-import static com.example.edgesum.util.dashcam.DashModel.drideBaseUrl;
 
 public class DownloadTask extends AsyncTask<DashName, Void, List<String>> {
     private static final String TAG = DownloadTask.class.getSimpleName();
     private final WeakReference<Context> weakReference;
+    private final MediaScannerConnection.OnScanCompletedListener downloadCallback;
 
     public DownloadTask(Context context) {
         weakReference = new WeakReference<>(context);
+
+        downloadCallback = (path, uri) -> {
+            Log.d(TAG, String.format("Finished downloading: %s", uri.getLastPathSegment()));
+            Video video = VideoManager.getVideoFromFile(weakReference.get(), new File(path));
+            EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+        };
     }
 
     @Override
@@ -24,18 +38,8 @@ public class DownloadTask extends AsyncTask<DashName, Void, List<String>> {
 
         switch (name) {
             case DRIDE:
-//                dash = new DashModel(DashName.DRIDE, DashModel.drideBaseUrl, DashModel.drideBaseUrl,
-//                        DashTools::getDrideFilenames);
-                DashDownloadManager ddm = new DashDownloadManager(weakReference.get());
-                List<String> videos = DashTools.getDrideFilenames();
-
-                if (videos != null && videos.size() != 0) {
-                    String last = videos.get(videos.size() - 1);
-                    ddm.startDownload(drideBaseUrl + last);
-                } else {
-                    Log.e(TAG, "Connection error");
-                }
-
+                dash = new DashModel(DashName.DRIDE, DashModel.drideBaseUrl, DashModel.drideBaseUrl,
+                        DashTools::getDrideFilenames);
                 break;
             case BLACKVUE:
                 dash = new DashModel(DashName.BLACKVUE, DashModel.blackvueBaseUrl, DashModel.blackvueVideoUrl,
@@ -45,8 +49,8 @@ public class DownloadTask extends AsyncTask<DashName, Void, List<String>> {
                 Log.e(TAG, "Dashcam model not specified");
                 return null;
         }
+        DashDownloadManager downloadManager = new DashDownloadManager(downloadCallback);
 
-//        return dash.downloadAll(weakReference.get());
-        return null;
+        return dash.downloadAll(downloadManager, weakReference.get());
     }
 }

@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -162,20 +163,21 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
         // Define logic on how to handle each option item selected.
         switch (item.getItemId()) {
             case R.id.action_connect:
-                Log.i(TAG, "Connect button clicked");
+                Log.v(TAG, "Connect button clicked");
                 showNewFragmentAndHideOldFragment(connectionFragment);
                 return true;
             case R.id.action_download:
-                Log.i(TAG, "Download button clicked");
+                Log.v(TAG, "Download button clicked");
+                Toast.makeText(this, "Starting download", Toast.LENGTH_SHORT).show();
                 DownloadTask mDownloadTask = new DownloadTask(this);
-                mDownloadTask.execute(DashName.DRIDE);
+                mDownloadTask.execute(DashName.BLACKVUE);
                 return true;
             case R.id.action_settings:
-                Log.i(TAG, "Setting button clicked");
+                Log.v(TAG, "Setting button clicked");
                 goToSettingsActivity();
                 return true;
             case R.id.action_logout:
-                Log.i(TAG, "Logout button clicked");
+                Log.v(TAG, "Logout button clicked");
                 signOut();
                 Intent i = new Intent(MainActivity.this, AuthenticationActivity.class);
                 startActivity(i);
