@@ -77,7 +77,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     private List<Endpoint> discoveredEndpoints = new ArrayList<>();
     private ConnectionsClient connectionsClient;
-    private int transferCounter = 0;
     protected RecyclerView.Adapter deviceAdapter;
     protected String localName = null;
 
@@ -257,28 +256,29 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     @Override
-    public void nextTransfer() {
-        // TODO currently only sends one file at a time, should make it one concurrent transfer per device
+    public void initialTransfer() {
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+
+        for (Endpoint toEndpoint : connectedEndpoints) {
+            if (transferQueue.isEmpty()) {
+                Log.i(TAG, "Transfer queue is empty");
+                break;
+            }
+            Message message = transferQueue.remove();
+
+            if (message != null) {
+                sendFile(message, toEndpoint);
+            }
+        }
+    }
+
+    private void nextTransfer(String returnEndpointId) {
         if (!transferQueue.isEmpty()) {
             Message message = transferQueue.remove();
 
             if (message != null) {
-                List<Endpoint> connectedEndpoints = getConnectedEndpoints();
-
-                // FIXME Oversight, moves onto the next device upon receiving COMPLETE, regardless of workload.
-                //  E.g. device 0 could complete processing within 30 seconds, while devices 1, 2, and 3 take over 2
-                //  minutes. Device 0 will have to wait for the transfers to cycle through 1, 2, and 3 before it
-                //  receives another transfer.
-                //  Should fix this by initially sending a video to every device round-robin, then respond to RETURN
-                //  commands by sending a video to the device that sent the RETURN command.
-                // Round robin scheduling
-                Endpoint toEndpoint = connectedEndpoints.get(transferCounter % connectedEndpoints.size());
-                transferCounter++;
-
-                // TODO Create more scheduling algorithms.
-                //  Should use worker's incomingFilePayloads.size() as a metric.
-
-                sendFile(message, toEndpoint);
+                discoveredEndpoints.stream().filter(e -> e.name.equals(returnEndpointId)).findFirst()
+                        .ifPresent(returnEndpoint -> sendFile(message, returnEndpoint));
             }
         } else {
             Log.i(TAG, "Transfer queue is empty");
@@ -482,7 +482,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         video = VideoManager.getVideoFromFile(getContext(), new File(videoPath));
                         EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                         EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
-                        nextTransfer();
+                        nextTransfer(endpointId);
                         break;
                     case NO_ACTIVITY:
                         videoName = parts[1];
@@ -567,7 +567,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 } else {
                     Log.e(TAG, String.format("Could not create file payload for %s", filename));
                 }
-                nextTransfer();
             }
         }
 

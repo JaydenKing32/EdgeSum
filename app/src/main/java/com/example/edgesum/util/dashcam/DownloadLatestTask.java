@@ -32,7 +32,7 @@ public class DownloadLatestTask extends AsyncTask<Void, Void, Boolean> {
             Video video = VideoManager.getVideoFromFile(context, new File(path));
             EventBus.getDefault().post(new AddEvent(video, Type.RAW));
             transferCallback.addToTransferQueue(video, Command.SUMMARISE);
-            transferCallback.nextTransfer();
+            transferCallback.initialTransfer();
         };
     }
 
