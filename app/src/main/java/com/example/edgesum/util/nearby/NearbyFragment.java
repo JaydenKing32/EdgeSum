@@ -277,7 +277,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             Message message = transferQueue.remove();
 
             if (message != null) {
-                discoveredEndpoints.stream().filter(e -> e.name.equals(returnEndpointId)).findFirst()
+                discoveredEndpoints.stream().filter(e -> e.id.equals(returnEndpointId)).findFirst()
                         .ifPresent(returnEndpoint -> sendFile(message, returnEndpoint));
             }
         } else {
@@ -465,8 +465,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         //
                         break;
                     case SUMMARISE:
-                    case RETURN:
-                        Log.i(TAG, String.format("Started downloading %s", message));
+                        Log.v(TAG, String.format("Started downloading %s", message));
                         payloadId = addPayloadFilename(message);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -475,6 +474,17 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
                         processFilePayload(payloadId);
                         break;
+                    case RETURN:
+                        Log.v(TAG, String.format("Started downloading %s", message));
+                        payloadId = addPayloadFilename(message);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            startTimes.put(payloadId, Instant.now());
+                        }
+
+                        processFilePayload(payloadId);
+                        nextTransfer(endpointId);
+                        break;
                     case COMPLETE:
                         videoName = parts[1];
                         Log.d(TAG, String.format("Endpoint %s has finished downloading %s", endpointId, videoName));
@@ -482,7 +492,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         video = VideoManager.getVideoFromFile(getContext(), new File(videoPath));
                         EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                         EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
-                        nextTransfer(endpointId);
                         break;
                     case NO_ACTIVITY:
                         videoName = parts[1];
@@ -490,6 +499,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         videoPath = String.format("%s/%s", FileManager.rawFootageFolderPath(), videoName);
                         video = VideoManager.getVideoFromFile(getContext(), new File(videoPath));
                         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
+                        nextTransfer(endpointId);
                         break;
                 }
             } else if (payload.getType() == Payload.Type.FILE) {
