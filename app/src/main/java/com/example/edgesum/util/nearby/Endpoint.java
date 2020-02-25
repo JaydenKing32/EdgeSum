@@ -4,9 +4,6 @@ package com.example.edgesum.util.nearby;
 
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Endpoint {
     final String id;
     final String name;
@@ -42,27 +39,5 @@ public class Endpoint {
     @Override
     public String toString() {
         return String.format("Endpoint{id=%s, name=%s}", id, name);
-    }
-
-    static int getIndexById(List<Endpoint> endpoints, String endpointId) {
-        for (int index = 0; index < endpoints.size(); index++) {
-            if (endpoints.get(index).id.equals(endpointId)) {
-                return index;
-            }
-        }
-
-        return -1;
-    }
-
-    static ArrayList<String> getConnectedEndpointIds(List<Endpoint> endpoints) {
-        ArrayList<String> endpointIds = new ArrayList<>();
-
-        for (Endpoint endpoint : endpoints) {
-            if (endpoint.connected) {
-                endpointIds.add(endpoint.id);
-            }
-        }
-
-        return endpointIds;
     }
 }

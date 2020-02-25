@@ -51,7 +51,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -59,9 +59,8 @@ import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
-import static com.example.edgesum.util.nearby.Endpoint.getConnectedEndpointIds;
-import static com.example.edgesum.util.nearby.Endpoint.getIndexById;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public abstract class NearbyFragment extends Fragment implements DeviceCallback, TransferCallback {
@@ -75,7 +74,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     // Just use a single thread for downloading
     private final ScheduledExecutorService downloadTaskExecutor = Executors.newSingleThreadScheduledExecutor();
 
-    private List<Endpoint> discoveredEndpoints = new ArrayList<>();
+    // https://stackoverflow.com/questions/36351417/how-to-inflate-hashmapstring-listitems-into-the-recyclerview
+    // https://stackoverflow.com/questions/50809619/on-the-adapter-class-how-to-get-key-and-value-from-hashmap
+    // https://stackoverflow.com/questions/38142819/make-a-list-of-hashmap-type-in-recycler-view-adapter
+    private final LinkedHashMap<String, Endpoint> discoveredEndpoints = new LinkedHashMap<>();
     private ConnectionsClient connectionsClient;
     protected RecyclerView.Adapter deviceAdapter;
     protected String localName = null;
@@ -111,8 +113,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 @Override
                 public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo info) {
                     Log.d(TAG, String.format("Found endpoint %s: %s", endpointId, info.getEndpointName()));
-                    if (getIndexById(discoveredEndpoints, endpointId) == -1) {
-                        discoveredEndpoints.add(new Endpoint(endpointId, info.getEndpointName()));
+
+                    if (!discoveredEndpoints.containsKey(endpointId)) {
+                        discoveredEndpoints.put(endpointId, new Endpoint(endpointId, info.getEndpointName()));
                         deviceAdapter.notifyItemInserted(discoveredEndpoints.size() - 1);
                     }
                 }
@@ -121,11 +124,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 public void onEndpointLost(@NonNull String endpointId) {
                     // A previously discovered endpoint has gone away.
                     Log.d(TAG, String.format("Lost endpoint %s", endpointId));
-                    int index = getIndexById(discoveredEndpoints, endpointId);
 
-                    if (index >= 0) {
-                        discoveredEndpoints.remove(index);
-                        deviceAdapter.notifyItemRemoved(index);
+                    if (discoveredEndpoints.containsKey(endpointId)) {
+                        discoveredEndpoints.remove(endpointId);
+                        deviceAdapter.notifyDataSetChanged();
                     }
                 }
             };
@@ -137,8 +139,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     Log.d(TAG, String.format("Initiated connection with %s: %s",
                             endpointId, connectionInfo.getEndpointName()));
 
-                    if (getIndexById(discoveredEndpoints, endpointId) == -1) {
-                        discoveredEndpoints.add(new Endpoint(endpointId, connectionInfo.getEndpointName()));
+                    if (!discoveredEndpoints.containsKey(endpointId)) {
+                        discoveredEndpoints.put(endpointId, new Endpoint(endpointId, connectionInfo.getEndpointName()));
                         deviceAdapter.notifyItemInserted(discoveredEndpoints.size() - 1);
                     }
 
@@ -163,11 +165,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         case ConnectionsStatusCodes.STATUS_OK:
                             // We're connected! Can now start sending and receiving data.
                             Log.i(TAG, String.format("Connected to %s", endpointId));
-                            int index = getIndexById(discoveredEndpoints, endpointId);
+                            Endpoint endpoint = discoveredEndpoints.get(endpointId);
 
-                            if (index >= 0) {
-                                discoveredEndpoints.get(index).connected = true;
-                                deviceAdapter.notifyItemChanged(index);
+                            if (endpoint != null) {
+                                endpoint.connected = true;
+                                deviceAdapter.notifyDataSetChanged();
                             }
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
@@ -187,11 +189,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 public void onDisconnected(@NonNull String endpointId) {
                     // We've been disconnected from this endpoint. No more data can be sent or received.
                     Log.d(TAG, String.format("Disconnected from %s", endpointId));
-                    int index = getIndexById(discoveredEndpoints, endpointId);
+                    Endpoint endpoint = discoveredEndpoints.get(endpointId);
 
-                    if (index >= 0) {
-                        discoveredEndpoints.get(index).connected = false;
-                        deviceAdapter.notifyItemChanged(index);
+                    if (endpoint != null) {
+                        endpoint.connected = false;
+                        deviceAdapter.notifyDataSetChanged();
                     }
                 }
             };
@@ -240,16 +242,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         downloadTaskExecutor.shutdownNow();
     }
 
-    private List<Endpoint> getConnectedEndpoints() {
-        ArrayList<Endpoint> endpoints = new ArrayList<>();
-        for (Endpoint endpoint : discoveredEndpoints) {
-            if (endpoint.connected) {
-                endpoints.add(endpoint);
-            }
-        }
-        return endpoints;
-    }
-
     @Override
     public void addToTransferQueue(Video video, Command command) {
         transferQueue.add(new Message(video, command));
@@ -257,7 +249,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     @Override
     public void initialTransfer() {
-        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        List<Endpoint> connectedEndpoints =
+                discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
 
         for (Endpoint toEndpoint : connectedEndpoints) {
             if (transferQueue.isEmpty()) {
@@ -272,13 +265,13 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
     }
 
-    private void nextTransfer(String returnEndpointId) {
+    private void nextTransfer(String toEndpointId) {
         if (!transferQueue.isEmpty()) {
             Message message = transferQueue.remove();
 
             if (message != null) {
-                discoveredEndpoints.stream().filter(e -> e.id.equals(returnEndpointId)).findFirst()
-                        .ifPresent(returnEndpoint -> sendFile(message, returnEndpoint));
+                Endpoint toEndpoint = discoveredEndpoints.get(toEndpointId);
+                sendFile(message, toEndpoint);
             }
         } else {
             Log.i(TAG, "Transfer queue is empty");
@@ -291,7 +284,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             Log.e(TAG, "No video file selected");
             return;
         }
-        ArrayList<String> toEndpointIds = getConnectedEndpointIds(discoveredEndpoints);
+        List<String> toEndpointIds = discoveredEndpoints.values().stream()
+                .filter(e -> e.connected).map(e -> e.id).collect(Collectors.toList());
 
         if (toEndpointIds.size() <= 0) {
             Log.e(TAG, "No connected endpoints");
@@ -360,22 +354,26 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     @Override
-    public void sendCommandMessage(Command command, String filename) {
+    public void sendCommandMessageToAll(Command command, String filename) {
         String commandMessage = String.format("%s:%s", command, filename);
         Payload filenameBytesPayload = Payload.fromBytes(commandMessage.getBytes(UTF_8));
 
         // Only sent from worker to master, might be better to make bidirectional
-        connectionsClient.sendPayload(getConnectedEndpointIds(discoveredEndpoints), filenameBytesPayload);
+        List<String> connectedEndpoints = discoveredEndpoints.values().stream()
+                .filter(e -> e.connected).map(e -> e.id).collect(Collectors.toList());
+        connectionsClient.sendPayload(connectedEndpoints, filenameBytesPayload);
+    }
+
+    @Override
+    public void sendCommandMessage(Command command, String filename, String toEndpointId) {
+        String commandMessage = String.format("%s:%s", command, filename);
+        Payload filenameBytesPayload = Payload.fromBytes(commandMessage.getBytes(UTF_8));
+        connectionsClient.sendPayload(toEndpointId, filenameBytesPayload);
     }
 
     @Override
     public boolean isConnected() {
-        for (Endpoint endpoint : discoveredEndpoints) {
-            if (endpoint.connected) {
-                return true;
-            }
-        }
-        return false;
+        return discoveredEndpoints.values().stream().anyMatch(e -> e.connected);
     }
 
     @Override
@@ -406,19 +404,15 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         connectionsClient.disconnectFromEndpoint(endpoint.id);
         endpoint.connected = false;
-        int index = getIndexById(discoveredEndpoints, endpoint.id);
-        deviceAdapter.notifyItemChanged(index);
+        deviceAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void removeEndpoint(Endpoint endpoint) {
         Log.d(TAG, String.format("Removed %s", endpoint));
-        int index = getIndexById(discoveredEndpoints, endpoint.id);
 
-        if (index >= 0) {
-            discoveredEndpoints.remove(index);
-            deviceAdapter.notifyItemRemoved(index);
-        }
+        discoveredEndpoints.remove(endpoint.id);
+        deviceAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -472,7 +466,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             startTimes.put(payloadId, Instant.now());
                         }
 
-                        processFilePayload(payloadId);
+                        processFilePayload(payloadId, endpointId);
                         break;
                     case RETURN:
                         Log.v(TAG, String.format("Started downloading %s", message));
@@ -482,7 +476,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             startTimes.put(payloadId, Instant.now());
                         }
 
-                        processFilePayload(payloadId);
+                        processFilePayload(payloadId, endpointId);
                         nextTransfer(endpointId);
                         break;
                     case COMPLETE:
@@ -522,7 +516,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             return payloadId;
         }
 
-        private void processFilePayload(long payloadId) {
+        private void processFilePayload(long payloadId, String fromEndpointId) {
             // BYTES and FILE could be received in any order, so we call when either the BYTES or the FILE
             // payload is completely received. The file payload is considered complete only when both have
             // been received.
@@ -542,9 +536,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 filePayloadFilenames.remove(payloadId);
                 filePayloadCommands.remove(payloadId);
 
-                // Currently only workers inform the master that the download has completed
                 if (command.equals(Command.SUMMARISE)) {
-                    sendCommandMessage(Command.COMPLETE, filename);
+                    sendCommandMessage(Command.COMPLETE, filename, fromEndpointId);
                 }
                 // Get the received file (which will be in the Downloads folder)
                 File payloadFile = Objects.requireNonNull(filePayload.asFile()).asJavaFile();
@@ -609,7 +602,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 completedFilePayloads.put(payloadId, payload);
 
                 if (payload != null && payload.getType() == Payload.Type.FILE) {
-                    processFilePayload(payloadId);
+                    processFilePayload(payloadId, endpointId);
                 }
             }
         }

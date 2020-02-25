@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.edgesum.R;
 
-import java.util.List;
+import java.util.LinkedHashMap;
 
 public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.DeviceViewHolder> {
-    private final List<Endpoint> endpoints;
+    private final LinkedHashMap<String, Endpoint> endpoints;
     private final LayoutInflater inflater;
     private final DeviceCallback deviceCallback;
 
-    DeviceListAdapter(Context context, List<Endpoint> endpoints, DeviceCallback deviceCallback) {
+    DeviceListAdapter(Context context, LinkedHashMap<String, Endpoint> endpoints, DeviceCallback deviceCallback) {
         this.inflater = LayoutInflater.from(context);
         this.endpoints = endpoints;
         this.deviceCallback = deviceCallback;
@@ -36,7 +36,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
 
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
-        Endpoint endpoint = endpoints.get(position);
+        Endpoint endpoint = ((Endpoint[]) endpoints.values().toArray())[position];
 
         holder.deviceName.setText(endpoint.name);
         holder.deviceName.setClickable(!endpoint.connected);
