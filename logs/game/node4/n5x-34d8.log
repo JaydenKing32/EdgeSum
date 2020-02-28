@@ -1,38 +1,24 @@
-PS E:\User> .\logging.ps1 "00a6a4630f4e34d8" "W"
---------- beginning of system
-02-10 21:45:23.730 13248 13386 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 21:45:23.731 13248 13386 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 21:45:23.904 13248 13386 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 21:45:25.065 13248 13248 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
-02-10 21:46:50.263 13248 13248 W NearbyFragment: Started downloading SUM:-5728811535247701452:test00.mp4
-02-10 21:46:52.038 13248 13248 W NearbyFragment: Completed downloading test00.mp4
-02-10 21:47:12.304 13248 13248 W NearbyFragment: Started downloading SUM:-5565103700364258640:test03.mp4
-02-10 21:47:16.459 13248 13248 W NearbyFragment: Completed downloading test03.mp4
-02-10 21:47:23.009 13248 13248 W NearbyFragment: Started downloading SUM:-7068780468716212004:test06.mp4
-02-10 21:47:28.530 13248 13248 W NearbyFragment: Completed downloading test06.mp4
-02-10 21:47:50.238 13248 13248 W NearbyFragment: Started downloading SUM:-6389360922580998782:test09.mp4
-02-10 21:47:53.920 13248 13248 W NearbyFragment: Completed downloading test09.mp4
-02-10 21:49:24.886 13248 13656 W Summariser: Summarisation completed
-02-10 21:49:24.886 13248 13656 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test00.mp4
-02-10 21:49:24.886 13248 13656 W Summariser:   time: 152s
-02-10 21:49:24.886 13248 13656 W Summariser:   noise tolerance: 60.00
-02-10 21:49:24.886 13248 13656 W Summariser:   quality: 23
-02-10 21:49:24.886 13248 13656 W Summariser:   speed: medium
-02-10 21:57:06.839 13248 13656 W Summariser: Summarisation completed
-02-10 21:57:06.839 13248 13656 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test03.mp4
-02-10 21:57:06.839 13248 13656 W Summariser:   time: 461s
-02-10 21:57:06.839 13248 13656 W Summariser:   noise tolerance: 60.00
-02-10 21:57:06.839 13248 13656 W Summariser:   quality: 23
-02-10 21:57:06.839 13248 13656 W Summariser:   speed: medium
-02-10 22:11:10.519 13248 13656 W Summariser: Summarisation completed
-02-10 22:11:10.519 13248 13656 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test06.mp4
-02-10 22:11:10.519 13248 13656 W Summariser:   time: 843s
-02-10 22:11:10.519 13248 13656 W Summariser:   noise tolerance: 60.00
-02-10 22:11:10.519 13248 13656 W Summariser:   quality: 23
-02-10 22:11:10.519 13248 13656 W Summariser:   speed: medium
-02-10 22:12:44.129 13248 13656 W Summariser: Summarisation completed
-02-10 22:12:44.129 13248 13656 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test09.mp4
-02-10 22:12:44.129 13248 13656 W Summariser:   time: 93s
-02-10 22:12:44.129 13248 13656 W Summariser:   noise tolerance: 60.00
-02-10 22:12:44.129 13248 13656 W Summariser:   quality: 23
-02-10 22:12:44.129 13248 13656 W Summariser:   speed: medium
+02-28 18:50:22.205  5212  5212 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
+02-28 18:52:18.867  5212  5212 W NearbyFragment: Sending test00.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 18:52:18.874  5212  5212 W NearbyFragment: Sending test01.mp4 to Nexus 5X [Li7XCB6a]
+02-28 18:52:18.880  5212  5212 W NearbyFragment: Sending test02.mp4 to Nexus 5 [X4i7JHzi]
+02-28 18:53:06.537  5212  5212 W NearbyFragment: Sending test03.mp4 to Nexus 5X [Li7XCB6a]
+02-28 18:53:06.790  5212  5212 W NearbyFragment: Sending test04.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 18:53:07.383  5212  5212 W NearbyFragment: Completed downloading test00.mp4 in 00.584s
+02-28 18:53:21.204  5212  5212 W NearbyFragment: Sending test05.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 18:53:22.115  5212  5212 W NearbyFragment: Completed downloading test04.mp4 in 00.916s
+02-28 18:53:36.267  5212  5212 W NearbyFragment: Sending test06.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 18:53:41.096  5212  5212 W NearbyFragment: Completed downloading test05.mp4 in 04.833s
+02-28 18:55:02.638  5212  5212 W NearbyFragment: Sending test07.mp4 to Nexus 5 [X4i7JHzi]
+02-28 18:55:37.888  5212  5212 W NearbyFragment: Completed downloading test02.mp4 in 35.254s
+02-28 18:57:40.785  5212  5212 W NearbyFragment: Sending test08.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 18:57:45.131  5212  5212 W NearbyFragment: Completed downloading test06.mp4 in 04.352s
+02-28 18:59:03.304  5212  5212 W NearbyFragment: Sending test09.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 18:59:06.795  5212  5212 W NearbyFragment: Completed downloading test08.mp4 in 03.493s
+02-28 18:59:33.977  5212  5212 W NearbyFragment: Sending test10.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 18:59:37.746  5212  5212 W NearbyFragment: Completed downloading test09.mp4 in 03.776s
+02-28 19:00:05.275  5212  5212 W NearbyFragment: Sending test11.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 19:00:12.264  5212  5212 W NearbyFragment: Completed downloading test10.mp4 in 06.994s
+02-28 19:00:32.922  5212  5212 W NearbyFragment: Completed downloading test03.mp4 in 01.691s
+02-28 19:01:03.153  5212  5212 W NearbyFragment: Completed downloading test11.mp4 in 19.269s
+02-28 19:12:01.879  5212  5212 W NearbyFragment: Completed downloading test07.mp4 in 05.023s

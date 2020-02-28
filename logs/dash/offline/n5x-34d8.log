@@ -1,0 +1,319 @@
+02-28 23:36:16.479 10782 10782 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
+02-28 23:36:35.333 10782 11268 W mobile-ffmpeg:
+02-28 23:36:35.334 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-28 23:36:35.334 10782 11268 W mobile-ffmpeg:
+02-28 23:36:35.334 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:37:28.316 10782 11266 W Summariser: Whole video is active
+02-28 23:37:33.384 10782 11266 W Summariser: Summarisation completed
+02-28 23:37:33.384 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_171616_NF.mp4
+02-28 23:37:33.384 10782 11266 W Summariser:   time: 58.332s
+02-28 23:37:33.384 10782 11266 W Summariser:   noise tolerance: 38.00
+02-28 23:37:33.384 10782 11266 W Summariser:   quality: 23
+02-28 23:37:33.384 10782 11266 W Summariser:   speed: medium
+02-28 23:37:33.502 10782 11268 W mobile-ffmpeg:
+02-28 23:37:33.506 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-28 23:37:33.506 10782 11268 W mobile-ffmpeg:
+02-28 23:37:33.506 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:38:13.338 10782 11266 W Summariser: Whole video is active
+02-28 23:38:15.990 10782 11266 W Summariser: Summarisation completed
+02-28 23:38:15.990 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_171716_NF.mp4
+02-28 23:38:15.990 10782 11266 W Summariser:   time: 42.509s
+02-28 23:38:15.990 10782 11266 W Summariser:   noise tolerance: 38.00
+02-28 23:38:15.990 10782 11266 W Summariser:   quality: 23
+02-28 23:38:15.990 10782 11266 W Summariser:   speed: medium
+02-28 23:38:16.147 10782 11268 W mobile-ffmpeg:
+02-28 23:38:16.147 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-28 23:38:16.147 10782 11268 W mobile-ffmpeg:
+02-28 23:38:16.147 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:39:26.238 10782 11266 W Summariser: Whole video is active
+02-28 23:39:30.754 10782 11266 W Summariser: Summarisation completed
+02-28 23:39:30.754 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_171746_EF.mp4
+02-28 23:39:30.754 10782 11266 W Summariser:   time: 74.640s
+02-28 23:39:30.754 10782 11266 W Summariser:   noise tolerance: 38.00
+02-28 23:39:30.754 10782 11266 W Summariser:   quality: 23
+02-28 23:39:30.754 10782 11266 W Summariser:   speed: medium
+02-28 23:39:30.884 10782 11268 W mobile-ffmpeg:
+02-28 23:39:30.885 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-28 23:39:30.885 10782 11268 W mobile-ffmpeg:
+02-28 23:39:30.885 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:40:44.272 10782 11266 W Summariser: Whole video is active
+02-28 23:40:48.789 10782 11266 W Summariser: Summarisation completed
+02-28 23:40:48.789 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_171846_NF.mp4
+02-28 23:40:48.789 10782 11266 W Summariser:   time: 77.921s
+02-28 23:40:48.789 10782 11266 W Summariser:   noise tolerance: 38.00
+02-28 23:40:48.789 10782 11266 W Summariser:   quality: 23
+02-28 23:40:48.789 10782 11266 W Summariser:   speed: medium
+02-28 23:40:48.944 10782 11268 W mobile-ffmpeg:
+02-28 23:40:48.944 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-28 23:40:48.944 10782 11268 W mobile-ffmpeg:
+02-28 23:40:48.944 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:41:09.846 10782 11266 W Summariser: Whole video is active
+02-28 23:41:11.139 10782 11266 W Summariser: Summarisation completed
+02-28 23:41:11.139 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_180605_NF.mp4
+02-28 23:41:11.139 10782 11266 W Summariser:   time: 22.205s
+02-28 23:41:11.139 10782 11266 W Summariser:   noise tolerance: 38.00
+02-28 23:41:11.139 10782 11266 W Summariser:   quality: 23
+02-28 23:41:11.139 10782 11266 W Summariser:   speed: medium
+02-28 23:41:11.234 10782 11268 W mobile-ffmpeg:
+02-28 23:41:11.235 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-28 23:41:11.235 10782 11268 W mobile-ffmpeg:
+02-28 23:41:11.235 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:42:32.975 10782 11266 W Summariser: 3 active sections found
+02-28 23:42:33.039 10782 11268 W mobile-ffmpeg:
+02-28 23:42:33.040 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-28 23:42:33.040 10782 11268 W mobile-ffmpeg:
+02-28 23:42:33.040 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:59:00.777 10782 11266 W Summariser: Summarisation completed
+02-28 23:59:00.777 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_180615_EF.mp4
+02-28 23:59:00.777 10782 11266 W Summariser:   time: 1069.536s
+02-28 23:59:00.777 10782 11266 W Summariser:   noise tolerance: 38.00
+02-28 23:59:00.777 10782 11266 W Summariser:   quality: 23
+02-28 23:59:00.777 10782 11266 W Summariser:   speed: medium
+02-28 23:59:00.915 10782 11268 W mobile-ffmpeg:
+02-28 23:59:00.915 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-28 23:59:00.915 10782 11268 W mobile-ffmpeg:
+02-28 23:59:00.915 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:00:41.051 10782 11266 W Summariser: One active section found
+02-29 00:00:41.092 10782 11268 W mobile-ffmpeg:
+02-29 00:00:41.092 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-29 00:00:41.096 10782 11268 W mobile-ffmpeg:
+02-29 00:00:41.096 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:00:41.704 10782 11266 W Summariser: Summarisation completed
+02-29 00:00:41.704 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_180715_NF.mp4
+02-29 00:00:41.704 10782 11266 W Summariser:   time: 100.808s
+02-29 00:00:41.704 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:00:41.704 10782 11266 W Summariser:   quality: 23
+02-29 00:00:41.704 10782 11266 W Summariser:   speed: medium
+02-29 00:00:41.842 10782 11268 W mobile-ffmpeg:
+02-29 00:00:41.843 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-29 00:00:41.843 10782 11268 W mobile-ffmpeg:
+02-29 00:00:41.844 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:02:25.229 10782 11266 W Summariser: No activity detected
+02-29 00:02:25.234 10782 11266 W Summariser: Summarisation completed
+02-29 00:02:25.234 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_180815_NF.mp4
+02-29 00:02:25.234 10782 11266 W Summariser:   time: 103.427s
+02-29 00:02:25.234 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:02:25.234 10782 11266 W Summariser:   quality: 23
+02-29 00:02:25.234 10782 11266 W Summariser:   speed: medium
+02-29 00:02:25.291 10782 11268 W mobile-ffmpeg:
+02-29 00:02:25.291 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-29 00:02:25.291 10782 11268 W mobile-ffmpeg:
+02-29 00:02:25.291 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:04:09.051 10782 11266 W Summariser: No activity detected
+02-29 00:04:09.057 10782 11266 W Summariser: Summarisation completed
+02-29 00:04:09.057 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_180915_NF.mp4
+02-29 00:04:09.057 10782 11266 W Summariser:   time: 103.794s
+02-29 00:04:09.057 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:04:09.057 10782 11266 W Summariser:   quality: 23
+02-29 00:04:09.057 10782 11266 W Summariser:   speed: medium
+02-29 00:04:09.114 10782 11268 W mobile-ffmpeg:
+02-29 00:04:09.114 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-29 00:04:09.114 10782 11268 W mobile-ffmpeg:
+02-29 00:04:09.114 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:05:47.983 10782 11266 W Summariser: No activity detected
+02-29 00:05:47.987 10782 11266 W Summariser: Summarisation completed
+02-29 00:05:47.987 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_181015_NF.mp4
+02-29 00:05:47.987 10782 11266 W Summariser:   time: 98.906s
+02-29 00:05:47.987 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:05:47.987 10782 11266 W Summariser:   quality: 23
+02-29 00:05:47.987 10782 11266 W Summariser:   speed: medium
+02-29 00:05:48.036 10782 11268 W mobile-ffmpeg:
+02-29 00:05:48.037 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-29 00:05:48.037 10782 11268 W mobile-ffmpeg:
+02-29 00:05:48.037 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:06:58.667 10782 11266 W Summariser: No activity detected
+02-29 00:06:58.671 10782 11266 W Summariser: Summarisation completed
+02-29 00:06:58.671 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_181115_NF.mp4
+02-29 00:06:58.671 10782 11266 W Summariser:   time: 70.665s
+02-29 00:06:58.671 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:06:58.671 10782 11266 W Summariser:   quality: 23
+02-29 00:06:58.671 10782 11266 W Summariser:   speed: medium
+02-29 00:06:58.724 10782 11268 W mobile-ffmpeg:
+02-29 00:06:58.724 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-29 00:06:58.724 10782 11268 W mobile-ffmpeg:
+02-29 00:06:58.724 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:08:42.078 10782 11266 W Summariser: No activity detected
+02-29 00:08:42.083 10782 11266 W Summariser: Summarisation completed
+02-29 00:08:42.083 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_181159_PF.mp4
+02-29 00:08:42.083 10782 11266 W Summariser:   time: 103.393s
+02-29 00:08:42.083 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:08:42.083 10782 11266 W Summariser:   quality: 23
+02-29 00:08:42.083 10782 11266 W Summariser:   speed: medium
+02-29 00:08:42.145 10782 11268 W mobile-ffmpeg:
+02-29 00:08:42.147 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-29 00:08:42.147 10782 11268 W mobile-ffmpeg:
+02-29 00:08:42.147 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:10:25.683 10782 11266 W Summariser: No activity detected
+02-29 00:10:25.688 10782 11266 W Summariser: Summarisation completed
+02-29 00:10:25.688 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191028_181359_PF.mp4
+02-29 00:10:25.688 10782 11266 W Summariser:   time: 103.574s
+02-29 00:10:25.688 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:10:25.688 10782 11266 W Summariser:   quality: 23
+02-29 00:10:25.688 10782 11266 W Summariser:   speed: medium
+02-29 00:10:25.751 10782 11268 W mobile-ffmpeg:
+02-29 00:10:25.751 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d7484ac00]
+02-29 00:10:25.751 10782 11268 W mobile-ffmpeg:
+02-29 00:10:25.751 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:12:06.571 10782 11266 W Summariser: 6 active sections found
+02-29 00:12:06.595 10782 11268 W mobile-ffmpeg:
+02-29 00:12:06.595 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:12:06.595 10782 11268 W mobile-ffmpeg:
+02-29 00:12:06.596 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:20:27.254 10782 11266 W Summariser: Summarisation completed
+02-29 00:20:27.254 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_161051_NF.mp4
+02-29 00:20:27.254 10782 11266 W Summariser:   time: 601.545s
+02-29 00:20:27.254 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:20:27.254 10782 11266 W Summariser:   quality: 23
+02-29 00:20:27.254 10782 11266 W Summariser:   speed: medium
+02-29 00:20:27.641 10782 11268 W mobile-ffmpeg:
+02-29 00:20:27.641 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:20:27.641 10782 11268 W mobile-ffmpeg:
+02-29 00:20:27.641 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:22:03.566 10782 11266 W Summariser: 2 active sections found
+02-29 00:22:03.591 10782 11268 W mobile-ffmpeg:
+02-29 00:22:03.592 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:22:03.592 10782 11268 W mobile-ffmpeg:
+02-29 00:22:03.592 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:26:35.836 10782 11266 W Summariser: Summarisation completed
+02-29 00:26:35.836 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_165129_NF.mp4
+02-29 00:26:35.836 10782 11266 W Summariser:   time: 368.214s
+02-29 00:26:35.836 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:26:35.836 10782 11266 W Summariser:   quality: 23
+02-29 00:26:35.836 10782 11266 W Summariser:   speed: medium
+02-29 00:26:35.968 10782 11268 W mobile-ffmpeg:
+02-29 00:26:35.968 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:26:35.969 10782 11268 W mobile-ffmpeg:
+02-29 00:26:35.969 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:28:11.933 10782 11266 W Summariser: No activity detected
+02-29 00:28:11.954 10782 11266 W Summariser: Summarisation completed
+02-29 00:28:11.954 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_165229_NF.mp4
+02-29 00:28:11.954 10782 11266 W Summariser:   time: 96.000s
+02-29 00:28:11.954 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:28:11.954 10782 11266 W Summariser:   quality: 23
+02-29 00:28:11.954 10782 11266 W Summariser:   speed: medium
+02-29 00:28:12.009 10782 11268 W mobile-ffmpeg:
+02-29 00:28:12.009 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:28:12.010 10782 11268 W mobile-ffmpeg:
+02-29 00:28:12.010 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:30:00.247 10782 11266 W Summariser: No activity detected
+02-29 00:30:00.266 10782 11266 W Summariser: Summarisation completed
+02-29 00:30:00.266 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_165329_NF.mp4
+02-29 00:30:00.266 10782 11266 W Summariser:   time: 108.271s
+02-29 00:30:00.266 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:30:00.266 10782 11266 W Summariser:   quality: 23
+02-29 00:30:00.266 10782 11266 W Summariser:   speed: medium
+02-29 00:30:00.326 10782 11268 W mobile-ffmpeg:
+02-29 00:30:00.326 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:30:00.326 10782 11268 W mobile-ffmpeg:
+02-29 00:30:00.327 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:31:40.429 10782 11266 W Summariser: One active section found
+02-29 00:31:40.443 10782 11268 W mobile-ffmpeg:
+02-29 00:31:40.444 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:31:40.444 10782 11268 W mobile-ffmpeg:
+02-29 00:31:40.444 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:31:40.965 10782 11266 W Summariser: Summarisation completed
+02-29 00:31:40.965 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_165429_NF.mp4
+02-29 00:31:40.965 10782 11266 W Summariser:   time: 100.674s
+02-29 00:31:40.965 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:31:40.965 10782 11266 W Summariser:   quality: 23
+02-29 00:31:40.965 10782 11266 W Summariser:   speed: medium
+02-29 00:31:41.077 10782 11268 W mobile-ffmpeg:
+02-29 00:31:41.077 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:31:41.077 10782 11268 W mobile-ffmpeg:
+02-29 00:31:41.077 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:32:16.055 10782 11266 W Summariser: No activity detected
+02-29 00:32:16.059 10782 11266 W Summariser: Summarisation completed
+02-29 00:32:16.059 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_165530_NF.mp4
+02-29 00:32:16.059 10782 11266 W Summariser:   time: 35.003s
+02-29 00:32:16.059 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:32:16.059 10782 11266 W Summariser:   quality: 23
+02-29 00:32:16.059 10782 11266 W Summariser:   speed: medium
+02-29 00:32:16.115 10782 11268 W mobile-ffmpeg:
+02-29 00:32:16.116 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:32:16.116 10782 11268 W mobile-ffmpeg:
+02-29 00:32:16.116 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:34:07.611 10782 11266 W Summariser: No activity detected
+02-29 00:34:07.617 10782 11266 W Summariser: Summarisation completed
+02-29 00:34:07.617 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_212910_NF.mp4
+02-29 00:34:07.617 10782 11266 W Summariser:   time: 111.536s
+02-29 00:34:07.617 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:34:07.617 10782 11266 W Summariser:   quality: 23
+02-29 00:34:07.617 10782 11266 W Summariser:   speed: medium
+02-29 00:34:07.670 10782 11268 W mobile-ffmpeg:
+02-29 00:34:07.670 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:34:07.670 10782 11268 W mobile-ffmpeg:
+02-29 00:34:07.670 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:35:58.999 10782 11266 W Summariser: No activity detected
+02-29 00:35:59.004 10782 11266 W Summariser: Summarisation completed
+02-29 00:35:59.004 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_213010_NF.mp4
+02-29 00:35:59.004 10782 11266 W Summariser:   time: 111.366s
+02-29 00:35:59.004 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:35:59.004 10782 11266 W Summariser:   quality: 23
+02-29 00:35:59.004 10782 11266 W Summariser:   speed: medium
+02-29 00:35:59.064 10782 11268 W mobile-ffmpeg:
+02-29 00:35:59.064 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:35:59.065 10782 11268 W mobile-ffmpeg:
+02-29 00:35:59.065 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:37:46.766 10782 11266 W Summariser: One active section found
+02-29 00:37:46.781 10782 11268 W mobile-ffmpeg:
+02-29 00:37:46.782 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:37:46.782 10782 11268 W mobile-ffmpeg:
+02-29 00:37:46.782 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:37:47.756 10782 11266 W Summariser: Summarisation completed
+02-29 00:37:47.756 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_220901_NF.mp4
+02-29 00:37:47.756 10782 11266 W Summariser:   time: 108.733s
+02-29 00:37:47.756 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:37:47.756 10782 11266 W Summariser:   quality: 23
+02-29 00:37:47.756 10782 11266 W Summariser:   speed: medium
+02-29 00:37:48.153 10782 11268 W mobile-ffmpeg:
+02-29 00:37:48.153 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d1e00]
+02-29 00:37:48.153 10782 11268 W mobile-ffmpeg:
+02-29 00:37:48.153 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:39:34.078 10782 11266 W Summariser: 3 active sections found
+02-29 00:39:34.102 10782 11268 W mobile-ffmpeg:
+02-29 00:39:34.102 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d2400]
+02-29 00:39:34.102 10782 11268 W mobile-ffmpeg:
+02-29 00:39:34.102 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:49:36.050 10782 11266 W Summariser: Summarisation completed
+02-29 00:49:36.050 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_221001_NF.mp4
+02-29 00:49:36.050 10782 11266 W Summariser:   time: 707.912s
+02-29 00:49:36.050 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:49:36.050 10782 11266 W Summariser:   quality: 23
+02-29 00:49:36.050 10782 11266 W Summariser:   speed: medium
+02-29 00:49:36.236 10782 11268 W mobile-ffmpeg:
+02-29 00:49:36.236 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d2400]
+02-29 00:49:36.236 10782 11268 W mobile-ffmpeg:
+02-29 00:49:36.236 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:51:29.341 10782 11266 W Summariser: No activity detected
+02-29 00:51:29.345 10782 11266 W Summariser: Summarisation completed
+02-29 00:51:29.345 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_221101_NF.mp4
+02-29 00:51:29.345 10782 11266 W Summariser:   time: 113.133s
+02-29 00:51:29.345 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:51:29.345 10782 11266 W Summariser:   quality: 23
+02-29 00:51:29.345 10782 11266 W Summariser:   speed: medium
+02-29 00:51:29.402 10782 11268 W mobile-ffmpeg:
+02-29 00:51:29.402 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d2400]
+02-29 00:51:29.403 10782 11268 W mobile-ffmpeg:
+02-29 00:51:29.403 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:53:20.785 10782 11266 W Summariser: No activity detected
+02-29 00:53:20.788 10782 11266 W Summariser: Summarisation completed
+02-29 00:53:20.788 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_221201_NF.mp4
+02-29 00:53:20.788 10782 11266 W Summariser:   time: 111.428s
+02-29 00:53:20.788 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 00:53:20.788 10782 11266 W Summariser:   quality: 23
+02-29 00:53:20.788 10782 11266 W Summariser:   speed: medium
+02-29 00:53:20.849 10782 11268 W mobile-ffmpeg:
+02-29 00:53:20.850 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d2400]
+02-29 00:53:20.850 10782 11268 W mobile-ffmpeg:
+02-29 00:53:20.850 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 00:55:08.689 10782 11266 W Summariser: 2 active sections found
+02-29 00:55:08.711 10782 11268 W mobile-ffmpeg:
+02-29 00:55:08.711 10782 11268 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7d748d2400]
+02-29 00:55:08.711 10782 11268 W mobile-ffmpeg:
+02-29 00:55:08.711 10782 11268 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-29 01:06:31.257 10782 11266 W Summariser: Summarisation completed
+02-29 01:06:31.257 10782 11266 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/20191030_221302_NF.mp4
+02-29 01:06:31.257 10782 11266 W Summariser:   time: 790.446s
+02-29 01:06:31.257 10782 11266 W Summariser:   noise tolerance: 38.00
+02-29 01:06:31.257 10782 11266 W Summariser:   quality: 23
+02-29 01:06:31.257 10782 11266 W Summariser:   speed: medium

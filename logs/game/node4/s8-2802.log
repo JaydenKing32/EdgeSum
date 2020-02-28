@@ -1,67 +1,69 @@
-PS E:\User> .\logging.ps1 "ce12171c8a14c72802" "W"
-02-10 21:43:51.258  8478  8478 E Zygote  : isWhitelistProcess - Process is Whitelisted
-02-10 21:43:51.261  8478  8478 E Zygote  : accessInfo : 1
---------- beginning of system
-02-10 21:43:52.639  8478  8478 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 21:45:17.392  8478  8478 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@afd631b
-02-10 21:45:17.468  8478  8478 W example.edgesu: Accessing hidden method Landroid/graphics/drawable/Drawable;->getOpticalInsets()Landroid/graphics/Insets; (light greylist, linking)
-02-10 21:45:17.468  8478  8478 W example.edgesu: Accessing hidden field Landroid/graphics/Insets;->left:I (light greylist, linking)
-02-10 21:45:17.468  8478  8478 W example.edgesu: Accessing hidden field Landroid/graphics/Insets;->right:I (light greylist, linking)
-02-10 21:45:17.468  8478  8478 W example.edgesu: Accessing hidden field Landroid/graphics/Insets;->top:I (light greylist, linking)
-02-10 21:45:17.468  8478  8478 W example.edgesu: Accessing hidden field Landroid/graphics/Insets;->bottom:I (light greylist, linking)
-02-10 21:45:17.555  8478  8478 W example.edgesu: Accessing hidden method Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (light greylist, reflection)
-02-10 21:45:17.555  8478  8478 W example.edgesu: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (light greylist, reflection)
-02-10 21:45:17.568  8478  8478 W example.edgesu: Accessing hidden method Landroid/widget/TextView;->getTextDirectionHeuristic()Landroid/text/TextDirectionHeuristic; (light greylist, linking)
-02-10 21:45:17.709  8478  8606 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 21:45:17.709  8478  8606 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 21:45:17.797  8478  8606 W LogFactory: Truncating log tag length as it exceed 23, the limit imposed by Android on certain API Levels
-02-10 21:45:17.925  8478  8478 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@32fa88c
-02-10 21:45:18.048  8478  8478 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@c10cdf0
-02-10 21:45:18.506  8478  8478 W example.edgesu: Accessing hidden field Landroid/view/View;->mAccessibilityDelegate:Landroid/view/View$AccessibilityDelegate; (light greylist, reflection)
-02-10 21:45:18.731  8478  8478 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
-02-10 21:45:18.973  8478  8613 W libEGL  : EGLNativeWindowType 0x7504762010 disconnect failed
-02-10 21:45:19.221  8478  8613 W libEGL  : EGLNativeWindowType 0x751cced010 disconnect failed
-02-10 21:45:43.661  8478  8478 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;-><init>()V (light greylist, reflection)
-02-10 21:45:43.661  8478  8478 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->addFontFromAssetManager(Landroid/content/res/AssetManager;Ljava/lang/String;IZIII[Landroid/graphics/fonts/FontVariationAxis;)Z (light greylist, reflection)
-02-10 21:45:43.661  8478  8478 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->addFontFromBuffer(Ljava/nio/ByteBuffer;I[Landroid/graphics/fonts/FontVariationAxis;II)Z (light greylist, reflection)
-02-10 21:45:43.661  8478  8478 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->freeze()Z (light greylist, reflection)
-02-10 21:45:43.661  8478  8478 W example.edgesu: Accessing hidden method Landroid/graphics/FontFamily;->abortCreation()V (light greylist, reflection)
-02-10 21:45:43.662  8478  8478 W example.edgesu: Accessing hidden method Landroid/graphics/Typeface;->createFromFamiliesWithDefault([Landroid/graphics/FontFamily;Ljava/lang/String;II)Landroid/graphics/Typeface; (light greylist, reflection)
-02-10 21:45:47.554  8478  8613 W libEGL  : EGLNativeWindowType 0x7503f48010 disconnect failed
-02-10 21:45:47.622  8478  8478 E ViewRootImpl: sendUserActionEvent() returned.
-02-10 21:45:56.910  8478  8613 W libEGL  : EGLNativeWindowType 0x7503fe3010 disconnect failed
-02-10 21:45:56.951  8478  8478 E ViewRootImpl: sendUserActionEvent() returned.
-02-10 21:46:07.108  8478  8613 W libEGL  : EGLNativeWindowType 0x750407b010 disconnect failed
-02-10 21:46:07.151  8478  8478 E ViewRootImpl: sendUserActionEvent() returned.
-02-10 21:47:33.931  8478  8488 W System  : A resource failed to call close.
-02-10 21:47:33.938  8478  8488 W System  : A resource failed to call close.
-02-10 21:49:23.453  8478  8478 W NearbyFragment: Started downloading RET:-5140327996154051895:test00.mp4
-02-10 21:49:23.683  8478  8478 W NearbyFragment: Completed downloading test00.mp4
-02-10 21:49:30.733  8478  8478 W NearbyFragment: Started downloading RET:-5327291696604847655:test02.mp4
-02-10 21:50:00.292  8478  8478 W NearbyFragment: Completed downloading test02.mp4
-02-10 21:50:37.595  8478  8478 W NearbyFragment: Started downloading RET:-6630592379708477931:test05.mp4
-02-10 21:50:40.799  8478  8488 W System  : A resource failed to call close.
-02-10 21:50:40.803  8478  8488 W System  : A resource failed to call close.
-02-10 21:50:40.809  8478  8488 W System  : A resource failed to call close.
-02-10 21:50:41.632  8478  8478 W NearbyFragment: Completed downloading test05.mp4
-02-10 21:51:11.390  8478  8478 W NearbyFragment: Started downloading RET:-8326564524623520441:test04.mp4
-02-10 21:51:13.273  8478  8478 W NearbyFragment: Completed downloading test04.mp4
-02-10 21:52:27.462  8478  8478 W NearbyFragment: Started downloading RET:-7422874230821684949:test08.mp4
-02-10 21:52:31.948  8478  8478 W NearbyFragment: Completed downloading test08.mp4
-02-10 21:54:24.821  8478  8478 W NearbyFragment: Started downloading RET:-4761501647883617849:test11.mp4
-02-10 21:54:35.627  8478  8478 W NearbyFragment: Completed downloading test11.mp4
-02-10 21:57:05.297  8478  8478 W NearbyFragment: Started downloading RET:-9086049340714154781:test03.mp4
-02-10 21:57:08.385  8478  8478 W NearbyFragment: Completed downloading test03.mp4
-02-10 22:02:06.328  8478  8478 W example.edgesu: Accessing hidden method Landroid/view/View;->getTransitionAlpha()F (light greylist, reflection)
-02-10 22:02:06.429  8478  8478 W example.edgesu: Accessing hidden field Landroid/view/View;->mViewFlags:I (light greylist, reflection)
-02-10 22:02:06.432  8478  8478 W example.edgesu: Accessing hidden method Landroid/view/View;->setTransitionAlpha(F)V (light greylist, reflection)
-02-10 22:02:06.434  8478  8478 W example.edgesu: Accessing hidden method Landroid/view/ViewGroup;->suppressLayout(Z)V (light greylist, reflection)
-02-10 22:02:06.436  8478  8478 W example.edgesu: Accessing hidden method Landroid/view/View;->setLeftTopRightBottom(IIII)V (light greylist, reflection)
-02-10 22:11:09.150  8478  8478 W NearbyFragment: Started downloading RET:-8685047734711647321:test06.mp4
-02-10 22:11:12.842  8478  8478 W NearbyFragment: Started downloading RET:-9107898229387745852:test07.mp4
-02-10 22:11:13.564  8478  8478 W NearbyFragment: Completed downloading test06.mp4
-02-10 22:11:19.477  8478  8478 W NearbyFragment: Completed downloading test07.mp4
-02-10 22:12:42.573  8478  8478 W NearbyFragment: Started downloading RET:-8090301287329387149:test09.mp4
-02-10 22:12:45.910  8478  8478 W NearbyFragment: Completed downloading test09.mp4
-02-10 22:12:48.389  8478  8478 W NearbyFragment: Started downloading RET:-6484271171296900100:test10.mp4
-02-10 22:12:52.210  8478  8478 W NearbyFragment: Completed downloading test10.mp4
+02-28 18:50:32.038  9186  9186 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
+02-28 18:52:19.778  9186  9186 W NearbyFragment: Completed downloading test00.mp4 in 00.856s
+02-28 18:52:31.754  9186 14780 W Summariser: 2 active sections found
+02-28 18:53:06.246  9186 14780 W Summariser: Summarisation completed
+02-28 18:53:06.246  9186 14780 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test00.mp4
+02-28 18:53:06.246  9186 14780 W Summariser:   time: 45.299s
+02-28 18:53:06.246  9186 14780 W Summariser:   noise tolerance: 60.00
+02-28 18:53:06.246  9186 14780 W Summariser:   quality: 23
+02-28 18:53:06.246  9186 14780 W Summariser:   speed: medium
+02-28 18:53:10.182  9186  9186 W NearbyFragment: Completed downloading test04.mp4 in 03.694s
+02-28 18:53:20.577  9186 15830 W Summariser: One active section found
+02-28 18:53:20.647  9186 15830 W Summariser: Summarisation completed
+02-28 18:53:20.647  9186 15830 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test04.mp4
+02-28 18:53:20.647  9186 15830 W Summariser:   time: 10.125s
+02-28 18:53:20.647  9186 15830 W Summariser:   noise tolerance: 60.00
+02-28 18:53:20.647  9186 15830 W Summariser:   quality: 23
+02-28 18:53:20.647  9186 15830 W Summariser:   speed: medium
+02-28 18:53:23.137  9186  9186 W NearbyFragment: Completed downloading test05.mp4 in 02.218s
+02-28 18:53:35.607  9186 16173 W Summariser: One active section found
+02-28 18:53:35.692  9186 16173 W Summariser: Summarisation completed
+02-28 18:53:35.692  9186 16173 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test05.mp4
+02-28 18:53:35.692  9186 16173 W Summariser:   time: 12.320s
+02-28 18:53:35.692  9186 16173 W Summariser:   noise tolerance: 60.00
+02-28 18:53:35.692  9186 16173 W Summariser:   quality: 23
+02-28 18:53:35.692  9186 16173 W Summariser:   speed: medium
+02-28 18:53:36.210  9186  9196 W System  : A resource failed to call close.
+02-28 18:53:36.211  9186  9196 W System  : A resource failed to call close.
+02-28 18:53:40.554  9186  9186 W NearbyFragment: Completed downloading test06.mp4 in 04.537s
+02-28 18:54:01.736  9186 16540 W Summariser: 3 active sections found
+02-28 18:57:39.936  9186 16540 W Summariser: Summarisation completed
+02-28 18:57:39.936  9186 16540 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test06.mp4
+02-28 18:57:39.936  9186 16540 W Summariser:   time: 238.872s
+02-28 18:57:39.936  9186 16540 W Summariser:   noise tolerance: 60.00
+02-28 18:57:39.936  9186 16540 W Summariser:   quality: 23
+02-28 18:57:39.936  9186 16540 W Summariser:   speed: medium
+02-28 18:57:42.565  9186  9186 W NearbyFragment: Completed downloading test08.mp4 in 02.045s
+02-28 18:59:02.345  9186 22443 W Summariser: One active section found
+02-28 18:59:02.486  9186 22443 W Summariser: Summarisation completed
+02-28 18:59:02.486  9186 22443 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test08.mp4
+02-28 18:59:02.486  9186 22443 W Summariser:   time: 27.943s
+02-28 18:59:02.486  9186 22443 W Summariser:   noise tolerance: 60.00
+02-28 18:59:02.486  9186 22443 W Summariser:   quality: 23
+02-28 18:59:02.486  9186 22443 W Summariser:   speed: medium
+02-28 18:59:04.760  9186  9186 W NearbyFragment: Completed downloading test09.mp4 in 01.708s
+02-28 18:59:33.320  9186 23534 W Summariser: One active section found
+02-28 18:59:33.455  9186 23534 W Summariser: Summarisation completed
+02-28 18:59:33.455  9186 23534 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test09.mp4
+02-28 18:59:33.455  9186 23534 W Summariser:   time: 28.155s
+02-28 18:59:33.455  9186 23534 W Summariser:   noise tolerance: 60.00
+02-28 18:59:33.455  9186 23534 W Summariser:   quality: 23
+02-28 18:59:33.455  9186 23534 W Summariser:   speed: medium
+02-28 18:59:35.742  9186  9186 W NearbyFragment: Completed downloading test10.mp4 in 02.038s
+02-28 18:59:48.835  9186  9196 W System  : A resource failed to call close.
+02-28 18:59:48.838  9186  9196 W System  : A resource failed to call close.
+02-28 19:00:04.600  9186 24003 W Summariser: One active section found
+02-28 19:00:04.733  9186 24003 W Summariser: Summarisation completed
+02-28 19:00:04.733  9186 24003 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test10.mp4
+02-28 19:00:04.733  9186 24003 W Summariser:   time: 28.642s
+02-28 19:00:04.733  9186 24003 W Summariser:   noise tolerance: 60.00
+02-28 19:00:04.733  9186 24003 W Summariser:   quality: 23
+02-28 19:00:04.733  9186 24003 W Summariser:   speed: medium
+02-28 19:00:09.372  9186  9186 W NearbyFragment: Completed downloading test11.mp4 in 04.384s
+02-28 19:00:43.057  9186 24852 W Summariser: One active section found
+02-28 19:00:43.356  9186 24852 W Summariser: Summarisation completed
+02-28 19:00:43.356  9186 24852 W Summariser:   filename: /storage/emulated/0/Download/Nearby/test11.mp4
+02-28 19:00:43.356  9186 24852 W Summariser:   time: 33.646s
+02-28 19:00:43.356  9186 24852 W Summariser:   noise tolerance: 60.00
+02-28 19:00:43.356  9186 24852 W Summariser:   quality: 23
+02-28 19:00:43.356  9186 24852 W Summariser:   speed: medium

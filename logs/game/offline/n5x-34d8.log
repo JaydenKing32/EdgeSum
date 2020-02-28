@@ -1,0 +1,75 @@
+02-29 01:21:00.987 14686 14686 E TransferService: No notification is passed in the intent. Unable to transition to
+02-29 01:21:41.622 14686 14808 W Summariser: 2 active sections found
+02-29 01:23:36.222 14686 14808 W Summariser: Summarisation completed
+02-29 01:23:36.222 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test00.mp4
+02-29 01:23:36.222 14686 14808 W Summariser:   time: 141.788s
+02-29 01:23:36.222 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 01:23:36.222 14686 14808 W Summariser:   quality: 23
+02-29 01:23:36.222 14686 14808 W Summariser:   speed: medium
+02-29 01:24:21.074 14686 14808 W Summariser: No activity detected
+02-29 01:24:21.078 14686 14808 W Summariser: Summarisation completed
+02-29 01:24:21.078 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test01.mp4
+02-29 01:24:21.078 14686 14808 W Summariser:   time: 44.781s
+02-29 01:24:21.078 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 01:24:21.078 14686 14808 W Summariser:   quality: 23
+02-29 01:24:21.078 14686 14808 W Summariser:   speed: medium
+02-29 01:25:59.122 14686 14808 W Summariser: Whole video is active
+02-29 01:26:04.157 14686 14808 W Summariser: Summarisation completed
+02-29 01:26:04.157 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test02.mp4
+02-29 01:26:04.157 14686 14808 W Summariser:   time: 103.056s
+02-29 01:26:04.157 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 01:26:04.157 14686 14808 W Summariser:   quality: 23
+02-29 01:26:04.157 14686 14808 W Summariser:   speed: medium
+02-29 01:27:09.623 14686 14808 W Summariser: 2 active sections found
+02-29 01:32:22.814 14686 14808 W Summariser: Summarisation completed
+02-29 01:32:22.814 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test03.mp4
+02-29 01:32:22.814 14686 14808 W Summariser:   time: 378.560s
+02-29 01:32:22.814 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 01:32:22.814 14686 14808 W Summariser:   quality: 23
+02-29 01:32:22.814 14686 14808 W Summariser:   speed: medium
+02-29 01:32:55.521 14686 14808 W Summariser: One active section found
+02-29 01:32:55.716 14686 14808 W Summariser: Summarisation completed
+02-29 01:32:55.716 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test04.mp4
+02-29 01:32:55.716 14686 14808 W Summariser:   time: 32.820s
+02-29 01:32:55.716 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 01:32:55.716 14686 14808 W Summariser:   quality: 23
+02-29 01:32:55.716 14686 14808 W Summariser:   speed: medium
+02-29 01:33:43.351 14686 14808 W Summariser: One active section found
+02-29 01:33:43.693 14686 14808 W Summariser: Summarisation completed
+02-29 01:33:43.693 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test05.mp4
+02-29 01:33:43.693 14686 14808 W Summariser:   time: 47.902s
+02-29 01:33:43.693 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 01:33:43.693 14686 14808 W Summariser:   quality: 23
+02-29 01:33:43.693 14686 14808 W Summariser:   speed: medium
+02-29 01:35:15.641 14686 14808 W Summariser: 3 active sections found
+02-29 01:45:34.758 14686 14808 W Summariser: Summarisation completed
+02-29 01:45:34.758 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test06.mp4
+02-29 01:45:34.758 14686 14808 W Summariser:   time: 710.969s
+02-29 01:45:34.758 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 01:45:34.758 14686 14808 W Summariser:   quality: 23
+02-29 01:45:34.758 14686 14808 W Summariser:   speed: medium
+02-29 02:03:31.938 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test08.mp4
+02-29 02:03:31.938 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 02:03:31.938 14686 14808 W Summariser:   quality: 23
+02-29 02:03:31.938 14686 14808 W Summariser:   speed: medium
+02-29 02:04:48.005 14686 14808 W Summariser: One active section found
+02-29 02:04:48.303 14686 14808 W Summariser: Summarisation completed
+02-29 02:04:48.303 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test09.mp4
+02-29 02:04:48.303 14686 14808 W Summariser:   time: 76.261s
+02-29 02:04:48.303 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 02:04:48.303 14686 14808 W Summariser:   quality: 23
+02-29 02:04:48.303 14686 14808 W Summariser:   speed: medium
+02-29 02:06:16.977 14686 14808 W Summariser: One active section found
+02-29 02:06:17.340 14686 14808 W Summariser: Summarisation completed
+02-29 02:06:17.340 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test10.mp4
+02-29 02:06:17.340 14686 14808 W Summariser:   time: 88.954s
+02-29 02:06:17.340 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 02:06:17.340 14686 14808 W Summariser:   quality: 23
+02-29 02:06:17.340 14686 14808 W Summariser:   speed: medium
+02-29 02:07:59.745 14686 14808 W Summariser: One active section found
+02-29 02:08:00.340 14686 14808 W Summariser: Summarisation completed
+02-29 02:08:00.340 14686 14808 W Summariser:   filename: /storage/emulated/0/Movies/rawFootage/test11.mp4
+02-29 02:08:00.340 14686 14808 W Summariser:   time: 102.906s
+02-29 02:08:00.340 14686 14808 W Summariser:   noise tolerance: 60.00
+02-29 02:08:00.340 14686 14808 W Summariser:   quality: 23
+02-29 02:08:00.340 14686 14808 W Summariser:   speed: medium

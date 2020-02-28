@@ -1,120 +1,97 @@
-02-12 20:06:04.416  4290  4290 W NearbyFragment: Completed downloading 20191028_171716_NF.mp4 in 13.873s
-02-12 20:06:04.928  4290  5631 W mobile-ffmpeg:
-02-12 20:06:04.928  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a771600]
-02-12 20:06:04.929  4290  5631 W mobile-ffmpeg:
-02-12 20:06:04.929  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:06:38.967  4290  5629 W Summariser: Whole video is active
-02-12 20:06:41.708  4290  5629 W Summariser: Summarisation completed
-02-12 20:06:41.708  4290  5629 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_171716_NF.mp4
-02-12 20:06:41.708  4290  5629 W Summariser:   time: 36.907s
-02-12 20:06:41.708  4290  5629 W Summariser:   noise tolerance: 38.00
-02-12 20:06:41.708  4290  5629 W Summariser:   quality: 23
-02-12 20:06:41.708  4290  5629 W Summariser:   speed: medium
-02-12 20:07:26.046  4290  4290 W NearbyFragment: Completed downloading 20191028_180605_NF.mp4 in 27.703s
-02-12 20:07:26.192  4290  5631 W mobile-ffmpeg:
-02-12 20:07:26.192  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a771600]
-02-12 20:07:26.192  4290  5631 W mobile-ffmpeg:
-02-12 20:07:26.192  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:07:44.260  4290  5685 W Summariser: Whole video is active
-02-12 20:07:45.395  4290  5685 W Summariser: Summarisation completed
-02-12 20:07:45.395  4290  5685 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_180605_NF.mp4
-02-12 20:07:45.395  4290  5685 W Summariser:   time: 19.208s
-02-12 20:07:45.395  4290  5685 W Summariser:   noise tolerance: 38.00
-02-12 20:07:45.395  4290  5685 W Summariser:   quality: 23
-02-12 20:07:45.395  4290  5685 W Summariser:   speed: medium
-02-12 20:09:55.983  4290  4290 W NearbyFragment: Completed downloading 20191028_180815_NF.mp4 in 119.154s
-02-12 20:09:56.147  4290  5631 W mobile-ffmpeg:
-02-12 20:09:56.148  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a771600]
-02-12 20:09:56.149  4290  5631 W mobile-ffmpeg:
-02-12 20:09:56.149  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:11:03.752  4290  5739 W Summariser: No activity detected
-02-12 20:11:03.755  4290  5739 W Summariser: Summarisation completed
-02-12 20:11:03.755  4290  5739 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_180815_NF.mp4
-02-12 20:11:03.755  4290  5739 W Summariser:   time: 67.618s
-02-12 20:11:03.755  4290  5739 W Summariser:   noise tolerance: 38.00
-02-12 20:11:03.755  4290  5739 W Summariser:   quality: 23
-02-12 20:11:03.755  4290  5739 W Summariser:   speed: medium
-02-12 20:11:26.940  4290  4290 W NearbyFragment: Completed downloading 20191028_181115_NF.mp4 in 150.962s
-02-12 20:11:27.163  4290  5631 W mobile-ffmpeg:
-02-12 20:11:27.163  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a771600]
-02-12 20:11:27.163  4290  5631 W mobile-ffmpeg:
-02-12 20:11:27.163  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:12:21.612  4290  5767 W Summariser: No activity detected
-02-12 20:12:21.613  4290  5767 W Summariser: Summarisation completed
-02-12 20:12:21.613  4290  5767 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_181115_NF.mp4
-02-12 20:12:21.613  4290  5767 W Summariser:   time: 54.458s
-02-12 20:12:21.613  4290  5767 W Summariser:   noise tolerance: 38.00
-02-12 20:12:21.613  4290  5767 W Summariser:   quality: 23
-02-12 20:12:21.613  4290  5767 W Summariser:   speed: medium
-02-12 20:13:10.688  4290  4290 W NearbyFragment: Completed downloading 20191030_161051_NF.mp4 in 194.553s
-02-12 20:13:10.832  4290  5631 W mobile-ffmpeg:
-02-12 20:13:10.832  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a771600]
-02-12 20:13:10.832  4290  5631 W mobile-ffmpeg:
-02-12 20:13:10.832  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:14:23.725  4290  5862 W Summariser: 6 active sections found
-02-12 20:14:23.753  4290  5631 W mobile-ffmpeg:
-02-12 20:14:23.753  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a771c00]
-02-12 20:14:23.753  4290  5631 W mobile-ffmpeg:
-02-12 20:14:23.753  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:14:51.139  4290  4290 W NearbyFragment: Completed downloading 20191030_165329_NF.mp4 in 216.325s
-02-12 20:16:04.839  4290  4290 W NearbyFragment: Completed downloading 20191030_212910_NF.mp4 in 198.797s
-02-12 20:17:44.022  4290  4290 W NearbyFragment: Completed downloading 20191030_221001_NF.mp4 in 194.259s
-02-12 20:19:37.189  4290  4290 W NearbyFragment: Completed downloading 20191030_221302_NF.mp4 in 235.275s
-02-12 20:23:35.907  4290  5862 W Summariser: Summarisation completed
-02-12 20:23:35.907  4290  5862 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_161051_NF.mp4
-02-12 20:23:35.907  4290  5862 W Summariser:   time: 625.085s
-02-12 20:23:35.907  4290  5862 W Summariser:   noise tolerance: 38.00
-02-12 20:23:35.907  4290  5862 W Summariser:   quality: 23
-02-12 20:23:35.907  4290  5862 W Summariser:   speed: medium
-02-12 20:23:36.028  4290  5631 W mobile-ffmpeg:
-02-12 20:23:36.029  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a771c00]
-02-12 20:23:36.029  4290  5631 W mobile-ffmpeg:
-02-12 20:23:36.029  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:25:26.076  4290  5862 W Summariser: No activity detected
-02-12 20:25:26.079  4290  5862 W Summariser: Summarisation completed
-02-12 20:25:26.079  4290  5862 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_165329_NF.mp4
-02-12 20:25:26.079  4290  5862 W Summariser:   time: 110.077s
-02-12 20:25:26.079  4290  5862 W Summariser:   noise tolerance: 38.00
-02-12 20:25:26.079  4290  5862 W Summariser:   quality: 23
-02-12 20:25:26.079  4290  5862 W Summariser:   speed: medium
-02-12 20:25:26.149  4290  5631 W mobile-ffmpeg:
-02-12 20:25:26.149  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a771c00]
-02-12 20:25:26.150  4290  5631 W mobile-ffmpeg:
-02-12 20:25:26.150  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:27:18.089  4290  5862 W Summariser: No activity detected
-02-12 20:27:18.091  4290  5862 W Summariser: Summarisation completed
-02-12 20:27:18.091  4290  5862 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_212910_NF.mp4
-02-12 20:27:18.091  4290  5862 W Summariser:   time: 111.988s
-02-12 20:27:18.091  4290  5862 W Summariser:   noise tolerance: 38.00
-02-12 20:27:18.091  4290  5862 W Summariser:   quality: 23
-02-12 20:27:18.091  4290  5862 W Summariser:   speed: medium
-02-12 20:27:18.159  4290  5631 W mobile-ffmpeg:
-02-12 20:27:18.159  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a771c00]
-02-12 20:27:18.159  4290  5631 W mobile-ffmpeg:
-02-12 20:27:18.159  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:29:04.520  4290  5862 W Summariser: 3 active sections found
-02-12 20:29:04.541  4290  5631 W mobile-ffmpeg:
-02-12 20:29:04.541  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a772200]
-02-12 20:29:04.541  4290  5631 W mobile-ffmpeg:
-02-12 20:29:04.542  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:39:09.381  4290  5862 W Summariser: Summarisation completed
-02-12 20:39:09.381  4290  5862 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_221001_NF.mp4
-02-12 20:39:09.381  4290  5862 W Summariser:   time: 711.273s
-02-12 20:39:09.381  4290  5862 W Summariser:   noise tolerance: 38.00
-02-12 20:39:09.381  4290  5862 W Summariser:   quality: 23
-02-12 20:39:09.381  4290  5862 W Summariser:   speed: medium
-02-12 20:39:09.542  4290  5631 W mobile-ffmpeg:
-02-12 20:39:09.543  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a772200]
-02-12 20:39:09.543  4290  5631 W mobile-ffmpeg:
-02-12 20:39:09.543  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:40:59.292  4290  5862 W Summariser: 2 active sections found
-02-12 20:40:59.312  4290  5631 W mobile-ffmpeg:
-02-12 20:40:59.313  4290  5631 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x713a772200]
-02-12 20:40:59.313  4290  5631 W mobile-ffmpeg:
-02-12 20:40:59.313  4290  5631 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:52:22.034  4290  5862 W Summariser: Summarisation completed
-02-12 20:52:22.034  4290  5862 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_221302_NF.mp4
-02-12 20:52:22.034  4290  5862 W Summariser:   time: 792.523s
-02-12 20:52:22.034  4290  5862 W Summariser:   noise tolerance: 38.00
-02-12 20:52:22.034  4290  5862 W Summariser:   quality: 23
-02-12 20:52:22.034  4290  5862 W Summariser:   speed: medium
+02-28 22:41:22.766  8220  8220 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
+02-28 22:45:27.079  8220  8220 W NearbyFragment: Completed downloading 20191028_171616_NF.mp4 in 14.568s
+02-28 22:45:27.391  8220  8713 W mobile-ffmpeg:
+02-28 22:45:27.392  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe6f6800]
+02-28 22:45:27.392  8220  8713 W mobile-ffmpeg:
+02-28 22:45:27.392  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 22:46:19.390  8220  8712 W Summariser: Whole video is active
+02-28 22:46:23.996  8220  8712 W Summariser: Summarisation completed
+02-28 22:46:23.996  8220  8712 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_171616_NF.mp4
+02-28 22:46:23.996  8220  8712 W Summariser:   time: 56.768s
+02-28 22:46:23.996  8220  8712 W Summariser:   noise tolerance: 38.00
+02-28 22:46:23.996  8220  8712 W Summariser:   quality: 23
+02-28 22:46:23.996  8220  8712 W Summariser:   speed: medium
+02-28 22:47:17.544  8220  8220 W NearbyFragment: Completed downloading 20191028_180605_NF.mp4 in 53.307s
+02-28 22:47:17.697  8220  8713 W mobile-ffmpeg:
+02-28 22:47:17.698  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe6f6800]
+02-28 22:47:17.698  8220  8713 W mobile-ffmpeg:
+02-28 22:47:17.698  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 22:47:31.979  8220  8764 W Summariser: Whole video is active
+02-28 22:47:33.099  8220  8764 W Summariser: Summarisation completed
+02-28 22:47:33.099  8220  8764 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_180605_NF.mp4
+02-28 22:47:33.099  8220  8764 W Summariser:   time: 15.408s
+02-28 22:47:33.099  8220  8764 W Summariser:   noise tolerance: 38.00
+02-28 22:47:33.099  8220  8764 W Summariser:   quality: 23
+02-28 22:47:33.099  8220  8764 W Summariser:   speed: medium
+02-28 22:48:12.144  8220  8220 W NearbyFragment: Completed downloading 20191028_180715_NF.mp4 in 38.742s
+02-28 22:48:12.286  8220  8713 W mobile-ffmpeg:
+02-28 22:48:12.286  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe6f6800]
+02-28 22:48:12.286  8220  8713 W mobile-ffmpeg:
+02-28 22:48:12.286  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 22:49:23.560  8220  8878 W Summariser: One active section found
+02-28 22:49:23.573  8220  8713 W mobile-ffmpeg:
+02-28 22:49:23.573  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe6f6800]
+02-28 22:49:23.573  8220  8713 W mobile-ffmpeg:
+02-28 22:49:23.573  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 22:49:24.061  8220  8878 W Summariser: Summarisation completed
+02-28 22:49:24.061  8220  8878 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_180715_NF.mp4
+02-28 22:49:24.061  8220  8878 W Summariser:   time: 71.784s
+02-28 22:49:24.061  8220  8878 W Summariser:   noise tolerance: 38.00
+02-28 22:49:24.061  8220  8878 W Summariser:   quality: 23
+02-28 22:49:24.061  8220  8878 W Summariser:   speed: medium
+02-28 22:49:50.813  8220  8220 W NearbyFragment: Completed downloading 20191028_181115_NF.mp4 in 26.547s
+02-28 22:49:50.917  8220  8713 W mobile-ffmpeg:
+02-28 22:49:50.917  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe6f6800]
+02-28 22:49:50.917  8220  8713 W mobile-ffmpeg:
+02-28 22:49:50.917  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 22:50:44.112  8220  8912 W Summariser: No activity detected
+02-28 22:50:44.114  8220  8912 W Summariser: Summarisation completed
+02-28 22:50:44.114  8220  8912 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_181115_NF.mp4
+02-28 22:50:44.114  8220  8912 W Summariser:   time: 53.204s
+02-28 22:50:44.114  8220  8912 W Summariser:   noise tolerance: 38.00
+02-28 22:50:44.114  8220  8912 W Summariser:   quality: 23
+02-28 22:50:44.114  8220  8912 W Summariser:   speed: medium
+02-28 22:51:07.734  8220  8220 W NearbyFragment: Completed downloading 20191030_161051_NF.mp4 in 23.491s
+02-28 22:51:07.848  8220  8713 W mobile-ffmpeg:
+02-28 22:51:07.848  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe65de00]
+02-28 22:51:07.848  8220  8713 W mobile-ffmpeg:
+02-28 22:51:07.848  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 22:52:19.294  8220  8952 W Summariser: 6 active sections found
+02-28 22:52:19.311  8220  8713 W mobile-ffmpeg:
+02-28 22:52:19.312  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe65e400]
+02-28 22:52:19.312  8220  8713 W mobile-ffmpeg:
+02-28 22:52:19.312  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:00:21.633  8220  8952 W Summariser: Summarisation completed
+02-28 23:00:21.633  8220  8952 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_161051_NF.mp4
+02-28 23:00:21.633  8220  8952 W Summariser:   time: 553.791s
+02-28 23:00:21.633  8220  8952 W Summariser:   noise tolerance: 38.00
+02-28 23:00:21.633  8220  8952 W Summariser:   quality: 23
+02-28 23:00:21.633  8220  8952 W Summariser:   speed: medium
+02-28 23:00:39.301  8220  8220 W NearbyFragment: Completed downloading 20191030_221101_NF.mp4 in 17.503s
+02-28 23:00:39.511  8220  8713 W mobile-ffmpeg:
+02-28 23:00:39.511  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe65e400]
+02-28 23:00:39.512  8220  8713 W mobile-ffmpeg:
+02-28 23:00:39.512  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:02:27.744  8220  9073 W Summariser: No activity detected
+02-28 23:02:27.746  8220  9073 W Summariser: Summarisation completed
+02-28 23:02:27.746  8220  9073 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_221101_NF.mp4
+02-28 23:02:27.746  8220  9073 W Summariser:   time: 108.245s
+02-28 23:02:27.746  8220  9073 W Summariser:   noise tolerance: 38.00
+02-28 23:02:27.746  8220  9073 W Summariser:   quality: 23
+02-28 23:02:27.746  8220  9073 W Summariser:   speed: medium
+02-28 23:02:41.014  8220  8220 W NearbyFragment: Completed downloading 20191030_221302_NF.mp4 in 13.069s
+02-28 23:02:41.253  8220  8713 W mobile-ffmpeg:
+02-28 23:02:41.254  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe65e400]
+02-28 23:02:41.254  8220  8713 W mobile-ffmpeg:
+02-28 23:02:41.254  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:04:33.144  8220  9254 W Summariser: 2 active sections found
+02-28 23:04:33.167  8220  8713 W mobile-ffmpeg:
+02-28 23:04:33.167  8220  8713 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x77fe65e400]
+02-28 23:04:33.167  8220  8713 W mobile-ffmpeg:
+02-28 23:04:33.167  8220  8713 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+02-28 23:16:11.666  8220  9254 W Summariser: Summarisation completed
+02-28 23:16:11.666  8220  9254 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_221302_NF.mp4
+02-28 23:16:11.666  8220  9254 W Summariser:   time: 810.422s
+02-28 23:16:11.666  8220  9254 W Summariser:   noise tolerance: 38.00
+02-28 23:16:11.666  8220  9254 W Summariser:   quality: 23
+02-28 23:16:11.666  8220  9254 W Summariser:   speed: medium

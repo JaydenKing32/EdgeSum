@@ -1,116 +1,70 @@
-02-12 20:05:50.213  3947  3947 W NearbyFragment: Completed downloading 20191028_171616_NF.mp4 in 13.904s
-02-12 20:05:50.738  3947  5584 W mobile-ffmpeg:
-02-12 20:05:50.738  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:05:50.738  3947  5584 W mobile-ffmpeg:
-02-12 20:05:50.738  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:06:58.108  3947  3947 W NearbyFragment: Completed downloading 20191028_171846_NF.mp4 in 28.797s
-02-12 20:07:01.913  3947  5582 W Summariser: Whole video is active
-02-12 20:07:07.307  3947  5582 W Summariser: Summarisation completed
-02-12 20:07:07.307  3947  5582 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_171616_NF.mp4
-02-12 20:07:07.307  3947  5582 W Summariser:   time: 76.697s
-02-12 20:07:07.307  3947  5582 W Summariser:   noise tolerance: 38.00
-02-12 20:07:07.307  3947  5582 W Summariser:   quality: 23
-02-12 20:07:07.307  3947  5582 W Summariser:   speed: medium
-02-12 20:07:07.461  3947  5584 W mobile-ffmpeg:
-02-12 20:07:07.461  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:07:07.461  3947  5584 W mobile-ffmpeg:
-02-12 20:07:07.461  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:08:55.605  3947  3947 W NearbyFragment: Completed downloading 20191028_180715_NF.mp4 in 89.199s
-02-12 20:09:01.892  3947  5582 W Summariser: Whole video is active
-02-12 20:09:08.544  3947  5582 W Summariser: Summarisation completed
-02-12 20:09:08.544  3947  5582 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_171846_NF.mp4
-02-12 20:09:08.544  3947  5582 W Summariser:   time: 121.095s
-02-12 20:09:08.544  3947  5582 W Summariser:   noise tolerance: 38.00
-02-12 20:09:08.544  3947  5582 W Summariser:   quality: 23
-02-12 20:09:08.544  3947  5582 W Summariser:   speed: medium
-02-12 20:09:08.664  3947  5584 W mobile-ffmpeg:
-02-12 20:09:08.665  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:09:08.665  3947  5584 W mobile-ffmpeg:
-02-12 20:09:08.665  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:10:59.558  3947  5582 W Summariser: One active section found
-02-12 20:10:59.580  3947  5584 W mobile-ffmpeg:
-02-12 20:10:59.580  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:10:59.581  3947  5584 W mobile-ffmpeg:
-02-12 20:10:59.581  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:11:00.284  3947  5582 W Summariser: Summarisation completed
-02-12 20:11:00.284  3947  5582 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_180715_NF.mp4
-02-12 20:11:00.284  3947  5582 W Summariser:   time: 111.647s
-02-12 20:11:00.284  3947  5582 W Summariser:   noise tolerance: 38.00
-02-12 20:11:00.284  3947  5582 W Summariser:   quality: 23
-02-12 20:11:00.284  3947  5582 W Summariser:   speed: medium
-02-12 20:11:04.339  3947  3947 W NearbyFragment: Completed downloading 20191028_181015_NF.mp4 in 171.707s
-02-12 20:11:04.560  3947  5584 W mobile-ffmpeg:
-02-12 20:11:04.560  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:11:04.560  3947  5584 W mobile-ffmpeg:
-02-12 20:11:04.560  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:12:45.526  3947  3947 W NearbyFragment: Completed downloading 20191028_181359_PF.mp4 in 170.925s
-02-12 20:12:53.634  3947  5755 W Summariser: No activity detected
-02-12 20:12:53.645  3947  5755 W Summariser: Summarisation completed
-02-12 20:12:53.645  3947  5755 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_181015_NF.mp4
-02-12 20:12:53.645  3947  5755 W Summariser:   time: 109.090s
-02-12 20:12:53.645  3947  5755 W Summariser:   noise tolerance: 38.00
-02-12 20:12:53.645  3947  5755 W Summariser:   quality: 23
-02-12 20:12:53.645  3947  5755 W Summariser:   speed: medium
-02-12 20:12:53.673  3947  5584 W mobile-ffmpeg:
-02-12 20:12:53.673  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:12:53.674  3947  5584 W mobile-ffmpeg:
-02-12 20:12:53.674  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:14:29.285  3947  3947 W NearbyFragment: Completed downloading 20191030_165229_NF.mp4 in 200.339s
-02-12 20:14:43.110  3947  5755 W Summariser: No activity detected
-02-12 20:14:43.112  3947  5755 W Summariser: Summarisation completed
-02-12 20:14:43.112  3947  5755 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191028_181359_PF.mp4
-02-12 20:14:43.112  3947  5755 W Summariser:   time: 109.452s
-02-12 20:14:43.112  3947  5755 W Summariser:   noise tolerance: 38.00
-02-12 20:14:43.112  3947  5755 W Summariser:   quality: 23
-02-12 20:14:43.112  3947  5755 W Summariser:   speed: medium
-02-12 20:14:43.155  3947  5584 W mobile-ffmpeg:
-02-12 20:14:43.155  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:14:43.155  3947  5584 W mobile-ffmpeg:
-02-12 20:14:43.155  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:15:41.621  3947  3947 W NearbyFragment: Completed downloading 20191030_165530_NF.mp4 in 216.515s
-02-12 20:16:34.556  3947  5755 W Summariser: No activity detected
-02-12 20:16:34.557  3947  5755 W Summariser: Summarisation completed
-02-12 20:16:34.557  3947  5755 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_165229_NF.mp4
-02-12 20:16:34.557  3947  5755 W Summariser:   time: 111.417s
-02-12 20:16:34.557  3947  5755 W Summariser:   noise tolerance: 38.00
-02-12 20:16:34.557  3947  5755 W Summariser:   quality: 23
-02-12 20:16:34.557  3947  5755 W Summariser:   speed: medium
-02-12 20:16:34.593  3947  5584 W mobile-ffmpeg:
-02-12 20:16:34.593  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:16:34.593  3947  5584 W mobile-ffmpeg:
-02-12 20:16:34.594  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:17:13.325  3947  5755 W Summariser: No activity detected
-02-12 20:17:13.327  3947  5755 W Summariser: Summarisation completed
-02-12 20:17:13.327  3947  5755 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_165530_NF.mp4
-02-12 20:17:13.327  3947  5755 W Summariser:   time: 38.742s
-02-12 20:17:13.327  3947  5755 W Summariser:   noise tolerance: 38.00
-02-12 20:17:13.327  3947  5755 W Summariser:   quality: 23
-02-12 20:17:13.327  3947  5755 W Summariser:   speed: medium
-02-12 20:17:17.366  3947  3947 W NearbyFragment: Completed downloading 20191030_220901_NF.mp4 in 205.796s
-02-12 20:17:17.549  3947  5584 W mobile-ffmpeg:
-02-12 20:17:17.549  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:17:17.549  3947  5584 W mobile-ffmpeg:
-02-12 20:17:17.549  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:19:08.930  3947  5889 W Summariser: One active section found
-02-12 20:19:08.943  3947  5584 W mobile-ffmpeg:
-02-12 20:19:08.943  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:19:08.943  3947  5584 W mobile-ffmpeg:
-02-12 20:19:08.943  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:19:09.100  3947  3947 W NearbyFragment: Completed downloading 20191030_221201_NF.mp4 in 222.829s
-02-12 20:19:09.950  3947  5889 W Summariser: Summarisation completed
-02-12 20:19:09.950  3947  5889 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_220901_NF.mp4
-02-12 20:19:09.950  3947  5889 W Summariser:   time: 112.412s
-02-12 20:19:09.950  3947  5889 W Summariser:   noise tolerance: 38.00
-02-12 20:19:09.950  3947  5889 W Summariser:   quality: 23
-02-12 20:19:09.950  3947  5889 W Summariser:   speed: medium
-02-12 20:19:10.601  3947  5584 W mobile-ffmpeg:
-02-12 20:19:10.601  3947  5584 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7c264d6c00]
-02-12 20:19:10.601  3947  5584 W mobile-ffmpeg:
-02-12 20:19:10.601  3947  5584 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
-02-12 20:21:04.514  3947  5889 W Summariser: No activity detected
-02-12 20:21:04.515  3947  5889 W Summariser: Summarisation completed
-02-12 20:21:04.515  3947  5889 W Summariser:   filename: /storage/emulated/0/Download/Nearby/20191030_221201_NF.mp4
-02-12 20:21:04.515  3947  5889 W Summariser:   time: 113.931s
-02-12 20:21:04.515  3947  5889 W Summariser:   noise tolerance: 38.00
-02-12 20:21:04.515  3947  5889 W Summariser:   quality: 23
-02-12 20:21:04.515  3947  5889 W Summariser:   speed: medium
+02-28 22:41:32.468  9598  9598 E TransferService: No notification is passed in the intent. Unable to transition to foreground.
+02-28 22:45:06.368  9598  9598 W EventsRelays: Item change notification received for unknown item: 11
+02-28 22:45:06.368  9598  9598 W EventsRelays: Item change notification received for unknown item: 12
+02-28 22:45:06.369  9598  9598 W EventsRelays: Item change notification received for unknown item: 13
+02-28 22:45:06.369  9598  9598 W EventsRelays: Item change notification received for unknown item: 14
+02-28 22:45:06.369  9598  9598 W EventsRelays: Item change notification received for unknown item: 15
+02-28 22:45:06.370  9598  9598 W EventsRelays: Item change notification received for unknown item: 16
+02-28 22:45:06.370  9598  9598 W EventsRelays: Item change notification received for unknown item: 17
+02-28 22:45:06.370  9598  9598 W EventsRelays: Item change notification received for unknown item: 18
+02-28 22:45:06.371  9598  9598 W EventsRelays: Item change notification received for unknown item: 19
+02-28 22:45:06.371  9598  9598 W EventsRelays: Item change notification received for unknown item: 20
+02-28 22:45:06.371  9598  9598 W EventsRelays: Item change notification received for unknown item: 21
+02-28 22:45:06.371  9598  9598 W EventsRelays: Item change notification received for unknown item: 22
+02-28 22:45:06.371  9598  9598 W EventsRelays: Item change notification received for unknown item: 23
+02-28 22:45:06.371  9598  9598 W EventsRelays: Item change notification received for unknown item: 24
+02-28 22:45:06.372  9598  9598 W EventsRelays: Item change notification received for unknown item: 25
+02-28 22:45:20.010  9598  9598 W NearbyFragment: Sending 20191028_171616_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-28 22:45:20.015  9598  9598 W NearbyFragment: Sending 20191028_171716_NF.mp4 to Nexus 5 [X4i7JHzi]
+02-28 22:45:20.019  9598  9598 W NearbyFragment: Sending 20191028_171746_EF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:45:20.024  9598  9598 W EventsRelays: Item change notification received for unknown item: 11
+02-28 22:45:20.024  9598  9598 W EventsRelays: Item change notification received for unknown item: 12
+02-28 22:45:20.024  9598  9598 W EventsRelays: Item change notification received for unknown item: 13
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 14
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 15
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 16
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 17
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 18
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 19
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 20
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 21
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 22
+02-28 22:45:20.025  9598  9598 W EventsRelays: Item change notification received for unknown item: 23
+02-28 22:45:20.026  9598  9598 W EventsRelays: Item change notification received for unknown item: 24
+02-28 22:45:20.026  9598  9598 W EventsRelays: Item change notification received for unknown item: 25
+02-28 22:46:31.761  9598  9598 W NearbyFragment: Sending 20191028_171846_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:46:31.966  9598  9598 W NearbyFragment: Sending 20191028_180605_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-28 22:46:36.571  9598  9598 W NearbyFragment: Sending 20191028_180615_EF.mp4 to Nexus 5 [X4i7JHzi]
+02-28 22:46:57.612  9598  9598 W NearbyFragment: Completed downloading 20191028_171616_NF.mp4 in 25.121s
+02-28 22:47:12.832  9598  9598 W NearbyFragment: Completed downloading 20191028_171716_NF.mp4 in 36.262s
+02-28 22:47:21.578  9598  9598 W NearbyFragment: Completed downloading 20191028_171746_EF.mp4 in 49.819s
+02-28 22:47:41.053  9598  9598 W NearbyFragment: Sending 20191028_180715_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-28 22:47:43.786  9598  9598 W NearbyFragment: Sending 20191028_180815_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:47:46.666  9598  9598 W NearbyFragment: Completed downloading 20191028_180605_NF.mp4 in 05.320s
+02-28 22:48:06.821  9598  9598 W NearbyFragment: Completed downloading 20191028_171846_NF.mp4 in 23.035s
+02-28 22:48:54.228  9598  9598 W NearbyFragment: Sending 20191028_180915_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:49:31.770  9598  9598 W NearbyFragment: Sending 20191028_181015_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:49:31.993  9598  9598 W NearbyFragment: Sending 20191028_181115_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-28 22:49:34.553  9598  9598 W NearbyFragment: Completed downloading 20191028_180715_NF.mp4 in 02.561s
+02-28 22:50:09.934  9598  9598 W NearbyFragment: Sending 20191028_181159_PF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:50:48.252  9598  9598 W NearbyFragment: Sending 20191028_181359_PF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:50:51.953  9598  9598 W NearbyFragment: Sending 20191030_161051_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-28 22:51:25.534  9598  9598 W NearbyFragment: Sending 20191030_165129_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:53:06.958  9598  9598 W NearbyFragment: Sending 20191030_165229_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:53:07.925  9598  9598 W NearbyFragment: Completed downloading 20191030_165129_NF.mp4 in 00.970s
+02-28 22:53:54.775  9598  9598 W NearbyFragment: Sending 20191030_165329_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:54:38.746  9598  9598 W NearbyFragment: Sending 20191030_165429_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:55:25.051  9598  9598 W NearbyFragment: Sending 20191030_165530_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:55:25.677  9598  9598 W NearbyFragment: Completed downloading 20191030_165429_NF.mp4 in 00.625s
+02-28 22:55:40.008  9598  9598 W NearbyFragment: Sending 20191030_212910_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:56:26.174  9598  9598 W NearbyFragment: Sending 20191030_213010_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:57:10.746  9598  9598 W NearbyFragment: Sending 20191030_220901_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:58:01.540  9598  9598 W NearbyFragment: Sending 20191030_221001_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 22:58:11.278  9598  9598 W NearbyFragment: Completed downloading 20191030_220901_NF.mp4 in 09.744s
+02-28 23:00:29.538  9598  9598 W NearbyFragment: Sending 20191030_221101_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-28 23:00:51.207  9598  9598 W NearbyFragment: Completed downloading 20191030_161051_NF.mp4 in 21.671s
+02-28 23:01:47.602  9598  9598 W NearbyFragment: Sending 20191030_221201_NF.mp4 to Galaxy S8 [AUt2j7dP]
+02-28 23:01:52.899  9598  9598 W NearbyFragment: Completed downloading 20191030_221001_NF.mp4 in 05.299s
+02-28 23:02:35.686  9598  9598 W NearbyFragment: Sending 20191030_221302_NF.mp4 to Nexus 5X [Li7XCB6a]
+02-28 23:08:06.682  9598  9598 W NearbyFragment: Completed downloading 20191028_180615_EF.mp4 in 20.236s
+02-28 23:16:22.742  9598  9598 W NearbyFragment: Completed downloading 20191030_221302_NF.mp4 in 03.161s
