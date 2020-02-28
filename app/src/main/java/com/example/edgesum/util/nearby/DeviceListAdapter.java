@@ -36,7 +36,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
 
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
-        Endpoint endpoint = ((Endpoint[]) endpoints.values().toArray())[position];
+        Endpoint endpoint = (Endpoint) endpoints.values().toArray()[position];
 
         holder.deviceName.setText(endpoint.name);
         holder.deviceName.setClickable(!endpoint.connected);
