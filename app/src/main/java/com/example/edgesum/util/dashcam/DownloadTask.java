@@ -47,8 +47,6 @@ public class DownloadTask extends AsyncTask<DashName, Void, List<String>> {
                 Log.e(TAG, "Dashcam model not specified");
                 return null;
         }
-        DashDownloadManager downloadManager = new DashDownloadManager(downloadCallback);
-
-        return dash.downloadAll(downloadManager, weakReference.get());
+        return dash.downloadAll(downloadCallback, weakReference.get());
     }
 }
