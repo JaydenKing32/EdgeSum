@@ -1,5 +1,6 @@
 package com.example.edgesum.util.nearby;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -95,7 +96,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     private void setLocalName(Context context) {
-        if (localName == null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            @SuppressLint("MissingPermission")
+            String sn = Build.getSerial();
+            localName = String.format("%s [%s]", DeviceName.getDeviceName(), sn.substring(sn.length() - 4));
+        } else if (localName == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(LOCAL_NAME_KEY, Context.MODE_PRIVATE);
             String uniqueId = sharedPrefs.getString(LOCAL_NAME_KEY, null);
             if (uniqueId == null) {
