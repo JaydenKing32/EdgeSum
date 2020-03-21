@@ -1,15 +1,18 @@
 package com.example.edgesum.util.dashcam;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
+import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.Command;
 import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.VideoManager;
+import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -54,11 +57,22 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             } else {
                 Log.d(TAG, String.format("Completed downloading %s", uri.getLastPathSegment()));
             }
+            Video video = VideoManager.getVideoFromFile(context, new File(path));
 
-            Video video = VideoManager.getVideoFromFile(weakReference.get(), new File(path));
-            EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-            transferCallback.addToTransferQueue(video, Command.SUMMARISE);
-            transferCallback.initialTransfer();
+            if (transferCallback.isConnected()) {
+                EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                transferCallback.addToTransferQueue(video, Command.SUMMARISE);
+                transferCallback.initialTransfer();
+            } else {
+                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+
+                final String output = String.format("%s/%s", FileManager.summarisedVideosFolderPath(), video.getName());
+                Intent summariseIntent = new Intent(context, SummariserIntentService.class);
+                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
+                context.startService(summariseIntent);
+            }
         };
     }
 
