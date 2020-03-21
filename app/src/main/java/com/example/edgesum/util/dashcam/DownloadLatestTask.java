@@ -1,8 +1,6 @@
 package com.example.edgesum.util.dashcam;
 
 import android.content.Context;
-import android.media.MediaScannerConnection;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
@@ -17,20 +15,16 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
-public class DownloadLatestTask extends AsyncTask<Void, Void, Boolean> {
+public class DownloadLatestTask extends DownloadTask<Void, Void, Boolean> {
     private static final String TAG = DownloadLatestTask.class.getSimpleName();
     private static String lastVideo = "";
-    private final WeakReference<Context> weakReference;
-    private final MediaScannerConnection.OnScanCompletedListener downloadCallback;
-    private Instant start;
 
     public DownloadLatestTask(TransferCallback transferCallback, Context context) {
-        weakReference = new WeakReference<>(context);
+        super(context);
 
         downloadCallback = (path, uri) -> {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -41,7 +35,7 @@ public class DownloadLatestTask extends AsyncTask<Void, Void, Boolean> {
                 Log.d(TAG, String.format("Completed downloading %s", uri.getLastPathSegment()));
             }
 
-            Video video = VideoManager.getVideoFromFile(context, new File(path));
+            Video video = VideoManager.getVideoFromFile(weakReference.get(), new File(path));
             EventBus.getDefault().post(new AddEvent(video, Type.RAW));
             transferCallback.addToTransferQueue(video, Command.SUMMARISE);
             transferCallback.initialTransfer();

@@ -27,7 +27,7 @@ import com.example.edgesum.util.Injection;
 import com.example.edgesum.util.dashcam.DashName;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.NearbyFragment;
-import com.example.edgesum.util.dashcam.DownloadTask;
+import com.example.edgesum.util.dashcam.DownloadAllTask;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.videoeventhandler.ProcessingVideosEventHandler;
 import com.example.edgesum.util.video.videoeventhandler.RawFootageEventHandler;
@@ -169,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
             case R.id.action_download:
                 Log.v(TAG, "Download button clicked");
                 Toast.makeText(this, "Starting download", Toast.LENGTH_SHORT).show();
-                DownloadTask mDownloadTask = new DownloadTask(this);
-                mDownloadTask.execute(DashName.BLACKVUE);
+                DownloadAllTask downloadAllTask = new DownloadAllTask(this);
+                downloadAllTask.execute(DashName.BLACKVUE);
                 return true;
             case R.id.action_settings:
                 Log.v(TAG, "Setting button clicked");
