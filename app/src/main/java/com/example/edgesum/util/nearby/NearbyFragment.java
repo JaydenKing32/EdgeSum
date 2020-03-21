@@ -23,8 +23,8 @@ import com.example.edgesum.event.RemoveByNameEvent;
 import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
+import com.example.edgesum.util.dashcam.DownloadTestVideosTask;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.dashcam.DownloadLatestTask;
 import com.example.edgesum.util.video.VideoManager;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.google.android.gms.nearby.Nearby;
@@ -240,7 +240,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     // https://stackoverflow.com/a/8232889/8031185
     protected void startDashDownload() {
         downloadTaskExecutor.scheduleAtFixedRate(() ->
-                new DownloadLatestTask(this, getContext()).execute(), 0, 1, TimeUnit.MINUTES);
+                new DownloadTestVideosTask(this, getContext()).execute(), 0, 1, TimeUnit.MINUTES);
     }
 
     protected void stopDashDownload() {
