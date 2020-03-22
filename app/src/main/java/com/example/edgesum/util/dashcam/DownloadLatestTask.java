@@ -27,12 +27,14 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Boolean> {
         super(context);
 
         downloadCallback = (path, uri) -> {
+            String videoName = path.substring(path.lastIndexOf('/') + 1);
+
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 long duration = Duration.between(start, Instant.now()).toMillis();
                 String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
-                Log.w(TAG, String.format("Completed downloading %s in %ss", uri.getLastPathSegment(), time));
+                Log.w(TAG, String.format("Completed downloading %s in %ss", videoName, time));
             } else {
-                Log.d(TAG, String.format("Completed downloading %s", uri.getLastPathSegment()));
+                Log.d(TAG, String.format("Completed downloading %s", videoName));
             }
 
             Video video = VideoManager.getVideoFromFile(weakReference.get(), new File(path));

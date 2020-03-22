@@ -66,7 +66,7 @@ class DashDownloadManager {
     }
 
     void startDownload(String url, Context context) {
-        Log.v(TAG, String.format("Started downloading: %s", url));
+        Log.v(TAG, String.format("Started downloading: %s", url.substring(url.lastIndexOf('/') + 1)));
         Uri requestUri = Uri.parse(url);
 
         DownloadManager.Request request = new DownloadManager.Request(requestUri);
