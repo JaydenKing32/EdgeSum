@@ -123,7 +123,7 @@ class Summariser {
                             "  noise tolerance: %.2f\n" +
                             "  quality: %d\n" +
                             "  speed: %s",
-                    filename,
+                    String.format("%s.%s", FilenameUtils.getBaseName(filename), FilenameUtils.getExtension(filename)),
                     DurationFormatUtils.formatDuration(Duration.between(start, Instant.now()).toMillis(), "ss.SSS"),
                     noise,
                     quality,
@@ -136,7 +136,7 @@ class Summariser {
                             "  noise tolerance: %.2f\n" +
                             "  quality: %d\n" +
                             "  speed: %s",
-                    filename,
+                    String.format("%s.%s", FilenameUtils.getBaseName(filename), FilenameUtils.getExtension(filename)),
                     noise,
                     quality,
                     speed
