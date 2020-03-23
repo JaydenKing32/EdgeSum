@@ -81,10 +81,15 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        checkPermissions();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         startAwsS3TransferService();
 
@@ -99,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         makeRawFootageDirectory(externalStoragePublicMovieDirectory);
         makeSummarisedVideosDirectory(externalStoragePublicMovieDirectory);
-        checkPermissions();
     }
 
     private void startAwsS3TransferService() {
@@ -218,7 +222,8 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
                 Manifest.permission.ACCESS_WIFI_STATE,
                 Manifest.permission.CHANGE_WIFI_STATE,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_PHONE_STATE
         };
 
         if (hasPermissions()) {
