@@ -45,7 +45,7 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             "20200312_195330.mp4",
             "20200312_195430.mp4"
     };
-    private static int counter = 0;
+    private static int downloadedVideos = 0;
     private final WeakReference<NearbyFragment> nearbyFragment;
 
     public DownloadTestVideosTask(NearbyFragment nearbyFragment, Context context) {
@@ -66,8 +66,11 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
 
             if (nearbyFragment.isConnected()) {
                 EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                nearbyFragment.addToTransferQueue(video, Command.SUMMARISE);
-                nearbyFragment.initialTransfer();
+                nearbyFragment.addOrSend(video, Command.SUMMARISE);
+
+                if (downloadedVideos >= testVideos.length) { // Ensures all videos are sent
+                    nearbyFragment.initialTransfer();
+                }
             } else {
                 EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
 
@@ -83,10 +86,10 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        if (counter < testVideos.length) {
+        if (downloadedVideos < testVideos.length) {
             Log.v(TAG, "Starting DownloadLatestTask");
             DashModel dash = DashModel.blackvue();
-            String videoName = testVideos[counter++];
+            String videoName = testVideos[downloadedVideos++];
             DashDownloadManager downloadManager = new DashDownloadManager(downloadCallback);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

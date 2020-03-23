@@ -83,7 +83,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     protected RecyclerView.Adapter deviceAdapter;
     protected String localName = null;
 
-    OnFragmentInteractionListener listener;
+    private int transferCount = 0;
+    private OnFragmentInteractionListener listener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -259,6 +260,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         List<Endpoint> connectedEndpoints =
                 discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
 
+        if (connectedEndpoints.size() == 0) {
+            Log.e(TAG, "Not connected to any devices");
+            return;
+        }
+
         for (Endpoint toEndpoint : connectedEndpoints) {
             if (transferQueue.isEmpty()) {
                 Log.i(TAG, "Transfer queue is empty");
@@ -272,7 +278,34 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
     }
 
+    @Override
+    public void addOrSend(Video video, Command command) {
+        List<Endpoint> connectedEndpoints =
+                discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
+
+        if (connectedEndpoints.size() == 0) {
+            Log.e(TAG, "Not connected to any devices");
+            return;
+        }
+
+        Message message = new Message(video, command);
+        if (transferCount < connectedEndpoints.size()) { // may not account for very fast workers
+            Endpoint toEndpoint = connectedEndpoints.get(transferCount);
+            sendFile(message, toEndpoint);
+        } else {
+            transferQueue.add(message);
+        }
+    }
+
     private void nextTransfer(String toEndpointId) {
+        List<Endpoint> connectedEndpoints =
+                discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
+
+        if (connectedEndpoints.size() == 0) {
+            Log.e(TAG, "Not connected to any devices");
+            return;
+        }
+
         if (!transferQueue.isEmpty()) {
             Message message = transferQueue.remove();
 
@@ -329,6 +362,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     @Override
     public void sendFile(Message message, Endpoint toEndpoint) {
+        transferCount++;
         File fileToSend = new File(message.video.getData());
         Uri uri = Uri.fromFile(fileToSend);
         Payload filePayload = null;
