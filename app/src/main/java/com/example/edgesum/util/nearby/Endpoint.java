@@ -4,10 +4,15 @@ package com.example.edgesum.util.nearby;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Endpoint {
     final String id;
     final String name;
     boolean connected;
+    Integer completeCount = 0;
+    final List<String> activeTransfers = new ArrayList<>();
 
     Endpoint(String id, String name, boolean connected) {
         this.id = id;
@@ -19,6 +24,10 @@ public class Endpoint {
         this.id = id;
         this.name = name;
         this.connected = false;
+    }
+
+    public boolean isActive() {
+        return !activeTransfers.isEmpty();
     }
 
     @Override

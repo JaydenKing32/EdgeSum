@@ -7,7 +7,7 @@ public interface TransferCallback {
 
     void initialTransfer();
 
-    void addOrSend(Video video, Command command);
+    void nextTransfer();
 
     void sendFileToAll(String videoPath, Command command);
 

@@ -250,6 +250,14 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         downloadTaskExecutor.shutdownNow();
     }
 
+    private List<Endpoint> getConnectedEndpoints() {
+        return discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
+    }
+
+    public long getConnectedCount() {
+        return discoveredEndpoints.values().stream().filter(e -> e.connected).count();
+    }
+
     @Override
     public void addToTransferQueue(Video video, Command command) {
         transferQueue.add(new Message(video, command));
@@ -257,8 +265,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     @Override
     public void initialTransfer() {
-        List<Endpoint> connectedEndpoints =
-                discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
 
         if (connectedEndpoints.size() == 0) {
             Log.e(TAG, "Not connected to any devices");
@@ -278,30 +285,48 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
     }
 
-    @Override
-    public void addOrSend(Video video, Command command) {
-        List<Endpoint> connectedEndpoints =
-                discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
+    private Endpoint getFastestEndpoint() {
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        int minCount = -1;
+        int bestCount = minCount;
+        Endpoint fastest = null;
 
-        if (connectedEndpoints.size() == 0) {
-            Log.e(TAG, "Not connected to any devices");
-            return;
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (!endpoint.isActive() && endpoint.completeCount > bestCount) {
+                bestCount = endpoint.completeCount;
+                fastest = endpoint;
+            }
         }
 
-        Message message = new Message(video, command);
-        if (transferCount < connectedEndpoints.size()) { // may not account for very fast workers
-            Endpoint toEndpoint = connectedEndpoints.get(transferCount);
-            sendFile(message, toEndpoint);
+        if (bestCount > minCount) {
+            return fastest;
+        }
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (endpoint.completeCount > bestCount) {
+                bestCount = endpoint.completeCount;
+                fastest = endpoint;
+            }
+        }
+
+        return fastest;
+    }
+
+    @Override
+    public void nextTransfer() {
+        if (!transferQueue.isEmpty()) {
+            Message message = transferQueue.remove();
+
+            if (message != null) {
+                sendFile(message, getFastestEndpoint());
+            }
         } else {
-            transferQueue.add(message);
+            Log.i(TAG, "Transfer queue is empty");
         }
     }
 
     private void nextTransfer(String toEndpointId) {
-        List<Endpoint> connectedEndpoints =
-                discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
-
-        if (connectedEndpoints.size() == 0) {
+        if (getConnectedEndpoints().size() == 0) {
             Log.e(TAG, "Not connected to any devices");
             return;
         }
@@ -358,6 +383,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         // Finally, send the file payload.
         connectionsClient.sendPayload(toEndpointIds, filePayload);
+
+        for (Endpoint endpoint : getConnectedEndpoints()) {
+            endpoint.activeTransfers.add(uri.getLastPathSegment());
+        }
     }
 
     @Override
@@ -392,6 +421,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         // Finally, send the file payload.
         connectionsClient.sendPayload(toEndpoint.id, filePayload);
+        toEndpoint.activeTransfers.add(uri.getLastPathSegment());
     }
 
     @Override
@@ -400,9 +430,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         Payload filenameBytesPayload = Payload.fromBytes(commandMessage.getBytes(UTF_8));
 
         // Only sent from worker to master, might be better to make bidirectional
-        List<String> connectedEndpoints = discoveredEndpoints.values().stream()
+        List<String> connectedEndpointIds = discoveredEndpoints.values().stream()
                 .filter(e -> e.connected).map(e -> e.id).collect(Collectors.toList());
-        connectionsClient.sendPayload(connectedEndpoints, filenameBytesPayload);
+        connectionsClient.sendPayload(connectedEndpointIds, filenameBytesPayload);
     }
 
     @Override
@@ -494,6 +524,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 String videoName;
                 String videoPath;
                 Video video;
+                Endpoint fromEndpoint;
 
                 switch (Command.valueOf(parts[0])) {
                     case ERROR:
@@ -510,12 +541,16 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         processFilePayload(payloadId, endpointId);
                         break;
                     case RETURN:
-                        Log.v(TAG, String.format("Started downloading %s", message));
+                        videoName = parts[2];
+                        Log.v(TAG, String.format("Started downloading %s", videoName));
                         payloadId = addPayloadFilename(message);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             startTimes.put(payloadId, Instant.now());
                         }
+                        fromEndpoint = discoveredEndpoints.get(endpointId);
+                        fromEndpoint.completeCount++;
+                        fromEndpoint.activeTransfers.remove(videoName);
 
                         processFilePayload(payloadId, endpointId);
                         nextTransfer(endpointId);
@@ -531,6 +566,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     case NO_ACTIVITY:
                         videoName = parts[1];
                         Log.d(TAG, String.format("%s contained no activity", videoName));
+
+                        fromEndpoint = discoveredEndpoints.get(endpointId);
+                        fromEndpoint.completeCount++;
+                        fromEndpoint.activeTransfers.remove(videoName);
+
                         videoPath = String.format("%s/%s", FileManager.rawFootageFolderPath(), videoName);
                         video = VideoManager.getVideoFromFile(getContext(), new File(videoPath));
                         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
