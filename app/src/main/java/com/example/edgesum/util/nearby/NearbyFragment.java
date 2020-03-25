@@ -71,6 +71,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     private static final String LOCAL_NAME_KEY = "LOCAL_NAME";
     private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
     private final Queue<Message> transferQueue = new LinkedList<>();
+    private final Queue<Endpoint> endpointQueue = new LinkedList<>();
     // Dashcam isn't able to handle concurrent downloads, leads to a very high rate of download errors.
     // Just use a single thread for downloading
     private final ScheduledExecutorService downloadTaskExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -83,6 +84,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     protected RecyclerView.Adapter deviceAdapter;
     protected String localName = null;
 
+    private int transferCount = 0;
     private OnFragmentInteractionListener listener;
 
     @Override
@@ -311,6 +313,30 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         return fastest;
     }
 
+    public void sendToEarliestEndpoint() {
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+
+        if (transferCount == connectedEndpoints.size()) {
+            initialTransfer();
+        } else if (transferCount > connectedEndpoints.size()) {
+            if (!transferQueue.isEmpty()) {
+                Message message = transferQueue.remove();
+
+                if (message != null) {
+                    Endpoint toEndpoint = endpointQueue.remove();
+
+                    if (toEndpoint != null) {
+                        sendFile(message, toEndpoint);
+                    } else {
+                        sendFile(message, getFastestEndpoint());
+                    }
+                }
+            } else {
+                Log.i(TAG, "Transfer queue is empty");
+            }
+        }
+    }
+
     @Override
     public void nextTransfer() {
         if (!transferQueue.isEmpty()) {
@@ -389,6 +415,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     private void sendFile(Message message, Endpoint toEndpoint) {
+        if (message == null || toEndpoint == null) {
+            Log.e(TAG, "No message or endpoint selected");
+            return;
+        }
+
+        transferCount++;
         File fileToSend = new File(message.video.getData());
         Uri uri = Uri.fromFile(fileToSend);
         Payload filePayload = null;
@@ -548,6 +580,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         fromEndpoint = discoveredEndpoints.get(endpointId);
                         fromEndpoint.completeCount++;
                         fromEndpoint.activeTransfers.remove(videoName);
+                        endpointQueue.add(fromEndpoint);
 
                         processFilePayload(payloadId, endpointId);
                         nextTransfer(endpointId);
@@ -567,6 +600,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         fromEndpoint = discoveredEndpoints.get(endpointId);
                         fromEndpoint.completeCount++;
                         fromEndpoint.activeTransfers.remove(videoName);
+                        endpointQueue.add(fromEndpoint);
 
                         videoPath = String.format("%s/%s", FileManager.rawFootageFolderPath(), videoName);
                         video = VideoManager.getVideoFromFile(getContext(), new File(videoPath));
