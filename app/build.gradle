@@ -72,6 +72,7 @@ dependencies {
 
     implementation 'commons-io:commons-io:2.6'
     implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'org.apache.commons:commons-collections4:4.4'
 
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'
     implementation 'com.jaredrummler:android-device-names:1.1.9'

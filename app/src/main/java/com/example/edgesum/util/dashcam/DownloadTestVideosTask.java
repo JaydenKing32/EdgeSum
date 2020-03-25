@@ -14,6 +14,7 @@ import com.example.edgesum.util.nearby.NearbyFragment;
 import com.example.edgesum.util.video.VideoManager;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,6 +22,12 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
     private static final String TAG = DownloadTestVideosTask.class.getSimpleName();
@@ -45,7 +52,7 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             "20200312_195330.mp4",
             "20200312_195430.mp4"
     };
-    private static int downloadedVideos = 0;
+    private static final Set<String> downloadedVideos = new HashSet<>();
     private final WeakReference<NearbyFragment> nearbyFragment;
 
     public DownloadTestVideosTask(NearbyFragment nearbyFragment, Context context) {
@@ -67,13 +74,7 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             if (nearbyFragment.isConnected()) {
                 EventBus.getDefault().post(new AddEvent(video, Type.RAW));
                 nearbyFragment.addToTransferQueue(video, Command.SUMMARISE);
-
-                long connectedDevices = nearbyFragment.getConnectedCount();
-                if (downloadedVideos == connectedDevices) {
-                    nearbyFragment.initialTransfer();
-                } else if (downloadedVideos > connectedDevices) {
-                    nearbyFragment.nextTransfer();
-                }
+                nearbyFragment.nextTransfer();
             } else {
                 EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
 
@@ -89,17 +90,31 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        if (downloadedVideos < testVideos.length) {
-            Log.v(TAG, "Starting DownloadLatestTask");
-            DashModel dash = DashModel.blackvue();
-            String videoName = testVideos[downloadedVideos++];
+        Log.v(TAG, "Starting DownloadTestVideosTask");
+        DashModel dash = DashModel.blackvue();
+        //List<String> allVideos = dash.getFilenames();
+        List<String> allVideos = Arrays.asList(testVideos);
+
+        if (allVideos == null || allVideos.size() == 0) {
+            Log.e(TAG, "Couldn't download videos");
+            return null;
+        }
+        List<String> newVideos = new ArrayList<>(CollectionUtils.disjunction(allVideos, downloadedVideos));
+        newVideos.sort(Comparator.comparing(String::toString));
+
+        if (newVideos.size() != 0) {
+            // Get oldest new video, allVideos should already be sorted
+            String toDownload = newVideos.get(0);
+            downloadedVideos.add(toDownload);
             DashDownloadManager downloadManager = new DashDownloadManager(downloadCallback);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 start = Instant.now();
             }
-            dash.downloadVideo(videoName, downloadManager, weakReference.get());
+
+            dash.downloadVideo(toDownload, downloadManager, weakReference.get());
         } else {
+            Log.d(TAG, "No new videos");
             nearbyFragment.get().stopDashDownload();
         }
         return null;

@@ -1,27 +1,35 @@
 package com.example.edgesum.util.dashcam;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
+import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.Command;
 import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.VideoManager;
+import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class DownloadLatestTask extends DownloadTask<Void, Void, Boolean> {
+public class DownloadLatestTask extends DownloadTask<Void, Void, Void> {
     private static final String TAG = DownloadLatestTask.class.getSimpleName();
-    private static String lastVideo = "";
+    private static final Set<String> downloadedVideos = new HashSet<>();
 
     public DownloadLatestTask(TransferCallback transferCallback, Context context) {
         super(context);
@@ -36,42 +44,52 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Boolean> {
             } else {
                 Log.d(TAG, String.format("Completed downloading %s", videoName));
             }
-
             Video video = VideoManager.getVideoFromFile(weakReference.get(), new File(path));
-            EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-            transferCallback.addToTransferQueue(video, Command.SUMMARISE);
-            transferCallback.initialTransfer();
+
+            if (transferCallback.isConnected()) {
+                EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                transferCallback.addToTransferQueue(video, Command.SUMMARISE);
+                transferCallback.nextTransfer();
+            } else {
+                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+
+                final String output = String.format("%s/%s", FileManager.summarisedVideosFolderPath(), video.getName());
+                Intent summariseIntent = new Intent(context, SummariserIntentService.class);
+                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
+                context.startService(summariseIntent);
+            }
         };
     }
 
     @Override
-    protected Boolean doInBackground(Void... voids) {
+    protected Void doInBackground(Void... voids) {
         Log.v(TAG, "Starting DownloadLatestTask");
         DashModel dash = DashModel.blackvue();
-        List<String> videos = dash.getFilenames();
+        List<String> allVideos = dash.getFilenames();
 
-        // TODO very basic, improve to account for recording speed being faster than download speed.
-        //  Need to keep track of downloaded videos, could just use an ArrayList, but that would cause poor performance
-        if (videos != null && videos.size() != 0) {
-            String last = videos.get(videos.size() - 1);
-
-            // Don't download the same video twice.
-            if (!lastVideo.equals(last)) {
-                lastVideo = last;
-                DashDownloadManager downloadManager = new DashDownloadManager(downloadCallback);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    start = Instant.now();
-                }
-                dash.downloadVideo(last, downloadManager, weakReference.get());
-                return true;
-            } else {
-                Log.d(TAG, "No new videos");
-                return false;
-            }
-        } else {
+        if (allVideos == null || allVideos.size() == 0) {
             Log.e(TAG, "Couldn't download videos");
-            return false;
+            return null;
         }
+        List<String> newVideos = new ArrayList<>(CollectionUtils.disjunction(allVideos, downloadedVideos));
+        newVideos.sort(Comparator.comparing(String::toString));
+
+        if (newVideos.size() != 0) {
+            // Get oldest new video
+            String toDownload = newVideos.get(0);
+            downloadedVideos.add(toDownload);
+            DashDownloadManager downloadManager = new DashDownloadManager(downloadCallback);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                start = Instant.now();
+            }
+
+            dash.downloadVideo(toDownload, downloadManager, weakReference.get());
+        } else {
+            Log.d(TAG, "No new videos");
+        }
+        return null;
     }
 }

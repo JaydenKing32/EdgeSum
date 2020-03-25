@@ -83,7 +83,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     protected RecyclerView.Adapter deviceAdapter;
     protected String localName = null;
 
-    private int transferCount = 0;
     private OnFragmentInteractionListener listener;
 
     @Override
@@ -241,8 +240,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     // https://stackoverflow.com/a/8232889/8031185
     protected void startDashDownload() {
         Log.w(TAG, "Started downloading from dashcam");
-        downloadTaskExecutor.scheduleAtFixedRate(() ->
-                new DownloadTestVideosTask(this, getContext()).execute(), 0, 1, TimeUnit.MINUTES);
+        downloadTaskExecutor.scheduleAtFixedRate(() -> new DownloadTestVideosTask(
+                this, getContext()).execute(), 0, 30, TimeUnit.SECONDS);
     }
 
     public void stopDashDownload() {
@@ -389,9 +388,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
     }
 
-    @Override
-    public void sendFile(Message message, Endpoint toEndpoint) {
-        transferCount++;
+    private void sendFile(Message message, Endpoint toEndpoint) {
         File fileToSend = new File(message.video.getData());
         Uri uri = Uri.fromFile(fileToSend);
         Payload filePayload = null;
