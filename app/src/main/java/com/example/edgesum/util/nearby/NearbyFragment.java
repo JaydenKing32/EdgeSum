@@ -243,7 +243,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     protected void startDashDownload() {
         Log.w(TAG, "Started downloading from dashcam");
         downloadTaskExecutor.scheduleAtFixedRate(() -> new DownloadTestVideosTask(
-                this, getContext()).execute(), 0, 30, TimeUnit.SECONDS);
+                this, getContext()).execute(), 0, 40, TimeUnit.SECONDS);
     }
 
     public void stopDashDownload() {
@@ -314,22 +314,20 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     public void sendToEarliestEndpoint() {
-        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        long connectedCount = getConnectedCount();
 
-        if (transferCount == connectedEndpoints.size()) {
+        if (transferCount < connectedCount && transferQueue.size() == connectedCount) {
             initialTransfer();
-        } else if (transferCount > connectedEndpoints.size()) {
+        } else if (transferCount >= connectedCount) {
             if (!transferQueue.isEmpty()) {
                 Message message = transferQueue.remove();
 
-                if (message != null) {
+                if (!endpointQueue.isEmpty()) {
                     Endpoint toEndpoint = endpointQueue.remove();
-
-                    if (toEndpoint != null) {
-                        sendFile(message, toEndpoint);
-                    } else {
-                        sendFile(message, getFastestEndpoint());
-                    }
+                    sendFile(message, toEndpoint);
+                } else {
+                    Log.e(TAG, "Endpoint Queue is empty");
+                    sendFile(message, getFastestEndpoint());
                 }
             } else {
                 Log.i(TAG, "Transfer queue is empty");
@@ -341,10 +339,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     public void nextTransfer() {
         if (!transferQueue.isEmpty()) {
             Message message = transferQueue.remove();
-
-            if (message != null) {
-                sendFile(message, getFastestEndpoint());
-            }
+            sendFile(message, getFastestEndpoint());
         } else {
             Log.i(TAG, "Transfer queue is empty");
         }
@@ -358,11 +353,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         if (!transferQueue.isEmpty()) {
             Message message = transferQueue.remove();
-
-            if (message != null) {
-                Endpoint toEndpoint = discoveredEndpoints.get(toEndpointId);
-                sendFile(message, toEndpoint);
-            }
+            Endpoint toEndpoint = discoveredEndpoints.get(toEndpointId);
+            sendFile(message, toEndpoint);
         } else {
             Log.i(TAG, "Transfer queue is empty");
         }
