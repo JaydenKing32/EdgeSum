@@ -32,7 +32,6 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity android:name=".page.main.DownloadActivity" />
-        <activity android:name=".page.main.LoadingActivity" />
         <activity
             android:name=".page.viewuploadedvideos.ViewUploadedVideosActivity"
             android:configChanges="orientation"
@@ -56,18 +55,17 @@
             android:name=".page.authentication.AuthenticationActivity"
             android:configChanges="orientation"
             android:noHistory="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".page.main.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <service
@@ -75,5 +73,4 @@
             android:enabled="true" />
         <service android:name=".util.video.summariser.SummariserIntentService" />
     </application>
-
 </manifest>

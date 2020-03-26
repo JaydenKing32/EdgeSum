@@ -3,6 +3,7 @@ package com.example.edgesum.page.main;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -90,20 +91,31 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        scanVideoDirectories();
         startAwsS3TransferService();
 
         // Set the toolbar as the app bar for this Activity.
         setToolBarAsTheAppBar();
-
         setUpBottomNavigation();
-
         setUpFragments();
 
         File externalStoragePublicMovieDirectory =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         makeRawFootageDirectory(externalStoragePublicMovieDirectory);
         makeSummarisedVideosDirectory(externalStoragePublicMovieDirectory);
+    }
+
+    private void scanVideoDirectories() {
+        MediaScannerConnection.OnScanCompletedListener scanCompletedListener = (path, uri) -> {
+            Log.v(TAG, "Scanned " + path + ":");
+            Log.v(TAG, "-> uri=" + uri);
+        };
+
+        MediaScannerConnection.scanFile(this,
+                new String[]{Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath()},
+                null, scanCompletedListener);
+        MediaScannerConnection.scanFile(this, new String[]{FileManager.summarisedVideosFolderPath()},
+                null, scanCompletedListener);
     }
 
     private void startAwsS3TransferService() {
