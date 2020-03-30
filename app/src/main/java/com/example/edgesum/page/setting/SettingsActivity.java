@@ -43,13 +43,12 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
             Preference videoSummarisedVideoPreference = findPreference(viewSummarisedVideo);
-//            Log.i(TAG, videoSummarisedVideoPreference.getKey() + "");
 
             context = getActivity().getApplicationContext();
             videoSummarisedVideoPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Log.i(TAG, "View summarised videos");
+                    Log.d(TAG, "View summarised videos");
                     Intent i = new Intent(getContext(), ViewUploadedVideosActivity.class);
                     startActivity(i);
                     return false;

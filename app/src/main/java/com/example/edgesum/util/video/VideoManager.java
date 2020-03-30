@@ -24,7 +24,7 @@ public class VideoManager {
     }
 
     public static List<Video> getAllVideoFromExternalStorageFolder(Context context, File file) {
-        Log.i(TAG, "getAllVideoFromExternalStorageFolder");
+        Log.v(TAG, "getAllVideoFromExternalStorageFolder");
         String[] projection = {MediaStore.Video.Media._ID,
                 MediaStore.Video.Media.DATA,
                 MediaStore.Video.Media.DISPLAY_NAME,
@@ -34,7 +34,7 @@ public class VideoManager {
         if (DeviceExternalStorage.externalStorageIsReadable()) {
             String selection=MediaStore.Video.Media.DATA +" LIKE ? ";
             String[] selectionArgs=new String[]{"%" + file.getAbsolutePath() + "%"};
-            Log.i("VideoManager", file.getAbsolutePath());
+            Log.d("VideoManager", file.getAbsolutePath());
             return getVideosFromExternalStorage(context, projection, selection, selectionArgs, null);
         }
         return new ArrayList<>();
@@ -59,7 +59,7 @@ public class VideoManager {
 
 
     public static List<Video> getAllVideosFromExternalStorage(Context context, String[] projection) {
-        Log.i(TAG, "getAllVideosFromExternalStorage");
+        Log.v(TAG, "getAllVideosFromExternalStorage");
         if (DeviceExternalStorage.externalStorageIsReadable()) {
             return getVideosFromExternalStorage(context, projection, null, null, null);
         }
@@ -72,7 +72,7 @@ public class VideoManager {
         List<Video> videos = new ArrayList<>(videoCursor.getCount());
         getVideosFromCursor(videoCursor, videos);
         videoCursor.close();
-        Log.i(TAG, String.format("%d videos return", videos.size()));
+        Log.d(TAG, String.format("%d videos return", videos.size()));
         return videos;
     }
 
@@ -83,7 +83,7 @@ public class VideoManager {
                 Video video = videoFromCursor(videoCursor);
                 if (video != null) {
                     videos.add(video);
-                    Log.i("Video toString", video.toString());
+                    Log.d(TAG, video.toString());
                 } else {
                     Log.e(TAG, "Video is null");
                 }
@@ -92,7 +92,7 @@ public class VideoManager {
     }
 
     public static Video videoFromCursor(Cursor cursor) {
-        Log.i(TAG, "videoFromCursor");
+        Log.v(TAG, "videoFromCursor");
         Video video = null;
         try {
             String id = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID));

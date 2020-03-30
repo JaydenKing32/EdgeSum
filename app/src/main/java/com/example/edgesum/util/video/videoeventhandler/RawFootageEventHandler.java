@@ -24,7 +24,7 @@ public class RawFootageEventHandler implements VideoEventHandler {
     @Override
     public void onAdd(AddEvent event) {
         if (event.type == Type.RAW) {
-            Log.i(TAG, "onAdd");
+            Log.v(TAG, "onAdd");
             repository.insert(event.video);
         }
     }
@@ -33,7 +33,7 @@ public class RawFootageEventHandler implements VideoEventHandler {
     @Override
     public void onRemove(RemoveEvent event) {
         if (event.type == Type.RAW) {
-            Log.i(TAG, "onRemove");
+            Log.v(TAG, "onRemove");
             repository.delete(event.video.getData());
         }
     }

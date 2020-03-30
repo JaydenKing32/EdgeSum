@@ -197,7 +197,7 @@ class Summariser {
         File freeze = new File(freezeFilePath);
 
         if (!freeze.exists() || freeze.length() == 0) {  // No inactive sections
-            Log.i("No freeze", "freeze");
+            Log.e(TAG, "No freeze");
             return null;
         }
         Scanner sc = null;

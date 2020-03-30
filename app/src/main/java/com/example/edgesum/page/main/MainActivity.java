@@ -107,8 +107,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
 
     private void scanVideoDirectories() {
         MediaScannerConnection.OnScanCompletedListener scanCompletedListener = (path, uri) -> {
-            Log.v(TAG, "Scanned " + path + ":");
-            Log.v(TAG, "-> uri=" + uri);
+            Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
         };
 
         MediaScannerConnection.scanFile(this,

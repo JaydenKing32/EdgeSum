@@ -25,7 +25,7 @@ public class SummarisedVideosEventHandler implements VideoEventHandler {
     public void onAdd(AddEvent event) {
 
         if (event.type == Type.SUMMARISED) {
-            Log.i(TAG, "onAdd");
+            Log.v(TAG, "onAdd");
             repository.insert(event.video);
         }
     }
@@ -34,7 +34,7 @@ public class SummarisedVideosEventHandler implements VideoEventHandler {
     public void onRemoveByPath(RemoveByPathEvent event) {
 
         if (event.type == Type.SUMMARISED) {
-            Log.i(TAG, "onRemoveByPath");
+            Log.v(TAG, "onRemoveByPath");
             repository.delete(event.path);
         }
     }

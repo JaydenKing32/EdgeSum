@@ -46,13 +46,13 @@ public class SummariserIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.i(TAG, "onHandleIntent");
+        Log.v(TAG, "onHandleIntent");
         final Video video = intent.getParcelableExtra(VIDEO_KEY);
         final String output = intent.getStringExtra(OUTPUT_KEY);
         final String type = intent.getStringExtra(TYPE_KEY);
 
-        Log.i(TAG, video.toString());
-        Log.i(TAG, output);
+        Log.d(TAG, video.toString());
+        Log.d(TAG, output);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         double noise = pref.getInt(getString(R.string.noise_key), (int) Summariser.DEFAULT_NOISE);
@@ -92,15 +92,13 @@ public class SummariserIntentService extends IntentService {
         MediaScannerConnection.scanFile(getApplicationContext(),
                 new String[]{FileManager.summarisedVideosFolderPath()}, null,
                 (path, uri) -> {
-                    Log.i(TAG, "Scanned " + path + ":");
-                    Log.i(TAG, "-> uri=" + uri);
+                    Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
                     File rawFootageVideoPath = new File(video.getData());
 //                rawFootageVideoPath.delete();
 //                MediaScannerConnection.scanFile(getApplicationContext(), new String[]{rawFootageVideoPath
 //                .getAbsolutePath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
 //                    public void onScanCompleted(String path, Uri uri) {
-//                        Log.i(TAG, "Scanned " + path + ":");
-//                        Log.i(TAG, "-> uri=" + uri);
+//                        Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
 //                    }
 //                });
                 });

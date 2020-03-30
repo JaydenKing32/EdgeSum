@@ -31,11 +31,11 @@ public class ExternalStorageVideosRepository implements VideosRepository {
         this.TAG = tag;
         this.PATH = path;
         if (PATH == null) {
-            Log.i("ExternalStorageVideosRepository", "null");
+            Log.v("ExternalStorageVideosRepository", "null");
         }
 
         videoDirectory = new File(PATH);
-        Log.i("Repo", videoDirectory.getAbsolutePath());
+        Log.v("Repo", videoDirectory.getAbsolutePath());
 //        FileManager.makeDirectory(context, externalStoragePublicMovieDirectory, PATH);
     }
 

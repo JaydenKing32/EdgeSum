@@ -678,6 +678,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
 
         private void summarise(Context context, File videoFile) {
+            // In order to use videos, their information must be in the MediaStore.
+            // The MediaStore might not have information on newly downloaded files yet, so it is necessary to scan
+            // the files before they can be used.
             MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()}, null,
                     (path, uri) -> {
                         Video video = VideoManager.getVideoFromFile(context, videoFile);

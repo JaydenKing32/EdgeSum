@@ -42,24 +42,24 @@ public class FileManager {
     public static void makeDirectory(Context context, File path, String directoryName) {
         File newDirectory = new File(path, directoryName);
         if (DeviceExternalStorage.externalStorageIsWritable()) {
-            Log.i("External storage", "Is readable");
+            Log.v("External storage", "Is readable");
             try {
                 if (!newDirectory.exists()) {
                     boolean folderCreated = newDirectory.mkdirs();
-                    Log.i("Folder created", Boolean.toString(folderCreated));
+                    Log.v("Folder created", Boolean.toString(folderCreated));
                     MediaScannerConnection.scanFile(context, new String[]{newDirectory.getAbsolutePath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
                         @Override
                         public void onScanCompleted(String path, Uri uri) {
-                            Log.i("ExternalStorage", "Scanned " + path + ":");
-                            Log.i("ExternalStorage", "-> uri=" + uri);
+                            Log.v("ExternalStorage", "Scanned " + path + ":");
+                            Log.v("ExternalStorage", "-> uri=" + uri);
                         }
                     });
                 }
             } catch (SecurityException e) {
-                Log.i("Security exception", e.getMessage());
+                Log.e("Security exception", e.getMessage());
             }
         } else {
-            Log.i("External storage", "Not readable");
+            Log.e("External storage", "Not readable");
         }
     }
 

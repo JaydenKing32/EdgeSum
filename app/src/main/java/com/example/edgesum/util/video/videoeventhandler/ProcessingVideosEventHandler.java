@@ -27,7 +27,7 @@ public class ProcessingVideosEventHandler implements VideoEventHandler {
     public void onAdd(AddEvent event) {
 
         if (event.type == Type.PROCESSING) {
-            Log.i(TAG, "onAdd");
+            Log.v(TAG, "onAdd");
             repository.insert(event.video);
         }
     }
@@ -36,7 +36,7 @@ public class ProcessingVideosEventHandler implements VideoEventHandler {
     @Override
     public void onRemove(RemoveEvent event) {
         if (event.type == Type.PROCESSING) {
-            Log.i(TAG, "onRemove");
+            Log.v(TAG, "onRemove");
             repository.delete(event.video.getData());
         }
     }
@@ -44,7 +44,7 @@ public class ProcessingVideosEventHandler implements VideoEventHandler {
     @Subscribe
     public void removeFirst(RemoveFirstEvent event) {
         if (event.type == Type.PROCESSING) {
-            Log.i(TAG, "removeFirst");
+            Log.v(TAG, "removeFirst");
             repository.delete(0);
         }
     }
@@ -52,7 +52,7 @@ public class ProcessingVideosEventHandler implements VideoEventHandler {
     @Subscribe
     public void removeByName(RemoveByNameEvent event) {
         if (event.type == Type.PROCESSING) {
-            Log.i(TAG, "removeByName");
+            Log.v(TAG, "removeByName");
             String path = String.format("%s/%s", FileManager.rawFootageFolderPath(), event.name);
             repository.delete(path);
         }
