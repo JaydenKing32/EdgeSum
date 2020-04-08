@@ -3,16 +3,13 @@ package com.example.edgesum.util.video.summariser;
 import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.preference.PreferenceManager;
 
-import com.example.edgesum.R;
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
@@ -47,22 +44,32 @@ public class SummariserIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.v(TAG, "onHandleIntent");
-        final Video video = intent.getParcelableExtra(VIDEO_KEY);
-        final String output = intent.getStringExtra(OUTPUT_KEY);
-        final String type = intent.getStringExtra(TYPE_KEY);
 
+        if (intent == null) {
+            Log.e(TAG, "Null intent");
+            return;
+        }
+        Video video = intent.getParcelableExtra(VIDEO_KEY);
+        String output = intent.getStringExtra(OUTPUT_KEY);
+        String type = intent.getStringExtra(TYPE_KEY);
+
+        if (video == null) {
+            Log.e(TAG, "Video not specified");
+            return;
+        }
+        if (output == null) {
+            Log.e(TAG, "Output not specified");
+            return;
+        }
+        if (type == null) {
+            type = LOCAL_TYPE;
+        }
         Log.d(TAG, video.toString());
         Log.d(TAG, output);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        double noise = pref.getInt(getString(R.string.noise_key), (int) Summariser.DEFAULT_NOISE);
-        double duration = pref.getInt(getString(R.string.duration_key),
-                (int) Summariser.DEFAULT_DURATION * 10) / 10.0;
-        int quality = pref.getInt(getString(R.string.quality_key), Summariser.DEFAULT_QUALITY);
-        Speed speed = Speed.valueOf(pref.getString(getString(R.string.encoding_speed_key),
-                Summariser.DEFAULT_SPEED.name()));
-
-        Summariser summariser = Summariser.createSummariser(video.getData(), noise, duration, quality, speed, output);
+        SummariserPrefs prefs = SummariserPrefs.extractExtras(this, intent);
+        Summariser summariser = Summariser.createSummariser(video.getData(),
+                prefs.noise, prefs.duration, prefs.quality, prefs.speed, output);
         boolean isVideo = summariser.summarise();
 
         if (isVideo) {
@@ -91,19 +98,11 @@ public class SummariserIntentService extends IntentService {
         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
 
         MediaScannerConnection.scanFile(getApplicationContext(),
-                new String[]{FileManager.summarisedVideosFolderPath()}, null,
-                (path, uri) -> {
+                new String[]{FileManager.summarisedVideosFolderPath()}, null, (path, uri) -> {
                     Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
-                    File rawFootageVideoPath = new File(video.getData());
-//                rawFootageVideoPath.delete();
-//                MediaScannerConnection.scanFile(getApplicationContext(), new String[]{rawFootageVideoPath
-//                .getAbsolutePath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
-//                    public void onScanCompleted(String path, Uri uri) {
-//                        Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
-//                    }
-//                });
+                    // Delete raw video
+//                    File rawFootageVideoPath = new File(video.getData());
+//                    rawFootageVideoPath.delete();
                 });
-
-
     }
 }

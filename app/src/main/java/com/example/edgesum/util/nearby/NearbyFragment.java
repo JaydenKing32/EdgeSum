@@ -27,6 +27,7 @@ import com.example.edgesum.util.dashcam.DownloadTestVideosTask;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.video.VideoManager;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
+import com.example.edgesum.util.video.summariser.SummariserPrefs;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
@@ -386,8 +387,18 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
         Log.w(TAG, String.format("Sending %s to %s", message.video.getName(), toEndpoint.name));
 
-        // Construct a simple message mapping the ID of the file payload to the desired filename.
-        String bytesMessage = String.format("%s:%s:%s", message.command, filePayload.getId(), uri.getLastPathSegment());
+        // Construct a message mapping the ID of the file payload to the desired filename and command.
+        // Also include summarisation preferences for summarisation commands
+        String bytesMessage;
+        if (message.command.equals(Command.SUMMARISE)) {
+            SummariserPrefs prefs = SummariserPrefs.extractPreferences(getContext());
+            bytesMessage = String.format("%s:%s:%s:%s_%s_%s_%s",
+                    message.command, filePayload.getId(), uri.getLastPathSegment(),
+                    prefs.noise, prefs.duration, prefs.quality, prefs.speed
+            );
+        } else {
+            bytesMessage = String.format("%s:%s:%s", message.command, filePayload.getId(), uri.getLastPathSegment());
+        }
 
         // Send the filename message as a bytes payload.
         // Master will send to all workers, workers will just send to master
@@ -486,6 +497,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         private final SimpleArrayMap<Long, Payload> completedFilePayloads = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, String> filePayloadFilenames = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, Command> filePayloadCommands = new SimpleArrayMap<>();
+        private final SimpleArrayMap<Long, SummariserPrefs> filePayloadPrefs = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, Instant> startTimes = new SimpleArrayMap<>();
 
         @Override
@@ -507,7 +519,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         break;
                     case SUMMARISE:
                         Log.v(TAG, String.format("Started downloading %s", message));
-                        payloadId = addPayloadFilename(message);
+                        payloadId = addPayloadFilename(parts);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             startTimes.put(payloadId, Instant.now());
@@ -518,7 +530,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     case RETURN:
                         videoName = parts[2];
                         Log.v(TAG, String.format("Started downloading %s", videoName));
-                        payloadId = addPayloadFilename(message);
+                        payloadId = addPayloadFilename(parts);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             startTimes.put(payloadId, Instant.now());
@@ -562,15 +574,19 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         /**
          * Extracts the payloadId and filename from the message and stores it in the
-         * filePayloadFilenames map. The format is command:payloadId:filename.
+         * filePayloadFilenames map. The format is command:payloadId:filename:preferences.
          */
-        private long addPayloadFilename(String payloadFilenameMessage) {
-            String[] parts = payloadFilenameMessage.split(":");
-            Command command = Command.valueOf(parts[0]);
-            long payloadId = Long.parseLong(parts[1]);
-            String filename = parts[2];
+        private long addPayloadFilename(String[] message) {
+            Command command = Command.valueOf(message[0]);
+            long payloadId = Long.parseLong(message[1]);
+            String filename = message[2];
             filePayloadFilenames.put(payloadId, filename);
             filePayloadCommands.put(payloadId, command);
+
+            if (command.equals(Command.SUMMARISE)) {
+                filePayloadPrefs.put(payloadId, new SummariserPrefs(message[3]));
+            }
+
             return payloadId;
         }
 
@@ -608,7 +624,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     } else {
                         if (command.equals(Command.SUMMARISE)) {
                             Log.d(TAG, String.format("Summarising %s", filename));
-                            summarise(getContext(), videoFile);
+                            SummariserPrefs prefs = filePayloadPrefs.remove(payloadId);
+                            summarise(getContext(), videoFile, prefs);
                         } else if (command.equals(Command.RETURN)) {
                             File videoDest = new File(String.format("%s/%s",
                                     FileManager.summarisedVideosFolderPath(), filename));
@@ -643,12 +660,32 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
                         final String output = String.format("%s/%s",
                                 FileManager.summarisedVideosFolderPath(), videoFile.getName());
-                        Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                        summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                        summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
-                        summariseIntent.putExtra(SummariserIntentService.TYPE_KEY,
-                                SummariserIntentService.NETWORK_TYPE);
-                        context.startService(summariseIntent);
+                        Intent intent = new Intent(context, SummariserIntentService.class);
+                        intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                        intent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                        intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
+                        context.startService(intent);
+                    });
+        }
+
+        private void summarise(Context context, File videoFile, SummariserPrefs prefs) {
+            MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()}, null,
+                    (path, uri) -> {
+                        Video video = VideoManager.getVideoFromFile(context, videoFile);
+                        EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+                        EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+
+                        final String output = String.format("%s/%s",
+                                FileManager.summarisedVideosFolderPath(), videoFile.getName());
+                        Intent intent = new Intent(context, SummariserIntentService.class);
+                        intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                        intent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                        intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
+                        intent.putExtra(SummariserPrefs.NOISE_KEY, prefs.noise);
+                        intent.putExtra(SummariserPrefs.DURATION_KEY, prefs.duration);
+                        intent.putExtra(SummariserPrefs.QUALITY_KEY, prefs.quality);
+                        intent.putExtra(SummariserPrefs.ENCODING_SPEED_KEY, prefs.speed.name());
+                        context.startService(intent);
                     });
         }
 
