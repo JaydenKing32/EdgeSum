@@ -48,10 +48,10 @@ while :; do
     esac
 done
 
-out_dir="./out"
+out_dir="./out/$(date +%Y%m%d_%H%M%S)"
 
 if [[ ! -d "${out_dir}" ]]; then
-    mkdir "${out_dir}"
+    mkdir -p "${out_dir}"
 fi
 if [[ -z ${serials} ]]; then
     # Get `adb.exe devices` output, remove \r and "device", skip first line
