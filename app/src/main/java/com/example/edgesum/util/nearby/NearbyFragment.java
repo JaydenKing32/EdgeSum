@@ -360,52 +360,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
     }
 
-    @Override
-    public void sendFileToAll(String videoPath, Command command) {
-        if (videoPath == null) {
-            Log.e(TAG, "No video file selected");
-            return;
-        }
-        List<String> toEndpointIds = discoveredEndpoints.values().stream()
-                .filter(e -> e.connected).map(e -> e.id).collect(Collectors.toList());
-
-        if (toEndpointIds.size() <= 0) {
-            Log.e(TAG, "No connected endpoints");
-            return;
-        }
-        File fileToSend = new File(videoPath);
-        Uri uri = Uri.fromFile(fileToSend);
-        Payload filePayload = null;
-
-        try {
-            ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(uri, "r");
-            if (pfd != null) {
-                filePayload = Payload.fromFile(pfd);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (filePayload == null) {
-            Log.e(TAG, String.format("Could not create file payload for %s", videoPath));
-            return;
-        }
-        // Construct a simple message mapping the ID of the file payload to the desired filename.
-        String filenameMessage = String.format("%s:%s:%s", command, filePayload.getId(), uri.getLastPathSegment());
-
-        // Send the filename message as a bytes payload.
-        // Master will send to all workers, workers will just send to master
-        Payload filenameBytesPayload = Payload.fromBytes(filenameMessage.getBytes(UTF_8));
-        connectionsClient.sendPayload(toEndpointIds, filenameBytesPayload);
-
-        // Finally, send the file payload.
-        connectionsClient.sendPayload(toEndpointIds, filePayload);
-
-        for (Endpoint endpoint : getConnectedEndpoints()) {
-            endpoint.activeTransfers.add(uri.getLastPathSegment());
-        }
-    }
-
     private void sendFile(Message message, Endpoint toEndpoint) {
         if (message == null || toEndpoint == null) {
             Log.e(TAG, "No message or endpoint selected");

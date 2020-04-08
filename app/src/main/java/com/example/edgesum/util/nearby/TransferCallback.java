@@ -9,8 +9,6 @@ public interface TransferCallback {
 
     void nextTransfer();
 
-    void sendFileToAll(String videoPath, Command command);
-
     void sendCommandMessageToAll(Command command, String filename);
 
     void sendCommandMessage(Command command, String filename, String toEndpoint);
