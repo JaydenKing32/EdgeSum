@@ -106,9 +106,8 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     }
 
     private void scanVideoDirectories() {
-        MediaScannerConnection.OnScanCompletedListener scanCompletedListener = (path, uri) -> {
-            Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
-        };
+        MediaScannerConnection.OnScanCompletedListener scanCompletedListener = (path, uri) ->
+                Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
 
         MediaScannerConnection.scanFile(this,
                 new String[]{Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath()},
@@ -172,17 +171,11 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     }
 
     private void cleanVideoDirectories() {
+        rawFootageFragment.cleanRepository();
+        processingFragment.cleanRepository();
+        summarisedVideoFragment.cleanRepository();
         FileManager.cleanVideoDirectories();
-
-        // Will probably cause errors, need to find out how to refresh a repository
-        VideosRepository rawFootageRepository = Injection.getExternalVideoRepository(this, "",
-                FileManager.RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath());
-        rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(connectionFragment),
-                ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository), connectionFragment);
-        VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "",
-                FileManager.SUMMARISED_VIDEOS_PATH.getAbsolutePath());
-        summarisedVideoFragment = VideoFragment.newInstance(1, new SummarisedVideosViewHolderProcessor(),
-                ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository), connectionFragment);
+        scanVideoDirectories();
     }
 
     @Override

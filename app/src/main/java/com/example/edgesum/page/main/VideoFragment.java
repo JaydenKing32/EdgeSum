@@ -33,6 +33,9 @@ import com.example.edgesum.util.video.viewholderprocessor.VideoViewHolderProcess
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -118,7 +121,6 @@ public class VideoFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,7 +139,6 @@ public class VideoFragment extends Fragment {
         );
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -209,15 +210,12 @@ public class VideoFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
-
-
     }
 
     @Override
@@ -236,9 +234,21 @@ public class VideoFragment extends Fragment {
 
     }
 
-
     public void setVideoEventHandler(VideoEventHandler handler) {
         this.videoEventHandler = handler;
+    }
+
+    void cleanRepository() {
+        List<Video> videos = repository.getVideos().getValue();
+
+        if (videos != null) {
+            int videoCount = videos.size();
+
+            for (int i = 0; i < videoCount; i++) {
+                repository.delete(0);
+            }
+        }
+        adapter.setVideos(new ArrayList<>());
     }
 
     /**
