@@ -45,4 +45,9 @@
     <string name="remove_device_button_content_description">remove device button</string>
     <string name="local_name_label">Local Name:</string>
     <string name="auto_send_videos">Auto-send videos</string>
+    <string name="connect">Connect</string>
+    <string name="download">Download</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="clean_directories">Clean Directories</string>
 </resources>

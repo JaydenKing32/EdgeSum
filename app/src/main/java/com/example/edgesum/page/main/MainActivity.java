@@ -171,6 +171,20 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
         bottomNavigation.setOnNavigationItemSelectedListener(bottomNavigationOnNavigationItemSelectedListener);
     }
 
+    private void cleanVideoDirectories() {
+        FileManager.cleanVideoDirectories();
+
+        // Will probably cause errors, need to find out how to refresh a repository
+        VideosRepository rawFootageRepository = Injection.getExternalVideoRepository(this, "",
+                FileManager.RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath());
+        rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(connectionFragment),
+                ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository), connectionFragment);
+        VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "",
+                FileManager.SUMMARISED_VIDEOS_PATH.getAbsolutePath());
+        summarisedVideoFragment = VideoFragment.newInstance(1, new SummarisedVideosViewHolderProcessor(),
+                ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository), connectionFragment);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // This method gets called when a option in the App bar gets selected.
@@ -186,6 +200,11 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
                 Toast.makeText(this, "Starting download", Toast.LENGTH_SHORT).show();
                 DownloadAllTask downloadAllTask = new DownloadAllTask(this);
                 downloadAllTask.execute(DashName.BLACKVUE);
+                return true;
+            case R.id.action_clean:
+                Log.v(TAG, "Clean button clicked");
+                Toast.makeText(this, "Cleaning video directories", Toast.LENGTH_SHORT).show();
+                cleanVideoDirectories();
                 return true;
             case R.id.action_settings:
                 Log.v(TAG, "Setting button clicked");
