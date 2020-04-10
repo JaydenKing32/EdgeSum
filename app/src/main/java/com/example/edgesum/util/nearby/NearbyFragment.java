@@ -614,7 +614,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     sendCommandMessage(Command.COMPLETE, filename, fromEndpointId);
                 }
                 // Get the received file (which will be in the Downloads folder)
-                File payloadFile = Objects.requireNonNull(filePayload.asFile()).asJavaFile();
+                Payload.File payload = filePayload.asFile();
+                File payloadFile = payload != null ? payload.asJavaFile() : null;
 
                 if (payloadFile != null) {
                     // Rename the file.

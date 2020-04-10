@@ -38,26 +38,53 @@ class DashDownloadManager {
     private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            context.unregisterReceiver(onDownloadComplete);
             DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
             if (downloadManager != null) {
-                // https://stackoverflow.com/a/46328681/8031185
-                Cursor cursor = downloadManager.query(new DownloadManager.Query().setFilterById(downloadId));
+                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
 
-                if (cursor != null) {
-                    try {
-                        cursor.moveToFirst();
-                        String fileUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                        File videoFile = new File(Uri.parse(fileUri).getPath());
+                if (id == downloadId) {
+                    context.unregisterReceiver(onDownloadComplete);
+                    // https://stackoverflow.com/a/46328681/8031185
+                    // https://stackoverflow.com/q/21477493/8031185
+                    // https://stackoverflow.com/a/33192273/8031185
+                    // https://stackoverflow.com/q/8937817/8031185
+                    Cursor cursor = downloadManager.query(new DownloadManager.Query().setFilterById(downloadId));
 
-                        MediaScannerConnection.scanFile(context,
-                                new String[]{videoFile.getAbsolutePath()}, null, downloadCallback);
-                    } catch (Exception e) {
-                        Log.e(TAG, String.format("Download error: \n%s", e.getMessage()));
+                    if (cursor.moveToFirst()) {
+                        try {
+                            int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+
+                            if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                                String uri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                                String path = Uri.parse(uri).getPath();
+
+                                if (path != null) {
+                                    File videoFile = new File(path);
+
+                                    MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()},
+                                            null, downloadCallback);
+                                    Log.v(TAG, String.format("Successfully downloaded: %s", path));
+                                    return;
+                                } else {
+                                    Log.e(TAG, "Path is null");
+                                }
+                            } else {
+                                Log.e(TAG, "Download was not successful");
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, String.format("Download error: \n%s", e.getMessage()));
+                        }
+                    } else {
+                        Log.e(TAG, "Cursor failed to move");
                     }
+                } else {
+                    Log.e(TAG, "Not expected download ID");
                 }
+            } else {
+                Log.e(TAG, "Download manager is null");
             }
+            Log.e(TAG, "Download error");
         }
     };
 
