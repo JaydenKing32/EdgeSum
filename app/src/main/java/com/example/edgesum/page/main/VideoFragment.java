@@ -2,6 +2,7 @@ package com.example.edgesum.page.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -238,13 +239,16 @@ public class VideoFragment extends Fragment {
         this.videoEventHandler = handler;
     }
 
-    void cleanRepository() {
+    void cleanRepository(Context context) {
         List<Video> videos = repository.getVideos().getValue();
 
         if (videos != null) {
             int videoCount = videos.size();
 
             for (int i = 0; i < videoCount; i++) {
+                Video video = videos.get(0);
+                context.getContentResolver().delete(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                        MediaStore.MediaColumns.DATA + "=?", new String[]{video.getData()});
                 repository.delete(0);
             }
         }
