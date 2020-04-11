@@ -41,7 +41,7 @@ class DashModel {
         List<String> lastFiles = allFiles.subList(Math.max(allFiles.size(), 0) - last_n, allFiles.size());
 
         for (String filename : lastFiles) {
-            downloadVideo(filename, new DashDownloadManager(downloadCallback), context);
+            downloadVideo(filename, DashDownloadManager.getInstance(context, downloadCallback), context);
         }
         return lastFiles;
     }

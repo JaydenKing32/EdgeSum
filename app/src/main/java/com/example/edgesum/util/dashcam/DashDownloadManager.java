@@ -14,6 +14,8 @@ import android.util.Log;
 import com.example.edgesum.util.file.FileManager;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Might not work with stock android OS
@@ -29,13 +31,14 @@ import java.io.File;
  * https://stackoverflow.com/questions/42492136/force-android-to-use-wifi-network-with-no-internet
  * https://stackoverflow.com/questions/37218510/android-6-0-1-force-wifi-connection-with-no-internet-access
  */
-class DashDownloadManager {
+public class DashDownloadManager {
     private static final String TAG = DashDownloadManager.class.getSimpleName();
-    private final MediaScannerConnection.OnScanCompletedListener downloadCallback;
-    private long downloadId;
+    private static DashDownloadManager downloadManager = null;
+    private static MediaScannerConnection.OnScanCompletedListener downloadCallback;
+    private static Set<Long> downloadIds = new HashSet<>();
 
     // https://stackoverflow.com/a/46328681/8031185
-    private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+    private static BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -43,13 +46,13 @@ class DashDownloadManager {
             if (downloadManager != null) {
                 long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
 
-                if (id == downloadId) {
-                    context.unregisterReceiver(onDownloadComplete);
+                if (downloadIds.contains(id)) {
+                    downloadIds.remove(id);
                     // https://stackoverflow.com/a/46328681/8031185
                     // https://stackoverflow.com/q/21477493/8031185
                     // https://stackoverflow.com/a/33192273/8031185
                     // https://stackoverflow.com/q/8937817/8031185
-                    Cursor cursor = downloadManager.query(new DownloadManager.Query().setFilterById(downloadId));
+                    Cursor cursor = downloadManager.query(new DownloadManager.Query().setFilterById(id));
 
                     if (cursor.moveToFirst()) {
                         try {
@@ -88,8 +91,16 @@ class DashDownloadManager {
         }
     };
 
-    DashDownloadManager(MediaScannerConnection.OnScanCompletedListener downloadCallback) {
-        this.downloadCallback = downloadCallback;
+    private DashDownloadManager(Context context, MediaScannerConnection.OnScanCompletedListener callback) {
+        downloadCallback = callback;
+        context.registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    static DashDownloadManager getInstance(Context context, MediaScannerConnection.OnScanCompletedListener callback) {
+        if (downloadManager != null) {
+            return downloadManager;
+        }
+        return new DashDownloadManager(context, callback);
     }
 
     void startDownload(String url, Context context) {
@@ -104,8 +115,11 @@ class DashDownloadManager {
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
         if (downloadManager != null) {
-            context.registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-            downloadId = downloadManager.enqueue(request);
+            downloadIds.add(downloadManager.enqueue(request));
         }
+    }
+
+    public static void unregisterReceiver(Context context) {
+        context.unregisterReceiver(onDownloadComplete);
     }
 }

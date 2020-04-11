@@ -80,13 +80,14 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Void> {
             // Get oldest new video
             String toDownload = newVideos.get(0);
             downloadedVideos.add(toDownload);
-            DashDownloadManager downloadManager = new DashDownloadManager(downloadCallback);
+            Context context = weakReference.get();
+            DashDownloadManager downloadManager = DashDownloadManager.getInstance(context, downloadCallback);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 start = Instant.now();
             }
 
-            dash.downloadVideo(toDownload, downloadManager, weakReference.get());
+            dash.downloadVideo(toDownload, downloadManager, context);
         } else {
             Log.d(TAG, "No new videos");
         }
