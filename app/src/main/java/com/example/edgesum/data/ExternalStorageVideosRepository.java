@@ -49,9 +49,7 @@ public class ExternalStorageVideosRepository implements VideosRepository {
 
     @Override
     public void insert(Video video) {
-//        videos.add(video);
-
-        videos = VideoManager.getAllVideoFromExternalStorageFolder(context.getApplicationContext(), videoDirectory);
+        videos.add(video);
         result.postValue(videos);
     }
 
