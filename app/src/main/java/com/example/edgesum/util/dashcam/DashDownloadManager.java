@@ -13,6 +13,8 @@ import android.util.Log;
 
 import com.example.edgesum.util.file.FileManager;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
@@ -77,6 +79,8 @@ public class DashDownloadManager {
                                 if (reason == DownloadManager.ERROR_CANNOT_RESUME) {
                                     // Dashcam appears to be unable to resume downloads, trying downloading again
                                     String url = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_URI));
+                                    Log.w(TAG, String.format("Failed to download %s, retrying download",
+                                            FilenameUtils.getBaseName(url)));
                                     manager.startDownload(url, context);
 
                                 } else {
