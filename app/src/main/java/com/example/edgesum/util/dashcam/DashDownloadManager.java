@@ -120,6 +120,10 @@ public class DashDownloadManager {
     }
 
     public static void unregisterReceiver(Context context) {
-        context.unregisterReceiver(onDownloadComplete);
+        try {
+            context.unregisterReceiver(onDownloadComplete);
+        } catch (IllegalArgumentException e) {
+            Log.d(TAG, "Receiver is already unregistered");
+        }
     }
 }

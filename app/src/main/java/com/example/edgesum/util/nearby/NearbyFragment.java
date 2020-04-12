@@ -244,8 +244,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     // https://stackoverflow.com/a/8232889/8031185
     protected void startDashDownload() {
         Log.w(TAG, "Started downloading from dashcam");
+        int delay = 20;
+        Log.w(TAG, String.format("Download delay: %ds", delay));
         downloadTaskExecutor.scheduleAtFixedRate(() -> new DownloadTestVideosTask(
-                this, getContext()).execute(), 0, 40, TimeUnit.SECONDS);
+                this, getContext()).execute(), 0, delay, TimeUnit.SECONDS);
     }
 
     public void stopDashDownload() {
@@ -329,7 +331,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     Endpoint toEndpoint = endpointQueue.remove();
                     sendFile(message, toEndpoint);
                 } else {
-                    Log.e(TAG, "Endpoint Queue is empty");
+                    Log.i(TAG, "Endpoint Queue is empty");
                     sendFile(message, getFastestEndpoint());
                 }
             } else {
