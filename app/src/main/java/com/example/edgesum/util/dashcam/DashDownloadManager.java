@@ -33,7 +33,7 @@ import java.util.Set;
  */
 public class DashDownloadManager {
     private static final String TAG = DashDownloadManager.class.getSimpleName();
-    private static DashDownloadManager downloadManager = null;
+    private static DashDownloadManager manager = null;
     private static MediaScannerConnection.OnScanCompletedListener downloadCallback;
     private static Set<Long> downloadIds = new HashSet<>();
 
@@ -68,12 +68,20 @@ public class DashDownloadManager {
                                     MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()},
                                             null, downloadCallback);
                                     Log.v(TAG, String.format("Successfully downloaded: %s", path));
-                                    return;
                                 } else {
                                     Log.e(TAG, "Path is null");
                                 }
                             } else {
-                                Log.e(TAG, "Download was not successful");
+                                int reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
+
+                                if (reason == DownloadManager.ERROR_CANNOT_RESUME) {
+                                    // Dashcam appears to be unable to resume downloads, trying downloading again
+                                    String url = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_URI));
+                                    manager.startDownload(url, context);
+
+                                } else {
+                                    Log.e(TAG, String.format("Download failed, reason: %d", reason));
+                                }
                             }
                         } catch (Exception e) {
                             Log.e(TAG, String.format("Download error: \n%s", e.getMessage()));
@@ -87,7 +95,6 @@ public class DashDownloadManager {
             } else {
                 Log.e(TAG, "Download manager is null");
             }
-            Log.e(TAG, "Download error");
         }
     };
 
@@ -97,8 +104,8 @@ public class DashDownloadManager {
     }
 
     static DashDownloadManager getInstance(Context context, MediaScannerConnection.OnScanCompletedListener callback) {
-        if (downloadManager != null) {
-            return downloadManager;
+        if (manager != null) {
+            return manager;
         }
         return new DashDownloadManager(context, callback);
     }
