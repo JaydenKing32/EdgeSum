@@ -49,9 +49,10 @@ while :; do
 done
 
 out_dir="./out/$(date +%Y%m%d_%H%M%S)"
+verbose_dir="${out_dir}/verbose/"
 
-if [[ ! -d "${out_dir}" ]]; then
-    mkdir -p "${out_dir}"
+if [[ ! -d "${verbose_dir}" ]]; then
+    mkdir -p "${verbose_dir}"
 fi
 if [[ -z ${serials} ]]; then
     # Get `adb.exe devices` output, remove \r and "device", skip first line
@@ -64,6 +65,7 @@ fi
 for serial in ${serials}; do
     pid="$(adb.exe -s "${serial}" shell ps | awk '/com\.example\.edgesum/ {print $2}')"
     adb.exe -s "${serial}" logcat --pid "${pid}" "*:${verbosity}" >"${out_dir}/${serial}.log" &
+    adb.exe -s "${serial}" logcat --pid "${pid}" >"${verbose_dir}/${serial}.log" &
 done
 
 wait
