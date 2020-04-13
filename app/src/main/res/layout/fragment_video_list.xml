@@ -11,6 +11,6 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".page.main.VideoFragment"
-    tools:listitem="@layout/fragment_videos"
+    tools:listitem="@layout/video_list_item"
 
     />
