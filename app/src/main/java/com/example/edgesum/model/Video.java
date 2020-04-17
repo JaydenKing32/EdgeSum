@@ -1,10 +1,13 @@
 package com.example.edgesum.model;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 
 import java.math.BigInteger;
-import java.util.List;
 
 public class Video implements Parcelable {
     private final String id;
@@ -26,7 +29,6 @@ public class Video implements Parcelable {
         }
 
     };
-
 
     public Video(String id, String name, String data, String mimeType, BigInteger size) {
         this.id = id;
@@ -124,5 +126,18 @@ public class Video implements Parcelable {
         parcel.writeByte((visible == true) ? (byte) 1 : 0);
     }
 
-
+    // Insert a new video's values into the MediaStore using an existing video as a basis
+    public void insertMediaValues(Context context, String path) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Video.Media.TITLE, name);
+        values.put(MediaStore.Video.Media.MIME_TYPE, mimeType);
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "");
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        }
+        values.put(MediaStore.Video.Media.DATA, path);
+        context.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+    }
 }

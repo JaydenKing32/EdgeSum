@@ -93,7 +93,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
                 EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                 EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 
-                final String output = String.format("%s/%s", FileManager.summarisedVideosFolderPath(), video.getName());
+                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
                 Intent summariseIntent = new Intent(context, SummariserIntentService.class);
                 summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
                 summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);

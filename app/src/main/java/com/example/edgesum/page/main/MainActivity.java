@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,11 +37,9 @@ import com.example.edgesum.util.video.viewholderprocessor.RawFootageViewHolderPr
 import com.example.edgesum.util.video.viewholderprocessor.SummarisedVideosViewHolderProcessor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.File;
-
 public class MainActivity extends AppCompatActivity implements VideoFragment.OnListFragmentInteractionListener,
         NearbyFragment.OnFragmentInteractionListener {
-    private final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     VideoFragment rawFootageFragment;
     VideoFragment processingFragment;
@@ -98,38 +95,22 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
         setToolBarAsTheAppBar();
         setUpBottomNavigation();
         setUpFragments();
-
-        File externalStoragePublicMovieDirectory =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        makeRawFootageDirectory(externalStoragePublicMovieDirectory);
-        makeSummarisedVideosDirectory(externalStoragePublicMovieDirectory);
+        FileManager.initialiseDirectories();
     }
 
     private void scanVideoDirectories() {
         MediaScannerConnection.OnScanCompletedListener scanCompletedListener = (path, uri) ->
                 Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
 
-        MediaScannerConnection.scanFile(this,
-                new String[]{Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath()},
+        MediaScannerConnection.scanFile(this, new String[]{FileManager.getRawFootageDirPath()},
                 null, scanCompletedListener);
-        MediaScannerConnection.scanFile(this, new String[]{FileManager.summarisedVideosFolderPath()},
+        MediaScannerConnection.scanFile(this, new String[]{FileManager.getSummarisedDirPath()},
                 null, scanCompletedListener);
     }
 
     private void startAwsS3TransferService() {
         getApplicationContext().startService(new Intent(getApplicationContext(), TransferService.class));
     }
-
-    private void makeRawFootageDirectory(File path) {
-        final String rawFootageDirectoryName = "rawFootage/";
-        FileManager.makeDirectory(this.getApplicationContext(), path, rawFootageDirectoryName);
-    }
-
-    private void makeSummarisedVideosDirectory(File path) {
-        final String rawFootageDirectoryName = "summarised/";
-        FileManager.makeDirectory(this.getApplicationContext(), path, rawFootageDirectoryName);
-    }
-
 
     private void setToolBarAsTheAppBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -139,10 +120,10 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
 
     private void setUpFragments() {
         VideosRepository rawFootageRepository = Injection.getExternalVideoRepository(this, "",
-                FileManager.RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath());
+                FileManager.getRawFootageDirPath());
         VideosRepository processingVideosRepository = Injection.getProcessingVideosRespository(this);
         VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "",
-                FileManager.SUMMARISED_VIDEOS_PATH.getAbsolutePath());
+                FileManager.getSummarisedDirPath());
 
         connectionFragment = ConnectionFragment.newInstance();
         SummariserIntentService.transferCallback = connectionFragment;

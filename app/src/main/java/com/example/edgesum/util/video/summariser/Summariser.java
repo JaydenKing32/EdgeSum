@@ -1,12 +1,11 @@
 package com.example.edgesum.util.video.summariser;
 
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
-import com.arthenica.mobileffmpeg.MediaInformation;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.video.FfmpegTools;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -18,16 +17,16 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 class Summariser {
-    private final String TAG = Summariser.class.getSimpleName();
+    private static final String TAG = Summariser.class.getSimpleName();
     static final float DEFAULT_NOISE = 60;
     static final float DEFAULT_DURATION = 2;
     static final int DEFAULT_QUALITY = 23;
     static final Speed DEFAULT_SPEED = Speed.medium;
-    private final String freezeFilePath = String.format("%s/freeze.txt", FileManager.rawFootageFolderPath());
 
     private final String filename;
     private final double noise;
@@ -35,6 +34,7 @@ class Summariser {
     private final int quality;
     private final Speed speed;
     private final String outFile;
+    private final String freezeFilePath;
 
     static Summariser createSummariser(String filename, double noise, double duration, int quality,
                                        Speed speed, String outFile) {
@@ -48,6 +48,8 @@ class Summariser {
         this.speed = speed;
         this.duration = duration;
         this.outFile = outFile;
+        this.freezeFilePath = String.format("%s/%s.txt",
+                FileManager.getRawFootageDirPath(), FilenameUtils.getBaseName(filename));
     }
 
     /**
@@ -63,7 +65,7 @@ class Summariser {
         // Config.setLogLevel(Level.AV_LOG_WARNING);
 
         ArrayList<Double[]> activeTimes = getActiveTimes();
-        ArrayList<String> ffmpegArgs = new ArrayList<>();
+        ArrayList<String> ffmpegArgs;
 
         if (activeTimes == null) {
             // Testing purposes: Video file is completely active, so just copy it
@@ -77,20 +79,10 @@ class Summariser {
             return true;
         }
 
-        ActivitySections activitySections;
-
         switch (activeTimes.size()) {
             case 0:
                 // Video file is completely inactive, so ignore it, don't copy it
                 Log.w(TAG, "No activity detected");
-//                System.exit(0);
-//                try {
-//                    Files.copy(new File(filename).toPath(), new File(sumFilename()).toPath(),
-//                            StandardCopyOption.REPLACE_EXISTING);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-                activitySections = ActivitySections.NONE;
                 printResult(start);
                 return false;
             case 1:
@@ -98,18 +90,14 @@ class Summariser {
                 Double[] times = activeTimes.get(0);
                 ffmpegArgs = getArgumentsOneScene(times[0], times[1]);
                 Log.w(TAG, "One active section found");
-                activitySections = ActivitySections.ONE;
                 break;
             default:
                 // Multiple active scenes found, extract them and combine them into a summarised video
                 ffmpegArgs = getArgumentsMultipleScenes(activeTimes);
                 Log.w(TAG, String.format("%d active sections found", activeTimes.size()));
-                activitySections = ActivitySections.MANY;
-        }
-        if (activitySections != ActivitySections.NONE) {
-            executeFfmpeg(ffmpegArgs);
         }
 
+        FfmpegTools.executeFfmpeg(ffmpegArgs);
         printResult(start);
         return true;
     }
@@ -144,11 +132,6 @@ class Summariser {
         }
     }
 
-    private void executeFfmpeg(ArrayList<String> ffmpegArgs) {
-        Log.i(TAG, String.format("Running ffmpeg with:\n  %s", TextUtils.join(" ", ffmpegArgs)));
-        FFmpeg.execute(ffmpegArgs.stream().toArray(String[]::new));
-    }
-
     private ArrayList<String> getArgumentsOneScene(Double start, Double end) {
         return new ArrayList<>(Arrays.asList(
                 "-y", // Skip prompts
@@ -170,15 +153,15 @@ class Summariser {
         StringBuilder filter = new StringBuilder();
 
         for (int i = 0; i < activeTimes.size(); i++) {
-            filter.append(String.format(
+            filter.append(String.format(Locale.ENGLISH,
                     "[0:v]trim=%1$f:%2$f,setpts=PTS-STARTPTS[v%3$d];" +
                             "[0:a]atrim=%1$f:%2$f,asetpts=PTS-STARTPTS[a%3$d];",
                     activeTimes.get(i)[0], activeTimes.get(i)[1], i));
         }
         for (int i = 0; i < activeTimes.size(); i++) {
-            filter.append(String.format("[v%1$d][a%1$d]", i));
+            filter.append(String.format(Locale.ENGLISH, "[v%1$d][a%1$d]", i));
         }
-        filter.append(String.format("concat=n=%d:v=1:a=1[outv][outa]", activeTimes.size()));
+        filter.append(String.format(Locale.ENGLISH, "concat=n=%d:v=1:a=1[outv][outa]", activeTimes.size()));
 
         ffmpegArgs.addAll(new ArrayList<>(Arrays.asList(
                 filter.toString(),
@@ -208,6 +191,11 @@ class Summariser {
             e.printStackTrace();
             System.exit(1);
         }
+        if (sc == null) {
+            Log.e(TAG, "Could not open freeze file");
+            return null;
+        }
+
         ArrayList<Double[]> activeTimes = new ArrayList<>();
         Pattern gotoEquals = Pattern.compile(".*=");
 
@@ -232,7 +220,7 @@ class Summariser {
                     times[1] = sc.skip(gotoEquals).nextDouble();
                     sc.nextLine();
                 } else { // Active until end
-                    times[1] = getVideoDuration();
+                    times[1] = FfmpegTools.getDuration(filename);
                 }
 
                 if (times[0] < times[1]) { // Make sure start time is before end time
@@ -247,20 +235,9 @@ class Summariser {
 
     private void detectFreeze() {
         FFmpeg.execute(String.format("-i %s -vf %s -f null -",
-                filename,
-                String.format("freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=%s", noise, duration, freezeFilePath))
+                filename, String.format(Locale.ENGLISH,
+                        "freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=%s", noise, duration, freezeFilePath))
         );
-    }
-
-    private Double getVideoDuration() {
-        MediaInformation info = FFmpeg.getMediaInformation(filename);
-
-        if (info != null && info.getDuration() != null) {
-            return info.getDuration() / 1000.0;
-        } else {
-            Log.e(TAG, String.format("ffmpeg-mobile error, could not retrieve duration of %s", filename));
-            return 0.0;
-        }
     }
 
     private String sumFilename() {
@@ -271,11 +248,5 @@ class Summariser {
         } else {
             return outFile;
         }
-    }
-
-    private enum ActivitySections {
-        NONE,
-        ONE,
-        MANY
     }
 }

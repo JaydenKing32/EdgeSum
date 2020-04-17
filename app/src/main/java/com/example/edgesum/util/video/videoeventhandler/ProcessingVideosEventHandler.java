@@ -53,7 +53,7 @@ public class ProcessingVideosEventHandler implements VideoEventHandler {
     public void removeByName(RemoveByNameEvent event) {
         if (event.type == Type.PROCESSING) {
             Log.v(TAG, "removeByName");
-            String path = String.format("%s/%s", FileManager.rawFootageFolderPath(), event.name);
+            String path = String.format("%s/%s", FileManager.getRawFootageDirPath(), event.name);
             repository.delete(path);
         }
     }

@@ -71,19 +71,21 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             }
             Video video = VideoManager.getVideoFromFile(context, new File(path));
 
-            if (nearbyFragment.isConnected()) {
-                EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                nearbyFragment.addToTransferQueue(video, Command.SUMMARISE);
-                nearbyFragment.sendToEarliestEndpoint();
-            } else {
-                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+            if (video != null) {
+                if (nearbyFragment.isConnected()) {
+                    EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                    nearbyFragment.addToTransferQueue(video, Command.SUMMARISE);
+                    nearbyFragment.sendToEarliestEndpoint();
+                } else {
+                    EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
 
-                final String output = String.format("%s/%s", FileManager.summarisedVideosFolderPath(), video.getName());
-                Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
-                summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
-                context.startService(summariseIntent);
+                    final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
+                    Intent summariseIntent = new Intent(context, SummariserIntentService.class);
+                    summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                    summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                    summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
+                    context.startService(summariseIntent);
+                }
             }
         };
     }

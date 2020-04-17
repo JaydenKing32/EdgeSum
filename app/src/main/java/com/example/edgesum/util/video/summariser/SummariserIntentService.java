@@ -1,23 +1,24 @@
 package com.example.edgesum.util.video.summariser;
 
 import android.app.IntentService;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
-import android.os.Build;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.example.edgesum.event.AddEvent;
+import com.example.edgesum.event.RemoveByNameEvent;
 import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.Command;
 import com.example.edgesum.util.nearby.TransferCallback;
+import com.example.edgesum.util.video.FfmpegTools;
+import com.example.edgesum.util.video.VideoManager;
 
+import org.apache.commons.io.FilenameUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -30,8 +31,11 @@ public class SummariserIntentService extends IntentService {
     public static final String TYPE_KEY = "type";
     public static final String LOCAL_TYPE = "local";
     public static final String NETWORK_TYPE = "network";
+    public static final String SPLIT_PARENT_KEY = "splitParent";
+    public static final String SPLIT_NUM_KEY = "splitNum";
 
     public static TransferCallback transferCallback;
+    private static int sumCount = 0;
 
     public SummariserIntentService() {
         super("SummariserIntentService");
@@ -52,6 +56,7 @@ public class SummariserIntentService extends IntentService {
         Video video = intent.getParcelableExtra(VIDEO_KEY);
         String output = intent.getStringExtra(OUTPUT_KEY);
         String type = intent.getStringExtra(TYPE_KEY);
+        String splitParent = intent.getStringExtra(SPLIT_PARENT_KEY);
 
         if (video == null) {
             Log.e(TAG, "Video not specified");
@@ -73,21 +78,11 @@ public class SummariserIntentService extends IntentService {
         boolean isVideo = summariser.summarise();
 
         if (isVideo) {
-            String sumOut = new File(output).getAbsolutePath();
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Video.Media.TITLE, video.getName());
-            values.put(MediaStore.Video.Media.MIME_TYPE, video.getMimeType());
-            values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
-            values.put(MediaStore.Images.Media.DESCRIPTION, "");
-            values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+            video.insertMediaValues(getApplicationContext(), new File(output).getAbsolutePath());
+
+            if (splitParent == null) {
+                EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
             }
-            values.put(MediaStore.Video.Media.DATA, sumOut);
-            getApplicationContext().getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
-
-            EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
-
             if (type.equals(NETWORK_TYPE)) {
                 transferCallback.addToTransferQueue(video, Command.RETURN);
                 transferCallback.nextTransfer();
@@ -95,10 +90,30 @@ public class SummariserIntentService extends IntentService {
         } else if (type.equals(NETWORK_TYPE)) {
             transferCallback.sendCommandMessageToAll(Command.NO_ACTIVITY, video.getName());
         }
-        EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
+        if (splitParent == null) {
+            EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
+        } else {
+            // TODO replace sumCount later, probably use a list in NearbyFragment
+            sumCount++;
+            int splitNum = intent.getIntExtra(SPLIT_NUM_KEY, -1);
+
+            if (splitNum == sumCount) {
+                sumCount = 0;
+                String baseName = video.getName().substring(0, video.getName().lastIndexOf('_'));
+                String parentName = String.format("%s.%s", baseName, FilenameUtils.getExtension(video.getName()));
+                String outPath = FfmpegTools.mergeVideos(parentName);
+
+                if (outPath != null) {
+                    video.insertMediaValues(getApplicationContext(), outPath);
+                    Video mergedVideo = VideoManager.getVideoFromFile(getApplicationContext(), new File(outPath));
+                    EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
+                    EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.PROCESSING));
+                }
+            }
+        }
 
         MediaScannerConnection.scanFile(getApplicationContext(),
-                new String[]{FileManager.summarisedVideosFolderPath()}, null, (path, uri) -> {
+                new String[]{FileManager.getSummarisedDirPath()}, null, (path, uri) -> {
                     Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
                     // Delete raw video
 //                    File rawFootageVideoPath = new File(video.getData());

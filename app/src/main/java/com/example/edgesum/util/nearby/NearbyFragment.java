@@ -421,7 +421,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         // Only sent from worker to master, might be better to make bidirectional
         List<String> connectedEndpointIds = discoveredEndpoints.values().stream()
-                .filter(e -> e.connected).map(e -> e.id).collect(Collectors.toList());
+                .filter(e -> e.connected)
+                .map(e -> e.id)
+                .collect(Collectors.toList());
         connectionsClient.sendPayload(connectedEndpointIds, filenameBytesPayload);
     }
 
@@ -550,7 +552,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     case COMPLETE:
                         videoName = parts[1];
                         Log.d(TAG, String.format("Endpoint %s has finished downloading %s", endpointId, videoName));
-                        videoPath = String.format("%s/%s", FileManager.rawFootageFolderPath(), videoName);
+                        videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
                         video = VideoManager.getVideoFromFile(getContext(), new File(videoPath));
                         EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                         EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
@@ -564,7 +566,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         fromEndpoint.activeTransfers.remove(videoName);
                         endpointQueue.add(fromEndpoint);
 
-                        videoPath = String.format("%s/%s", FileManager.rawFootageFolderPath(), videoName);
+                        videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
                         video = VideoManager.getVideoFromFile(getContext(), new File(videoPath));
                         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
                         nextTransfer(endpointId);
@@ -633,7 +635,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             summarise(getContext(), videoFile, prefs);
                         } else if (command.equals(Command.RETURN)) {
                             File videoDest = new File(String.format("%s/%s",
-                                    FileManager.summarisedVideosFolderPath(), filename));
+                                    FileManager.getSummarisedDirPath(), filename));
                             try {
                                 FileManager.copy(videoFile, videoDest);
                             } catch (IOException e) {
@@ -664,7 +666,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 
                         final String output = String.format("%s/%s",
-                                FileManager.summarisedVideosFolderPath(), videoFile.getName());
+                                FileManager.getSummarisedDirPath(), videoFile.getName());
                         Intent intent = new Intent(context, SummariserIntentService.class);
                         intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
                         intent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
@@ -681,7 +683,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 
                         final String output = String.format("%s/%s",
-                                FileManager.summarisedVideosFolderPath(), videoFile.getName());
+                                FileManager.getSummarisedDirPath(), videoFile.getName());
                         Intent intent = new Intent(context, SummariserIntentService.class);
                         intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
                         intent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
