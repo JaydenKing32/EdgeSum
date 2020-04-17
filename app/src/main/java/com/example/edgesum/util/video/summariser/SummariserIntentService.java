@@ -24,7 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 
 public class SummariserIntentService extends IntentService {
-    private String TAG = SummariserIntentService.class.getSimpleName();
+    private static final String TAG = SummariserIntentService.class.getSimpleName();
 
     public static final String VIDEO_KEY = "video";
     public static final String OUTPUT_KEY = "outputPath";

@@ -1,5 +1,7 @@
 package com.example.edgesum.util.video;
 
+import com.example.edgesum.util.file.FileManager;
+
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,8 +39,8 @@ public class VidDownloading {
         for (String filename : lastFiles) {
             try {
                 FileUtils.copyURLToFile(
-                        new URL(baseUrl + filename),
-                        new File("/sdcard/Movies/rawFootage/" + filename)
+                        new URL(String.format("%s%s", baseUrl, filename)),
+                        new File(String.format("%s/%s", FileManager.getRawFootageDirPath(), filename))
                 );
             } catch (IOException e) {
                 e.printStackTrace();

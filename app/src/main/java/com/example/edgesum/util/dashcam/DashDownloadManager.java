@@ -37,10 +37,10 @@ public class DashDownloadManager {
     private static final String TAG = DashDownloadManager.class.getSimpleName();
     private static DashDownloadManager manager = null;
     private static MediaScannerConnection.OnScanCompletedListener downloadCallback;
-    private static Set<Long> downloadIds = new HashSet<>();
+    private static final Set<Long> downloadIds = new HashSet<>();
 
     // https://stackoverflow.com/a/46328681/8031185
-    private static BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+    private static final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -108,10 +108,10 @@ public class DashDownloadManager {
     }
 
     static DashDownloadManager getInstance(Context context, MediaScannerConnection.OnScanCompletedListener callback) {
-        if (manager != null) {
-            return manager;
+        if (manager == null) {
+            manager = new DashDownloadManager(context, callback);
         }
-        return new DashDownloadManager(context, callback);
+        return manager;
     }
 
     void startDownload(String url, Context context) {

@@ -31,6 +31,11 @@ class DashTools {
         }
         List<String> allFiles = new ArrayList<>();
 
+        if (doc == null) {
+            Log.e(TAG, "Couldn't parse dashcam web-page");
+            return null;
+        }
+
         for (Element file : doc.select("td:eq(0) > a")) {
             if (file.text().endsWith("MP4")) {
                 allFiles.add(file.text());
@@ -52,6 +57,11 @@ class DashTools {
             e.printStackTrace();
         }
         List<String> allFiles = new ArrayList<>();
+
+        if (doc == null) {
+            Log.e(TAG, "Couldn't parse dashcam web-page");
+            return null;
+        }
 
         String raw = doc.select("body").text();
         Pattern pat = Pattern.compile(Pattern.quote("Record/") + "(.*?)" + Pattern.quote(",s:"));

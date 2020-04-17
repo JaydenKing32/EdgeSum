@@ -41,16 +41,15 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
         NearbyFragment.OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    VideoFragment rawFootageFragment;
-    VideoFragment processingFragment;
-    VideoFragment summarisedVideoFragment;
-    ConnectionFragment connectionFragment;
+    private VideoFragment rawFootageFragment;
+    private VideoFragment processingFragment;
+    private VideoFragment summarisedVideoFragment;
+    private ConnectionFragment connectionFragment;
 
-    final FragmentManager supportFragmentManager = getSupportFragmentManager();
-    Fragment activeFragment;
+    private final FragmentManager supportFragmentManager = getSupportFragmentManager();
+    private Fragment activeFragment;
 
-
-    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {

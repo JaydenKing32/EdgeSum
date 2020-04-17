@@ -18,7 +18,7 @@ public class SummariserPrefs {
     public final int quality;
     public final Speed speed;
 
-    public SummariserPrefs(double noise, double duration, int quality, Speed speed) {
+    private SummariserPrefs(double noise, double duration, int quality, Speed speed) {
         this.noise = noise;
         this.duration = duration;
         this.quality = quality;
@@ -44,7 +44,7 @@ public class SummariserPrefs {
         return new SummariserPrefs(noise, duration, quality, speed);
     }
 
-    public static SummariserPrefs extractExtras(Context context, Intent intent) {
+    static SummariserPrefs extractExtras(Context context, Intent intent) {
         Bundle extras = intent.getExtras();
 
         if (extras == null || !hasExtras(intent)) {

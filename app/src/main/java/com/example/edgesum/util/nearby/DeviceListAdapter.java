@@ -68,7 +68,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
         return endpoints.size();
     }
 
-    class DeviceViewHolder extends RecyclerView.ViewHolder {
+    static class DeviceViewHolder extends RecyclerView.ViewHolder {
         final DeviceListAdapter adapter;
         final TextView deviceName;
         final ImageView connectionStatus;

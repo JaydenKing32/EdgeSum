@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.selection.Selection;
 import androidx.recyclerview.selection.SelectionTracker;
@@ -56,11 +55,11 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     private final String BUTTON_ACTION_TEXT;
     private final TransferCallback transferCallback;
 
-    private Context context;
+    private final Context context;
     private List<Video> videos;
     private SelectionTracker<Long> tracker;
-    private VideoViewHolderProcessor videoViewHolderProcessor;
-    private VideoViewModel viewModel;
+    private final VideoViewHolderProcessor videoViewHolderProcessor;
+    private final VideoViewModel viewModel;
 
     VideoRecyclerViewAdapter(OnListFragmentInteractionListener listener,
                              Context context,
@@ -103,6 +102,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         }
     }
 
+    @NonNull
     @Override
     public VideoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -135,7 +135,6 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     }
 
     public void uploadWithTransferUtility(String path) {
-
         TransferUtility transferUtility =
                 TransferUtility.builder()
                         .context(context)
@@ -183,9 +182,11 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
 
             // If you prefer to poll for the data, instead of attaching a
             // listener, check for the state and progress in the observer.
+            /*
             if (TransferState.COMPLETED == uploadObserver.getState()) {
                 // Handle a completed upload.
             }
+            */
 
             Log.d("UploadToS3", "Bytes Transferred: " + uploadObserver.getBytesTransferred());
             Log.d("UploadToS3", "Bytes Total: " + uploadObserver.getBytesTotal());
@@ -205,12 +206,11 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     }
 
     private Bitmap getThumbnail(String id) {
-        Bitmap thumbnail = MediaStore.Video.Thumbnails.getThumbnail(
+        return MediaStore.Video.Thumbnails.getThumbnail(
                 this.context.getContentResolver(),
                 Integer.parseInt(id),
                 MediaStore.Video.Thumbnails.MICRO_KIND,
                 null);
-        return thumbnail;
     }
 
     public void setVideos(List<Video> videos) {
@@ -219,20 +219,20 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     }
 
 
-    public class VideoViewHolder extends RecyclerView.ViewHolder {
+    public static class VideoViewHolder extends RecyclerView.ViewHolder {
         public final View view;
-        public final ImageView thumbnailView;
-        public final TextView videoFileNameView;
+        final ImageView thumbnailView;
+        final TextView videoFileNameView;
         public final Button actionButton;
         public Video video;
         final LinearLayout layout;
 
-        public VideoViewHolder(View view) {
+        VideoViewHolder(View view) {
             super(view);
             this.view = view;
-            thumbnailView = (ImageView) view.findViewById(R.id.thumbnail);
-            videoFileNameView = (TextView) view.findViewById(R.id.content);
-            actionButton = (Button) view.findViewById(R.id.actionButton);
+            thumbnailView = view.findViewById(R.id.thumbnail);
+            videoFileNameView = view.findViewById(R.id.content);
+            actionButton = view.findViewById(R.id.actionButton);
             layout = itemView.findViewById(R.id.video_row);
         }
 
@@ -243,7 +243,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
                     return getAdapterPosition();
                 }
 
-                @Nullable
+                @NonNull
                 @Override
                 public Long getSelectionKey() {
                     return getItemId();
@@ -251,8 +251,8 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
             };
         }
 
-        @Override
         @NonNull
+        @Override
         public String toString() {
             return super.toString() + " '" + videoFileNameView.getText() + "'";
         }

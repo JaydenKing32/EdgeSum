@@ -112,11 +112,16 @@ public class VideoManager {
                                                             String[] selectionArgs, String sortOrder) {
         Cursor videoCursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 projection, selection, selectionArgs, sortOrder);
-        List<Video> videos = new ArrayList<>(videoCursor.getCount());
-        getVideosFromCursor(videoCursor, videos);
-        videoCursor.close();
-        Log.d(TAG, String.format("%d videos return", videos.size()));
-        return videos;
+
+        if (videoCursor != null) {
+            List<Video> videos = new ArrayList<>(videoCursor.getCount());
+            getVideosFromCursor(videoCursor, videos);
+            videoCursor.close();
+            Log.d(TAG, String.format("%d videos return", videos.size()));
+            return videos;
+        } else {
+            return null;
+        }
     }
 
     private static void getVideosFromCursor(Cursor videoCursor, List<Video> videos) {
@@ -134,7 +139,7 @@ public class VideoManager {
         }
     }
 
-    public static Video videoFromCursor(Cursor cursor) {
+    private static Video videoFromCursor(Cursor cursor) {
         Log.v(TAG, "videoFromCursor");
         Video video = null;
         try {
@@ -145,7 +150,7 @@ public class VideoManager {
             String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
             video = new Video(id, name, data, mimeType, size);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         }
         return video;
     }

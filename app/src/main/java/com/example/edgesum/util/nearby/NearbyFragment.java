@@ -95,8 +95,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 //        discoveredEndpoints.add(new Endpoint("testing1", "testing1", true));
 //        discoveredEndpoints.add(new Endpoint("testing2", "testing2", false));
         deviceAdapter = new DeviceListAdapter(getContext(), discoveredEndpoints, this);
-        connectionsClient = Nearby.getConnectionsClient(getContext());
-        setLocalName(getContext());
+
+        Context context = getContext();
+        if (context != null) {
+            connectionsClient = Nearby.getConnectionsClient(context);
+            setLocalName(context);
+        }
     }
 
     private void setLocalName(Context context) {
@@ -153,19 +157,22 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         deviceAdapter.notifyItemInserted(discoveredEndpoints.size() - 1);
                     }
 
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Accept connection to " + connectionInfo.getEndpointName())
-                            .setMessage("Confirm the code matches on both devices: " + connectionInfo.getAuthenticationToken())
-                            .setPositiveButton(android.R.string.ok,
-                                    (DialogInterface dialog, int which) ->
-                                            // The user confirmed, so we can accept the connection.
-                                            connectionsClient.acceptConnection(endpointId, payloadCallback))
-                            .setNegativeButton(android.R.string.cancel,
-                                    (DialogInterface dialog, int which) ->
-                                            // The user canceled, so we should reject the connection.
-                                            connectionsClient.rejectConnection(endpointId))
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    Context context = getContext();
+                    if (context != null) {
+                        new AlertDialog.Builder(context)
+                                .setTitle("Accept connection to " + connectionInfo.getEndpointName())
+                                .setMessage("Confirm the code matches on both devices: " + connectionInfo.getAuthenticationToken())
+                                .setPositiveButton(android.R.string.ok,
+                                        (DialogInterface dialog, int which) ->
+                                                // The user confirmed, so we can accept the connection.
+                                                connectionsClient.acceptConnection(endpointId, payloadCallback))
+                                .setNegativeButton(android.R.string.cancel,
+                                        (DialogInterface dialog, int which) ->
+                                                // The user canceled, so we should reject the connection.
+                                                connectionsClient.rejectConnection(endpointId))
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
                 }
 
                 @Override
@@ -210,9 +217,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     protected void startAdvertising() {
         AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(STRATEGY).build();
         connectionsClient.startAdvertising(localName, SERVICE_ID, connectionLifecycleCallback, advertisingOptions)
-                .addOnSuccessListener((Void unused) -> {
-                    Log.d(TAG, "Started advertising");
-                })
+                .addOnSuccessListener((Void unused) -> Log.d(TAG, "Started advertising"))
                 .addOnFailureListener((Exception e) -> {
                     Log.e(TAG, "Advertisement failure");
                     e.printStackTrace();
@@ -222,9 +227,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     protected void startDiscovery() {
         DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(STRATEGY).build();
         connectionsClient.startDiscovery(SERVICE_ID, endpointDiscoveryCallback, discoveryOptions)
-                .addOnSuccessListener((Void unused) -> {
-                    Log.d(TAG, "Started discovering");
-                })
+                .addOnSuccessListener((Void unused) -> Log.d(TAG, "Started discovering"))
                 .addOnFailureListener((Exception e) -> {
                     Log.e(TAG, "Discovery failure");
                     e.printStackTrace();
@@ -253,14 +256,18 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     public void stopDashDownload() {
         Log.w(TAG, "Stopped downloading from dashcam");
         downloadTaskExecutor.shutdownNow();
-        DashDownloadManager.unregisterReceiver(getContext());
+
+        Context context = getContext();
+        if (context != null) {
+            DashDownloadManager.unregisterReceiver(context);
+        }
     }
 
     private List<Endpoint> getConnectedEndpoints() {
         return discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
     }
 
-    public long getConnectedCount() {
+    private long getConnectedCount() {
         return discoveredEndpoints.values().stream().filter(e -> e.connected).count();
     }
 
@@ -375,9 +382,15 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         File fileToSend = new File(message.video.getData());
         Uri uri = Uri.fromFile(fileToSend);
         Payload filePayload = null;
+        Context context = getContext();
+
+        if (context == null) {
+            Log.e(TAG, "No context");
+            return;
+        }
 
         try {
-            ParcelFileDescriptor pfd = getContext().getContentResolver().openFileDescriptor(uri, "r");
+            ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
             if (pfd != null) {
                 filePayload = Payload.fromFile(pfd);
             }
@@ -395,7 +408,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         // Also include summarisation preferences for summarisation commands
         String bytesMessage;
         if (message.command.equals(Command.SUMMARISE)) {
-            SummariserPrefs prefs = SummariserPrefs.extractPreferences(getContext());
+            SummariserPrefs prefs = SummariserPrefs.extractPreferences(context);
             bytesMessage = String.format("%s:%s:%s:%s_%s_%s_%s",
                     message.command, filePayload.getId(), uri.getLastPathSegment(),
                     prefs.noise, prefs.duration, prefs.quality, prefs.speed
@@ -519,6 +532,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 Video video;
                 Endpoint fromEndpoint;
 
+                Context context = getContext();
+                if (context == null) {
+                    Log.e(TAG, "No context");
+                    return;
+                }
+
                 switch (Command.valueOf(parts[0])) {
                     case ERROR:
                         //
@@ -542,34 +561,41 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             startTimes.put(payloadId, Instant.now());
                         }
                         fromEndpoint = discoveredEndpoints.get(endpointId);
-                        fromEndpoint.completeCount++;
-                        fromEndpoint.activeTransfers.remove(videoName);
-                        endpointQueue.add(fromEndpoint);
 
-                        processFilePayload(payloadId, endpointId);
-                        nextTransfer(endpointId);
+                        if (fromEndpoint != null) {
+                            fromEndpoint.completeCount++;
+                            fromEndpoint.activeTransfers.remove(videoName);
+                            endpointQueue.add(fromEndpoint);
+
+                            processFilePayload(payloadId, endpointId);
+                            nextTransfer(endpointId);
+                        }
                         break;
                     case COMPLETE:
                         videoName = parts[1];
                         Log.d(TAG, String.format("Endpoint %s has finished downloading %s", endpointId, videoName));
+
                         videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
-                        video = VideoManager.getVideoFromFile(getContext(), new File(videoPath));
+                        video = VideoManager.getVideoFromFile(context, new File(videoPath));
+
                         EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                         EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
                         break;
                     case NO_ACTIVITY:
                         videoName = parts[1];
                         Log.d(TAG, String.format("%s contained no activity", videoName));
-
                         fromEndpoint = discoveredEndpoints.get(endpointId);
-                        fromEndpoint.completeCount++;
-                        fromEndpoint.activeTransfers.remove(videoName);
-                        endpointQueue.add(fromEndpoint);
 
-                        videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
-                        video = VideoManager.getVideoFromFile(getContext(), new File(videoPath));
-                        EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
-                        nextTransfer(endpointId);
+                        if (fromEndpoint != null) {
+                            fromEndpoint.completeCount++;
+                            fromEndpoint.activeTransfers.remove(videoName);
+                            endpointQueue.add(fromEndpoint);
+
+                            videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
+                            video = VideoManager.getVideoFromFile(context, new File(videoPath));
+                            EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
+                            nextTransfer(endpointId);
+                        }
                         break;
                 }
             } else if (payload.getType() == Payload.Type.FILE) {
@@ -641,9 +667,16 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            MediaScannerConnection.scanFile(getContext(),
+
+                            Context context = getContext();
+                            if (context == null) {
+                                Log.e(TAG, "No context");
+                                return;
+                            }
+
+                            MediaScannerConnection.scanFile(context,
                                     new String[]{videoDest.getAbsolutePath()}, null, (path, uri) -> {
-                                        Video video = VideoManager.getVideoFromFile(getContext(), videoDest);
+                                        Video video = VideoManager.getVideoFromFile(context, videoDest);
                                         EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
                                         EventBus.getDefault().post(new RemoveByNameEvent(filename, Type.PROCESSING));
                                     });
