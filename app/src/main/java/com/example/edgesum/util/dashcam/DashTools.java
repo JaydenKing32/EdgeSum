@@ -2,6 +2,8 @@ package com.example.edgesum.util.dashcam;
 
 import android.util.Log;
 
+import com.example.edgesum.util.file.FileManager;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -37,7 +39,7 @@ class DashTools {
         }
 
         for (Element file : doc.select("td:eq(0) > a")) {
-            if (file.text().endsWith("MP4")) {
+            if (FileManager.isMp4(file.text())) {
                 allFiles.add(file.text());
             }
         }

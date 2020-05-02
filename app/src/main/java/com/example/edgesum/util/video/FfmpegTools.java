@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
 import com.arthenica.mobileffmpeg.MediaInformation;
+import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 
 import org.apache.commons.io.FilenameUtils;
@@ -16,12 +17,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class FfmpegTools {
     private static final String TAG = FfmpegTools.class.getSimpleName();
+    private static final char SEGMENT_SEPARATOR = '_';
+    public static final int SEGMENT_NUM = 4; // TODO Make into preference value
 
     public static void executeFfmpeg(ArrayList<String> ffmpegArgs) {
         Log.i(TAG, String.format("Running ffmpeg with:\n  %s", TextUtils.join(" ", ffmpegArgs)));
@@ -49,10 +53,32 @@ public class FfmpegTools {
         return Arrays.stream(files).map(File::getAbsolutePath).sorted(String::compareTo).collect(Collectors.toList());
     }
 
-    public static void splitVideo(Context context, String filePath, int splitNum) {
-        // Round segment time up to ensure that the number of split videos doesn't exceed splitNum
-        int splitTime = (int) Math.ceil(FfmpegTools.getDuration(filePath) / splitNum);
-        String outDir = FileManager.getSplitDirPath(FilenameUtils.getBaseName(filePath));
+    // Get base video name from split segment's name
+    public static String getBaseName(String segmentName) {
+        return segmentName.substring(0, segmentName.lastIndexOf(SEGMENT_SEPARATOR));
+    }
+
+    public static List<Video> splitAndReturn(Context context, String filePath, int segNum) {
+        if (segNum < 2) {
+            return new ArrayList<>(Collections.singletonList(
+                    VideoManager.getVideoFromPath(context, filePath)
+            ));
+        }
+        splitVideo(filePath, segNum);
+        String baseVideoName = FilenameUtils.getBaseName(filePath);
+        String segmentDirPath = FileManager.getSegmentDirPath(baseVideoName);
+
+        return VideoManager.getVideosFromDir(context, segmentDirPath);
+    }
+
+    private static void splitVideo(String filePath, int segNum) {
+        if (segNum < 2) {
+            return;
+        }
+
+        // Round segment time up to ensure that the number of split videos doesn't exceed segNum
+        int segTime = (int) Math.ceil(FfmpegTools.getDuration(filePath) / segNum);
+        String outDir = FileManager.getSegmentDirPath(FilenameUtils.getBaseName(filePath));
 
         ArrayList<String> ffmpegArgs = new ArrayList<>(Arrays.asList(
                 "-y",
@@ -61,10 +87,11 @@ public class FfmpegTools {
                 "-c", "copy",
                 "-f", "segment",
                 "-reset_timestamps", "1", // Necessary for freezedetect, otherwise timestamps will be incorrect
-                "-segment_time", String.valueOf(splitTime),
-                String.format(Locale.ENGLISH, "%s/%s_%%03d.%s",
+                "-segment_time", String.valueOf(segTime),
+                String.format(Locale.ENGLISH, "%s/%s%s%%03d.%s",
                         outDir,
                         FilenameUtils.getBaseName(filePath),
+                        SEGMENT_SEPARATOR,
                         FilenameUtils.getExtension(filePath))
         ));
         FfmpegTools.executeFfmpeg(ffmpegArgs);
@@ -98,7 +125,7 @@ public class FfmpegTools {
             }
         }
         String pathFilename = String.format("%s/paths.txt",
-                FileManager.getSplitDirPath(FilenameUtils.getBaseName(output)));
+                FileManager.getSegmentDirPath(FilenameUtils.getBaseName(output)));
         makePathsFile(vidPaths, pathFilename);
 
         ArrayList<String> ffmpegArgs = new ArrayList<>(Arrays.asList(
@@ -116,7 +143,7 @@ public class FfmpegTools {
 
     public static String mergeVideos(String parentName) {
         String baseName = FilenameUtils.getBaseName(parentName);
-        List<String> vidPaths = getChildPaths(new File(FileManager.getSplitSumDirPath(baseName)));
+        List<String> vidPaths = getChildPaths(new File(FileManager.getSegmentSumDirPath(baseName)));
 
         if (vidPaths != null) {
             return mergeVideos(vidPaths, String.format("%s/%s", FileManager.getSummarisedDirPath(), parentName));

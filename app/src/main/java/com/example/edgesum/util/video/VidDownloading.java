@@ -28,7 +28,7 @@ public class VidDownloading {
         assert doc != null;
 
         for (Element file : doc.select("td:eq(0) > a")) {
-            if (file.text().endsWith("MP4")) {
+            if (FileManager.isMp4(file.text())) {
                 allFiles.add(file.text());
             }
         }

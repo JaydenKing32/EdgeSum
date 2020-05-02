@@ -5,6 +5,8 @@ import com.example.edgesum.model.Video;
 public interface TransferCallback {
     void addToTransferQueue(Video video, Command command);
 
+    void addVideoSegment(String baseName, Video video);
+
     void initialTransfer();
 
     void nextTransfer();

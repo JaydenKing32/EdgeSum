@@ -26,6 +26,7 @@ import com.example.edgesum.model.Video;
 import com.example.edgesum.util.dashcam.DashDownloadManager;
 import com.example.edgesum.util.dashcam.DownloadTestVideosTask;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.video.FfmpegTools;
 import com.example.edgesum.util.video.VideoManager;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.summariser.SummariserPrefs;
@@ -45,6 +46,7 @@ import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
 import com.jaredrummler.android.device.DeviceName;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -74,6 +76,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
     private final Queue<Message> transferQueue = new LinkedList<>();
     private final Queue<Endpoint> endpointQueue = new LinkedList<>();
+    private final LinkedHashMap<String, LinkedHashMap<String, Video>> videoSegments = new LinkedHashMap<>();
     // Dashcam isn't able to handle concurrent downloads, leads to a very high rate of download errors.
     // Just use a single thread for downloading
     private final ScheduledExecutorService downloadTaskExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -274,6 +277,19 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     @Override
     public void addToTransferQueue(Video video, Command command) {
         transferQueue.add(new Message(video, command));
+    }
+
+    // Add segments when sending, remove segments when receiving. Empty list means all segments received.
+    @Override
+    public void addVideoSegment(String baseName, Video video) {
+        LinkedHashMap<String, Video> segmentMap = videoSegments.get(baseName);
+
+        if (segmentMap == null) {
+            segmentMap = new LinkedHashMap<>();
+            videoSegments.put(baseName, segmentMap);
+        }
+
+        segmentMap.put(video.getName(), video);
     }
 
     @Override
@@ -591,6 +607,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             fromEndpoint.activeTransfers.remove(videoName);
                             endpointQueue.add(fromEndpoint);
 
+                            handleSegment(videoName);
                             videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
                             video = VideoManager.getVideoFromFile(context, new File(videoPath));
                             EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
@@ -620,6 +637,45 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             }
 
             return payloadId;
+        }
+
+        private boolean handleSegment(String videoName) {
+            String baseVideoName = FfmpegTools.getBaseName(videoName);
+            LinkedHashMap<String, Video> vidMap = videoSegments.get(baseVideoName);
+            if (vidMap == null) {
+                Log.e(TAG, "Couldn't retrieve video map");
+                return false;
+            }
+            Video video = vidMap.remove(videoName);
+
+            if (video == null) {
+                Log.e(TAG, "Couldn't retrieve video");
+                return false;
+            }
+
+            if (vidMap.size() == 0) {
+                Log.i(TAG, "Received all summarised video segments");
+                String parentName = String.format("%s.%s", baseVideoName, FilenameUtils.getExtension(video.getName()));
+                String outPath = FfmpegTools.mergeVideos(parentName);
+
+                if (outPath == null) {
+                    Log.e(TAG, "Couldn't merge videos");
+                    return false;
+                }
+
+                Context context = getContext();
+                if (context == null) {
+                    Log.e(TAG, "No context");
+                    return false;
+                }
+
+                video.insertMediaValues(context, outPath);
+                Video mergedVideo = VideoManager.getVideoFromFile(context, new File(outPath));
+                EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
+                EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.PROCESSING));
+                return true;
+            }
+            return false;
         }
 
         private void processFilePayload(long payloadId, String fromEndpointId) {
@@ -660,6 +716,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             SummariserPrefs prefs = filePayloadPrefs.remove(payloadId);
                             summarise(getContext(), videoFile, prefs);
                         } else if (command.equals(Command.RETURN)) {
+                            if (handleSegment(filename)) {
+                                return;
+                            }
+
                             File videoDest = new File(String.format("%s/%s",
                                     FileManager.getSummarisedDirPath(), filename));
                             try {

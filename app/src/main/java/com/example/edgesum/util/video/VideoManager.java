@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.devicestorage.DeviceExternalStorage;
+import com.example.edgesum.util.file.FileManager;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -42,7 +43,12 @@ public class VideoManager {
         return new ArrayList<>();
     }
 
-    public static List<Video> getVideosFromDir(Context context, File dir) {
+    static List<Video> getVideosFromDir(Context context, String dirPath) {
+        File dir = new File(dirPath);
+        return getVideosFromDir(context, dir);
+    }
+
+    private static List<Video> getVideosFromDir(Context context, File dir) {
         if (!dir.isDirectory()) {
             Log.e(TAG, String.format("%s is not a directory", dir.getAbsolutePath()));
             return null;
@@ -83,10 +89,10 @@ public class VideoManager {
         return video;
     }
 
-    private static Video getVideoFromPath(Context context, String path) {
+    static Video getVideoFromPath(Context context, String path) {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Video.Media.TITLE, FilenameUtils.getBaseName(path));
-        values.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+        values.put(MediaStore.Video.Media.MIME_TYPE, String.format("video/%s", FileManager.VIDEO_EXTENSION));
         values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
         values.put(MediaStore.Images.Media.DESCRIPTION, "");
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
@@ -98,7 +104,6 @@ public class VideoManager {
 
         return getVideoFromFile(context, new File(path));
     }
-
 
     public static List<Video> getAllVideosFromExternalStorage(Context context, String[] projection) {
         Log.v(TAG, "getAllVideosFromExternalStorage");

@@ -17,25 +17,26 @@ import java.util.List;
 public class FileManager {
     private static final String TAG = FileManager.class.getSimpleName();
 
-    public static final String RAW_FOOTAGE_DIR_NAME = "rawFootage";
+    public static final String VIDEO_EXTENSION = "mp4";
+    public static final String RAW_DIR_NAME = "raw";
     private static final String SUMMARISED_DIR_NAME = "summarised";
     private static final String NEARBY_DIR_NAME = "nearby";
-    private static final String SPLIT_DIR_NAME = "split";
-    private static final String SPLIT_SUM_DIR_NAME = String.format("%s-sum", SPLIT_DIR_NAME);
+    private static final String SEGMENT_DIR_NAME = "segment";
+    private static final String SEGMENT_SUM_DIR_NAME = String.format("%s-sum", SEGMENT_DIR_NAME);
 
     private static final File MOVIE_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
     private static final File DOWN_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-    private static final File RAW_FOOTAGE_DIR = new File(MOVIE_DIR, RAW_FOOTAGE_DIR_NAME);
+    private static final File RAW_DIR = new File(MOVIE_DIR, RAW_DIR_NAME);
     private static final File SUMMARISED_DIR = new File(MOVIE_DIR, SUMMARISED_DIR_NAME);
     private static final File NEARBY_DIR = new File(DOWN_DIR, NEARBY_DIR_NAME);
-    private static final File SPLIT_DIR = new File(MOVIE_DIR, SPLIT_DIR_NAME);
-    private static final File SPLIT_SUM_DIR = new File(MOVIE_DIR, SPLIT_SUM_DIR_NAME);
+    private static final File SEGMENT_DIR = new File(MOVIE_DIR, SEGMENT_DIR_NAME);
+    private static final File SEGMENT_SUM_DIR = new File(MOVIE_DIR, SEGMENT_SUM_DIR_NAME);
 
     private static final List<File> DIRS = Arrays.asList(
-            RAW_FOOTAGE_DIR, SUMMARISED_DIR, NEARBY_DIR, SPLIT_DIR, SPLIT_SUM_DIR);
+            RAW_DIR, SUMMARISED_DIR, NEARBY_DIR, SEGMENT_DIR, SEGMENT_SUM_DIR);
 
     public static String getRawFootageDirPath() {
-        return RAW_FOOTAGE_DIR.getAbsolutePath();
+        return RAW_DIR.getAbsolutePath();
     }
 
     public static String getSummarisedDirPath() {
@@ -46,20 +47,20 @@ public class FileManager {
         return NEARBY_DIR.getAbsolutePath();
     }
 
-    public static String getSplitDirPath() {
-        return SPLIT_DIR.getAbsolutePath();
+    public static String getSegmentDirPath() {
+        return SEGMENT_DIR.getAbsolutePath();
     }
 
-    public static String getSplitDirPath(String subDir) {
-        return makeDirectory(SPLIT_DIR, subDir).getAbsolutePath();
+    public static String getSegmentDirPath(String subDir) {
+        return makeDirectory(SEGMENT_DIR, subDir).getAbsolutePath();
     }
 
-    public static String getSplitSumDirPath() {
-        return SPLIT_SUM_DIR.getAbsolutePath();
+    public static String getSegmentSumDirPath() {
+        return SEGMENT_SUM_DIR.getAbsolutePath();
     }
 
-    public static String getSplitSumDirPath(String subDir) {
-        return makeDirectory(SPLIT_SUM_DIR, subDir).getAbsolutePath();
+    public static String getSegmentSumDirPath(String subDir) {
+        return makeDirectory(SEGMENT_SUM_DIR, subDir).getAbsolutePath();
     }
 
     public static void initialiseDirectories() {
@@ -138,5 +139,10 @@ public class FileManager {
                 }
             }
         }
+    }
+
+    public static boolean isMp4(String filename) {
+        int extensionStartIndex = filename.lastIndexOf('.') + 1;
+        return filename.regionMatches(true, extensionStartIndex, VIDEO_EXTENSION, 0, VIDEO_EXTENSION.length());
     }
 }
