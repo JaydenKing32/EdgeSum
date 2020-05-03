@@ -8,17 +8,13 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.edgesum.event.AddEvent;
-import com.example.edgesum.event.RemoveByNameEvent;
 import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.Command;
 import com.example.edgesum.util.nearby.TransferCallback;
-import com.example.edgesum.util.video.FfmpegTools;
-import com.example.edgesum.util.video.VideoManager;
 
-import org.apache.commons.io.FilenameUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -31,11 +27,8 @@ public class SummariserIntentService extends IntentService {
     public static final String TYPE_KEY = "type";
     public static final String LOCAL_TYPE = "local";
     public static final String NETWORK_TYPE = "network";
-    public static final String SEGMENT_PARENT_KEY = "segmentParent";
-    public static final String SEGMENT_NUM_KEY = "segmentNum";
 
     public static TransferCallback transferCallback;
-    private static int sumCount = 0;
 
     public SummariserIntentService() {
         super("SummariserIntentService");
@@ -56,7 +49,6 @@ public class SummariserIntentService extends IntentService {
         Video video = intent.getParcelableExtra(VIDEO_KEY);
         String output = intent.getStringExtra(OUTPUT_KEY);
         String type = intent.getStringExtra(TYPE_KEY);
-        String segmentParent = intent.getStringExtra(SEGMENT_PARENT_KEY);
 
         if (video == null) {
             Log.e(TAG, "Video not specified");
@@ -79,10 +71,8 @@ public class SummariserIntentService extends IntentService {
 
         if (isVideo) {
             video.insertMediaValues(getApplicationContext(), new File(output).getAbsolutePath());
+            EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
 
-            if (segmentParent == null) {
-                EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
-            }
             if (type.equals(NETWORK_TYPE)) {
                 transferCallback.addToTransferQueue(video, Command.RETURN);
                 transferCallback.nextTransfer();
@@ -90,28 +80,7 @@ public class SummariserIntentService extends IntentService {
         } else if (type.equals(NETWORK_TYPE)) {
             transferCallback.sendCommandMessageToAll(Command.NO_ACTIVITY, video.getName());
         }
-        if (segmentParent == null) {
-            EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
-        } else {
-
-            // TODO replace sumCount later, probably use a list in NearbyFragment
-            sumCount++;
-            int segNum = intent.getIntExtra(SEGMENT_NUM_KEY, -1);
-
-            if (segNum == sumCount) {
-                sumCount = 0;
-                String baseName = video.getName().substring(0, video.getName().lastIndexOf('_'));
-                String parentName = String.format("%s.%s", baseName, FilenameUtils.getExtension(video.getName()));
-                String outPath = FfmpegTools.mergeVideos(parentName);
-
-                if (outPath != null) {
-                    video.insertMediaValues(getApplicationContext(), outPath);
-                    Video mergedVideo = VideoManager.getVideoFromFile(getApplicationContext(), new File(outPath));
-                    EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
-                    EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.PROCESSING));
-                }
-            }
-        }
+        EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
 
         MediaScannerConnection.scanFile(getApplicationContext(),
                 new String[]{FileManager.getSummarisedDirPath()}, null, (path, uri) -> {
