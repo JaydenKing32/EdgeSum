@@ -49,7 +49,7 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Void> {
             if (video != null) {
                 if (transferCallback.isConnected()) {
                     EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                    transferCallback.addToTransferQueue(video, Command.SUMMARISE);
+                    transferCallback.queueVideo(video, Command.SUMMARISE);
                     transferCallback.nextTransfer();
                 } else {
                     EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));

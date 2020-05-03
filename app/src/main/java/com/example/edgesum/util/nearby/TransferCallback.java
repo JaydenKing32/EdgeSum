@@ -1,11 +1,13 @@
 package com.example.edgesum.util.nearby;
 
+import android.content.Context;
+
 import com.example.edgesum.model.Video;
 
 public interface TransferCallback {
-    void addToTransferQueue(Video video, Command command);
+    void queueVideo(Video video, Command command);
 
-    void addVideoSegment(String baseName, Video video);
+    void splitAndQueue(Context context, String videoPath);
 
     void initialTransfer();
 

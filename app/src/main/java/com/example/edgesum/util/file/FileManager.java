@@ -4,6 +4,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.edgesum.util.devicestorage.DeviceExternalStorage;
+import com.example.edgesum.util.video.FfmpegTools;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,6 +62,11 @@ public class FileManager {
 
     public static String getSegmentSumDirPath(String subDir) {
         return makeDirectory(SEGMENT_SUM_DIR, subDir).getAbsolutePath();
+    }
+
+    public static String getSegmentSumSubDirPath(String videoName) {
+        String baseVideoName = FfmpegTools.getBaseName(videoName);
+        return makeDirectory(SEGMENT_SUM_DIR, baseVideoName).getAbsolutePath();
     }
 
     public static void initialiseDirectories() {

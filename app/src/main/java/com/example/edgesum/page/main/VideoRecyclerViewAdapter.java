@@ -34,7 +34,6 @@ import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.page.main.VideoFragment.OnListFragmentInteractionListener;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.nearby.Command;
 import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.viewholderprocessor.VideoViewHolderProcessor;
@@ -83,7 +82,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     void sendVideos(Selection<Long> positions) {
         if (transferCallback.isConnected()) {
             for (Long pos : positions) {
-                transferCallback.addToTransferQueue(videos.get(pos.intValue()), Command.SUMMARISE);
+                transferCallback.splitAndQueue(context, videos.get(pos.intValue()).getData());
             }
             transferCallback.nextTransfer();
         } else {

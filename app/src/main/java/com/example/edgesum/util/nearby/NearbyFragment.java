@@ -275,13 +275,27 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     @Override
-    public void addToTransferQueue(Video video, Command command) {
+    public void queueVideo(Video video, Command command) {
         transferQueue.add(new Message(video, command));
     }
 
-    // Add segments when sending, remove segments when receiving. Empty list means all segments received.
     @Override
-    public void addVideoSegment(String baseName, Video video) {
+    public void splitAndQueue(Context context, String videoPath) {
+        String baseVideoName = FilenameUtils.getBaseName(videoPath);
+        List<Video> videos = FfmpegTools.splitAndReturn(context, videoPath, FfmpegTools.SEGMENT_NUM);
+
+        if (videos == null || videos.size() == 0) {
+            Log.e(TAG, String.format("Could not split %s", baseVideoName));
+            return;
+        }
+        for (Video segment : videos) {
+            queueVideo(segment, Command.SUMMARISE_SEGMENT);
+            queueVideoSegment(baseVideoName, segment);
+        }
+    }
+
+    // Add segments when sending, remove segments when receiving. Empty list means all segments received.
+    private void queueVideoSegment(String baseName, Video segment) {
         LinkedHashMap<String, Video> segmentMap = videoSegments.get(baseName);
 
         if (segmentMap == null) {
@@ -289,7 +303,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             videoSegments.put(baseName, segmentMap);
         }
 
-        segmentMap.put(video.getName(), video);
+        segmentMap.put(segment.getName(), segment);
     }
 
     @Override
@@ -559,6 +573,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         //
                         break;
                     case SUMMARISE:
+                    case SUMMARISE_SEGMENT:
                         Log.v(TAG, String.format("Started downloading %s", message));
                         payloadId = addPayloadFilename(parts);
 
@@ -639,22 +654,34 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             return payloadId;
         }
 
+        private boolean isSegmentedVideo(String videoName) {
+            String baseVideoName = FfmpegTools.getBaseName(videoName);
+            return videoSegments.containsKey(baseVideoName);
+        }
+
         private boolean handleSegment(String videoName) {
+            if (videoSegments.size() == 0) { // Not master device
+                return false;
+            }
+
             String baseVideoName = FfmpegTools.getBaseName(videoName);
             LinkedHashMap<String, Video> vidMap = videoSegments.get(baseVideoName);
             if (vidMap == null) {
                 Log.e(TAG, "Couldn't retrieve video map");
                 return false;
             }
-            Video video = vidMap.remove(videoName);
+            if (vidMap.size() == 0) { // Video segment map is already empty,
+                return true;
+            }
 
+            Video video = vidMap.remove(videoName);
             if (video == null) {
                 Log.e(TAG, "Couldn't retrieve video");
                 return false;
             }
 
             if (vidMap.size() == 0) {
-                Log.i(TAG, "Received all summarised video segments");
+                Log.d(TAG, "Received all summarised video segments");
                 String parentName = String.format("%s.%s", baseVideoName, FilenameUtils.getExtension(video.getName()));
                 String outPath = FfmpegTools.mergeVideos(parentName);
 
@@ -705,45 +732,60 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 Payload.File payload = filePayload.asFile();
                 File payloadFile = payload != null ? payload.asJavaFile() : null;
 
-                if (payloadFile != null) {
-                    // Rename the file.
-                    File videoFile = new File(payloadFile.getParentFile(), filename);
-                    if (!payloadFile.renameTo(videoFile)) {
-                        Log.e(TAG, String.format("Could not rename received file as %s", filename));
-                    } else {
-                        if (command.equals(Command.SUMMARISE)) {
-                            Log.d(TAG, String.format("Summarising %s", filename));
-                            SummariserPrefs prefs = filePayloadPrefs.remove(payloadId);
-                            summarise(getContext(), videoFile, prefs);
-                        } else if (command.equals(Command.RETURN)) {
-                            if (handleSegment(filename)) {
-                                return;
-                            }
-
-                            File videoDest = new File(String.format("%s/%s",
-                                    FileManager.getSummarisedDirPath(), filename));
-                            try {
-                                FileManager.copy(videoFile, videoDest);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            Context context = getContext();
-                            if (context == null) {
-                                Log.e(TAG, "No context");
-                                return;
-                            }
-
-                            MediaScannerConnection.scanFile(context,
-                                    new String[]{videoDest.getAbsolutePath()}, null, (path, uri) -> {
-                                        Video video = VideoManager.getVideoFromFile(context, videoDest);
-                                        EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
-                                        EventBus.getDefault().post(new RemoveByNameEvent(filename, Type.PROCESSING));
-                                    });
-                        }
-                    }
-                } else {
+                if (payloadFile == null) {
                     Log.e(TAG, String.format("Could not create file payload for %s", filename));
+                    return;
+                }
+                // Rename the file.
+                File videoFile = new File(payloadFile.getParentFile(), filename);
+                if (!payloadFile.renameTo(videoFile)) {
+                    Log.e(TAG, String.format("Could not rename received file as %s", filename));
+                    return;
+                }
+
+                if (command.equals(Command.SUMMARISE) || command.equals(Command.SUMMARISE_SEGMENT)) {
+                    String outPath = (command.equals(Command.SUMMARISE_SEGMENT)) ?
+                            String.format("%s/%s", FileManager.getSegmentSumDirPath(), videoFile.getName()) :
+                            String.format("%s/%s", FileManager.getSummarisedDirPath(), videoFile.getName());
+                    Log.d(TAG, String.format("Summarising %s", filename));
+                    SummariserPrefs prefs = filePayloadPrefs.remove(payloadId);
+                    summarise(getContext(), videoFile, prefs, outPath);
+
+                } else if (command.equals(Command.RETURN)) {
+                    boolean isSeg = isSegmentedVideo(filename);
+                    String videoDestPath = (isSeg) ?
+                            String.format("%s/%s", FileManager.getSegmentSumSubDirPath(filename), filename) :
+                            String.format("%s/%s", FileManager.getSummarisedDirPath(), filename);
+
+                    File videoDest = new File(videoDestPath);
+                    try {
+                        FileManager.copy(videoFile, videoDest);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (isSeg) {
+                        if (handleSegment(filename)) {
+                            Log.d(TAG, "Successfully merged summarised video segments");
+                            videoSegments.remove(FfmpegTools.getBaseName(filename));
+                        } else {
+                            Log.e(TAG, "Video segment merge failure");
+                        }
+                        return;
+                    }
+
+                    Context context = getContext();
+                    if (context == null) {
+                        Log.e(TAG, "No context");
+                        return;
+                    }
+
+                    MediaScannerConnection.scanFile(context, new String[]{videoDest.getAbsolutePath()}, null,
+                            (path, uri) -> {
+                                Video video = VideoManager.getVideoFromFile(context, videoDest);
+                                EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
+                                EventBus.getDefault().post(new RemoveByNameEvent(filename, Type.PROCESSING));
+                            });
                 }
             }
         }
@@ -768,18 +810,16 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     });
         }
 
-        private void summarise(Context context, File videoFile, SummariserPrefs prefs) {
+        private void summarise(Context context, File videoFile, SummariserPrefs prefs, String outPath) {
             MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()}, null,
                     (path, uri) -> {
                         Video video = VideoManager.getVideoFromFile(context, videoFile);
                         EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                         EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 
-                        final String output = String.format("%s/%s",
-                                FileManager.getSummarisedDirPath(), videoFile.getName());
                         Intent intent = new Intent(context, SummariserIntentService.class);
                         intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                        intent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                        intent.putExtra(SummariserIntentService.OUTPUT_KEY, outPath);
                         intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
                         intent.putExtra(SummariserPrefs.NOISE_KEY, prefs.noise);
                         intent.putExtra(SummariserPrefs.DURATION_KEY, prefs.duration);

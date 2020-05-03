@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class FfmpegTools {
     private static final String TAG = FfmpegTools.class.getSimpleName();
-    private static final char SEGMENT_SEPARATOR = '_';
+    private static final char SEGMENT_SEPARATOR = '!';
     public static final int SEGMENT_NUM = 4; // TODO Make into preference value
 
     public static void executeFfmpeg(ArrayList<String> ffmpegArgs) {
@@ -55,7 +55,13 @@ public class FfmpegTools {
 
     // Get base video name from split segment's name
     public static String getBaseName(String segmentName) {
-        return segmentName.substring(0, segmentName.lastIndexOf(SEGMENT_SEPARATOR));
+        int segSepIndex = segmentName.lastIndexOf(SEGMENT_SEPARATOR);
+
+        if (segSepIndex > 0) {
+            return segmentName.substring(0, segSepIndex);
+        } else {
+            return null;
+        }
     }
 
     public static List<Video> splitAndReturn(Context context, String filePath, int segNum) {

@@ -74,7 +74,7 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             if (video != null) {
                 if (nearbyFragment.isConnected()) {
                     EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                    nearbyFragment.addToTransferQueue(video, Command.SUMMARISE);
+                    nearbyFragment.queueVideo(video, Command.SUMMARISE);
                     nearbyFragment.sendToEarliestEndpoint();
                 } else {
                     EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));

@@ -2,7 +2,6 @@ package com.example.edgesum.util.video.viewholderprocessor;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.edgesum.data.VideoViewModel;
@@ -12,16 +11,10 @@ import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.page.main.VideoRecyclerViewAdapter;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.nearby.Command;
 import com.example.edgesum.util.nearby.TransferCallback;
-import com.example.edgesum.util.video.FfmpegTools;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
-import org.apache.commons.io.FilenameUtils;
 import org.greenrobot.eventbus.EventBus;
-
-import java.io.File;
-import java.util.List;
 
 public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
     private static final String TAG = RawFootageViewHolderProcessor.class.getSimpleName();
@@ -36,30 +29,17 @@ public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
                         final VideoRecyclerViewAdapter.VideoViewHolder viewHolder, final int position) {
         viewHolder.actionButton.setOnClickListener(view -> {
             final Video video = viewHolder.video;
-            final String filePath = video.getData();
-            final File pathFile = new File(filePath);
-            final String pathName = pathFile.getName();
 
             if (transferCallback.isConnected()) {
-                String baseVideoName = FilenameUtils.getBaseName(filePath);
-                List<Video> videos = FfmpegTools.splitAndReturn(context, filePath, FfmpegTools.SEGMENT_NUM);
-
-                if (videos == null || videos.size() == 0) {
-                    Log.e(TAG, String.format("Could not split %s", pathName));
-                    return;
-                }
-                for (Video vid : videos) {
-                    transferCallback.addToTransferQueue(vid, Command.SUMMARISE);
-                    transferCallback.addVideoSegment(baseVideoName, vid);
-                }
-
+                transferCallback.splitAndQueue(context, video.getData());
                 transferCallback.nextTransfer();
+
                 EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                 EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 
                 Toast.makeText(context, "Transferring to connected devices", Toast.LENGTH_SHORT).show();
             } else {
-                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), pathName);
+                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
 
                 Intent summariseIntent = new Intent(context, SummariserIntentService.class);
                 summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
