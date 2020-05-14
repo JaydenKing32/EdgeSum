@@ -89,7 +89,7 @@ public class VideoManager {
         return video;
     }
 
-    static Video getVideoFromPath(Context context, String path) {
+    public static Video getVideoFromPath(Context context, String path) {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Video.Media.TITLE, FilenameUtils.getBaseName(path));
         values.put(MediaStore.Video.Media.MIME_TYPE, String.format("video/%s", FileManager.VIDEO_EXTENSION));

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -744,11 +743,16 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 }
 
                 if (command.equals(Command.SUMMARISE) || command.equals(Command.SUMMARISE_SEGMENT)) {
+                    SummariserPrefs prefs = filePayloadPrefs.remove(payloadId);
+                    if (prefs == null) {
+                        Log.e(TAG, "Failed to retrieve summarisation preferences");
+                        return;
+                    }
+
                     String outPath = (command.equals(Command.SUMMARISE_SEGMENT)) ?
                             String.format("%s/%s", FileManager.getSegmentSumDirPath(), videoFile.getName()) :
                             String.format("%s/%s", FileManager.getSummarisedDirPath(), videoFile.getName());
                     Log.d(TAG, String.format("Summarising %s", filename));
-                    SummariserPrefs prefs = filePayloadPrefs.remove(payloadId);
                     summarise(getContext(), videoFile, prefs, outPath);
 
                 } else if (command.equals(Command.RETURN)) {
@@ -780,53 +784,27 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         return;
                     }
 
-                    MediaScannerConnection.scanFile(context, new String[]{videoDest.getAbsolutePath()}, null,
-                            (path, uri) -> {
-                                Video video = VideoManager.getVideoFromFile(context, videoDest);
-                                EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
-                                EventBus.getDefault().post(new RemoveByNameEvent(filename, Type.PROCESSING));
-                            });
+                    Video video = VideoManager.getVideoFromPath(context, videoDestPath);
+                    EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
+                    EventBus.getDefault().post(new RemoveByNameEvent(filename, Type.PROCESSING));
                 }
             }
         }
 
-        private void summarise(Context context, File videoFile) {
-            // In order to use videos, their information must be in the MediaStore.
-            // The MediaStore might not have information on newly downloaded files yet, so it is necessary to scan
-            // the files before they can be used.
-            MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()}, null,
-                    (path, uri) -> {
-                        Video video = VideoManager.getVideoFromFile(context, videoFile);
-                        EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
-                        EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
-
-                        final String output = String.format("%s/%s",
-                                FileManager.getSummarisedDirPath(), videoFile.getName());
-                        Intent intent = new Intent(context, SummariserIntentService.class);
-                        intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                        intent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
-                        intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
-                        context.startService(intent);
-                    });
-        }
-
         private void summarise(Context context, File videoFile, SummariserPrefs prefs, String outPath) {
-            MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()}, null,
-                    (path, uri) -> {
-                        Video video = VideoManager.getVideoFromFile(context, videoFile);
-                        EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
-                        EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+            Video video = VideoManager.getVideoFromPath(context, videoFile.getAbsolutePath());
+            EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+            EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 
-                        Intent intent = new Intent(context, SummariserIntentService.class);
-                        intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                        intent.putExtra(SummariserIntentService.OUTPUT_KEY, outPath);
-                        intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
-                        intent.putExtra(SummariserPrefs.NOISE_KEY, prefs.noise);
-                        intent.putExtra(SummariserPrefs.DURATION_KEY, prefs.duration);
-                        intent.putExtra(SummariserPrefs.QUALITY_KEY, prefs.quality);
-                        intent.putExtra(SummariserPrefs.ENCODING_SPEED_KEY, prefs.speed.name());
-                        context.startService(intent);
-                    });
+            Intent intent = new Intent(context, SummariserIntentService.class);
+            intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+            intent.putExtra(SummariserIntentService.OUTPUT_KEY, outPath);
+            intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
+            intent.putExtra(SummariserPrefs.NOISE_KEY, prefs.noise);
+            intent.putExtra(SummariserPrefs.DURATION_KEY, prefs.duration);
+            intent.putExtra(SummariserPrefs.QUALITY_KEY, prefs.quality);
+            intent.putExtra(SummariserPrefs.ENCODING_SPEED_KEY, prefs.speed.name());
+            context.startService(intent);
         }
 
         @Override

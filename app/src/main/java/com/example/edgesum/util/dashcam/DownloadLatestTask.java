@@ -7,18 +7,15 @@ import android.util.Log;
 
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
-import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.Command;
 import com.example.edgesum.util.nearby.TransferCallback;
-import com.example.edgesum.util.video.VideoManager;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -34,33 +31,28 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Void> {
     public DownloadLatestTask(TransferCallback transferCallback, Context context) {
         super(context);
 
-        downloadCallback = (path, uri) -> {
-            String videoName = path.substring(path.lastIndexOf('/') + 1);
-
+        this.downloadCallback = (video) -> {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 long duration = Duration.between(start, Instant.now()).toMillis();
                 String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
-                Log.w(TAG, String.format("Completed downloading %s in %ss", videoName, time));
+                Log.w(TAG, String.format("Completed downloading %s in %ss", video.getName(), time));
             } else {
-                Log.d(TAG, String.format("Completed downloading %s", videoName));
+                Log.d(TAG, String.format("Completed downloading %s", video.getName()));
             }
-            Video video = VideoManager.getVideoFromFile(weakReference.get(), new File(path));
 
-            if (video != null) {
-                if (transferCallback.isConnected()) {
-                    EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                    transferCallback.queueVideo(video, Command.SUMMARISE);
-                    transferCallback.nextTransfer();
-                } else {
-                    EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+            if (transferCallback.isConnected()) {
+                EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                transferCallback.queueVideo(video, Command.SUMMARISE);
+                transferCallback.nextTransfer();
+            } else {
+                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
 
-                    final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
-                    Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                    summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                    summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
-                    summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
-                    context.startService(summariseIntent);
-                }
+                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
+                Intent summariseIntent = new Intent(context, SummariserIntentService.class);
+                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
+                context.startService(summariseIntent);
             }
         };
     }

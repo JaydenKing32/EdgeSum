@@ -6,18 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.video.VideoManager;
 
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Might not work with stock android OS
@@ -36,7 +37,7 @@ import java.util.Set;
 public class DashDownloadManager {
     private static final String TAG = DashDownloadManager.class.getSimpleName();
     private static DashDownloadManager manager = null;
-    private static MediaScannerConnection.OnScanCompletedListener downloadCallback;
+    private static Consumer<Video> downloadCallback;
     private static final Set<Long> downloadIds = new HashSet<>();
 
     // https://stackoverflow.com/a/46328681/8031185
@@ -65,10 +66,8 @@ public class DashDownloadManager {
                                 String path = Uri.parse(uri).getPath();
 
                                 if (path != null) {
-                                    File videoFile = new File(path);
-
-                                    MediaScannerConnection.scanFile(context, new String[]{videoFile.getAbsolutePath()},
-                                            null, downloadCallback);
+                                    Video video = VideoManager.getVideoFromPath(context, path);
+                                    downloadCallback.accept(video);
                                     Log.v(TAG, String.format("Successfully downloaded: %s", path));
                                 } else {
                                     Log.e(TAG, "Path is null");
@@ -102,12 +101,12 @@ public class DashDownloadManager {
         }
     };
 
-    private DashDownloadManager(Context context, MediaScannerConnection.OnScanCompletedListener callback) {
+    private DashDownloadManager(Context context, Consumer<Video> callback) {
         downloadCallback = callback;
         context.registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
-    static DashDownloadManager getInstance(Context context, MediaScannerConnection.OnScanCompletedListener callback) {
+    static DashDownloadManager getInstance(Context context, Consumer<Video> callback) {
         if (manager == null) {
             manager = new DashDownloadManager(context, callback);
         }

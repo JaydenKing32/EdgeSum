@@ -1,9 +1,11 @@
 package com.example.edgesum.util.dashcam;
 
 import android.content.Context;
-import android.media.MediaScannerConnection;
+
+import com.example.edgesum.model.Video;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 class DashModel {
@@ -31,7 +33,7 @@ class DashModel {
         return new DashModel(DashName.BLACKVUE, blackvueBaseUrl, blackvueVideoUrl, DashTools::getBlackvueFilenames);
     }
 
-    List<String> downloadAll(MediaScannerConnection.OnScanCompletedListener downloadCallback, Context context) {
+    List<String> downloadAll(Consumer<Video> downloadCallback, Context context) {
         List<String> allFiles = getFilenameFunc.get();
 
         if (allFiles == null) {
