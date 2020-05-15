@@ -55,12 +55,15 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_raw_footage:
+                    Log.v(TAG, "Navigation raw button clicked");
                     showNewFragmentAndHideOldFragment(rawFootageFragment);
                     return true;
                 case R.id.navigation_processing:
+                    Log.v(TAG, "Navigation processing button clicked");
                     showNewFragmentAndHideOldFragment(processingFragment);
                     return true;
                 case R.id.navigation_summarised_videos:
+                    Log.v(TAG, "Navigation summarised button clicked");
                     showNewFragmentAndHideOldFragment(summarisedVideoFragment);
                     return true;
             }
@@ -151,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     }
 
     private void cleanVideoDirectories() {
-        rawFootageFragment.cleanRepository(this);
+//        rawFootageFragment.cleanRepository(this);
         processingFragment.cleanRepository(this);
         summarisedVideoFragment.cleanRepository(this);
         FileManager.cleanVideoDirectories();

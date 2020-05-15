@@ -12,8 +12,9 @@ import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.nearby.Command;
+import com.example.edgesum.util.nearby.Message;
 import com.example.edgesum.util.nearby.TransferCallback;
+import com.example.edgesum.util.video.VideoManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -70,15 +71,15 @@ public class SummariserIntentService extends IntentService {
         boolean isVideo = summariser.summarise();
 
         if (isVideo) {
-            video.insertMediaValues(getApplicationContext(), new File(output).getAbsolutePath());
-            EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
+            Video sumVid = VideoManager.getVideoFromPath(getApplicationContext(), output);
+            EventBus.getDefault().post(new AddEvent(sumVid, Type.SUMMARISED));
 
             if (type.equals(NETWORK_TYPE)) {
-                transferCallback.queueVideo(video, Command.RETURN);
+                transferCallback.queueVideo(sumVid, Message.Command.RETURN);
                 transferCallback.nextTransfer();
             }
         } else if (type.equals(NETWORK_TYPE)) {
-            transferCallback.sendCommandMessageToAll(Command.NO_ACTIVITY, video.getName());
+            transferCallback.sendCommandMessageToAll(Message.Command.NO_ACTIVITY, video.getName());
         }
         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
 

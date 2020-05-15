@@ -30,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    static class SettingsFragment extends PreferenceFragmentCompat {
+    public static class SettingsFragment extends PreferenceFragmentCompat {
         private static final String TAG = SettingsActivity.class.getSimpleName();
         private static final String VIEW_SUMMARISED_VIDEO = "view_summarised_video";
         Context context;

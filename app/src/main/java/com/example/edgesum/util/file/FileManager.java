@@ -6,6 +6,8 @@ import android.util.Log;
 import com.example.edgesum.util.devicestorage.DeviceExternalStorage;
 import com.example.edgesum.util.video.FfmpegTools;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -104,31 +106,16 @@ public class FileManager {
     }
 
     public static void cleanVideoDirectories() {
-        for (File dir : DIRS) {
-            cleanDirectory(dir);
-        }
-    }
-
-    private static void cleanDirectory(File dir) {
-        if (!dir.exists()) {
-            Log.e(TAG, "Directory does not exist: %s");
-        }
-
-        if (!dir.isDirectory()) {
-            Log.e(TAG, String.format("Attempt to clean a non-directory: %s", dir.getAbsolutePath()));
-        }
-
-        File[] files = dir.listFiles();
-
-        if (files != null) {
-            for (File video : files) {
-                String videoPath = video.getAbsolutePath();
-
-                if (video.delete()) {
-                    Log.v(TAG, String.format("Video deleted: %s", videoPath));
-                } else {
-                    Log.e(TAG, String.format("Failed video deletion: %s", videoPath));
-                }
+//        for (File dir : DIRS) {
+//            cleanDirectory(dir);
+//        }
+        List<File> dirs = Arrays.asList(SUMMARISED_DIR, NEARBY_DIR, SEGMENT_DIR, SEGMENT_SUM_DIR);
+        for (File dir : dirs) {
+            try {
+                FileUtils.cleanDirectory(dir);
+            } catch (IOException e) {
+                Log.e(TAG, String.format("Failed to delete %s", dir.getAbsolutePath()));
+                e.printStackTrace();
             }
         }
     }

@@ -2,6 +2,7 @@ package com.example.edgesum.util.video.viewholderprocessor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.edgesum.data.VideoViewModel;
@@ -29,8 +30,11 @@ public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
                         final VideoRecyclerViewAdapter.VideoViewHolder viewHolder, final int position) {
         viewHolder.actionButton.setOnClickListener(view -> {
             final Video video = viewHolder.video;
+            Log.v(TAG, String.format("User selected %s", video));
 
             if (transferCallback.isConnected()) {
+                // TODO Abstract out adding videos to queue and starting transfers to standardise for all techniques
+                //  Techniques should be user-selectable, e.g. splitting or not splitting should be a preference setting
                 transferCallback.splitAndQueue(context, video.getData());
                 transferCallback.nextTransfer();
 

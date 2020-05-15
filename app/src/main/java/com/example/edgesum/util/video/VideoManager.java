@@ -60,7 +60,8 @@ public class VideoManager {
             return null;
         }
 
-        List<String> vidPaths = Arrays.stream(videoFiles).map(File::getAbsolutePath).collect(Collectors.toList());
+        List<String> vidPaths = Arrays.stream(videoFiles)
+                .map(File::getAbsolutePath).filter(FileManager::isMp4).collect(Collectors.toList());
         List<Video> videos = new ArrayList<>();
         for (String vidPath : vidPaths) {
             videos.add(getVideoFromPath(context, vidPath));
@@ -68,7 +69,7 @@ public class VideoManager {
         return videos;
     }
 
-    public static Video getVideoFromFile(Context context, File file) {
+    private static Video getVideoFromFile(Context context, File file) {
         String[] projection = {MediaStore.Video.Media._ID,
                 MediaStore.Video.Media.DATA,
                 MediaStore.Video.Media.DISPLAY_NAME,

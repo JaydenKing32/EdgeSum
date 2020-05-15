@@ -8,7 +8,7 @@ import android.util.Log;
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.nearby.Command;
+import com.example.edgesum.util.nearby.Message;
 import com.example.edgesum.util.nearby.NearbyFragment;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
@@ -67,7 +67,7 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
 
             if (nearbyFragment.isConnected()) {
                 EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                nearbyFragment.queueVideo(video, Command.SUMMARISE);
+                nearbyFragment.queueVideo(video, Message.Command.SUMMARISE);
                 nearbyFragment.sendToEarliestEndpoint();
             } else {
                 EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
