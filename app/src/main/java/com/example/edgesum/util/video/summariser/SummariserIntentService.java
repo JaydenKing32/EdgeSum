@@ -18,8 +18,6 @@ import com.example.edgesum.util.video.VideoManager;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
-
 public class SummariserIntentService extends IntentService {
     private static final String TAG = SummariserIntentService.class.getSimpleName();
 

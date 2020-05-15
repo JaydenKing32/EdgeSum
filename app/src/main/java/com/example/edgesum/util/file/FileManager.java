@@ -106,8 +106,14 @@ public class FileManager {
     }
 
     public static void cleanVideoDirectories() {
+        // TODO uncomment after testing
 //        for (File dir : DIRS) {
-//            cleanDirectory(dir);
+//            try {
+//                FileUtils.cleanDirectory(dir);
+//            } catch (IOException e) {
+//                Log.e(TAG, String.format("Failed to delete %s", dir.getAbsolutePath()));
+//                e.printStackTrace();
+//            }
 //        }
         List<File> dirs = Arrays.asList(SUMMARISED_DIR, NEARBY_DIR, SEGMENT_DIR, SEGMENT_SUM_DIR);
         for (File dir : dirs) {

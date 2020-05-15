@@ -116,22 +116,22 @@ public class FfmpegTools {
         }
     }
 
-    private static String mergeVideos(List<String> vidPaths, String output) {
-        Log.d(TAG, String.format("Merging %s", output));
+    private static void mergeVideos(List<String> vidPaths, String outPath) {
+        Log.d(TAG, String.format("Merging %s", outPath));
 
         if (vidPaths == null || vidPaths.size() == 0) {
             Log.d(TAG, "No split videos to merge");
-            return null;
+            return;
         }
         if (vidPaths.size() == 1) { // Only one video, no need to merge so just copy
             try {
-                FileManager.copy(new File(vidPaths.get(0)), new File(output));
+                FileManager.copy(new File(vidPaths.get(0)), new File(outPath));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         String pathFilename = String.format("%s/paths.txt",
-                FileManager.getSegmentDirPath(FilenameUtils.getBaseName(output)));
+                FileManager.getSegmentDirPath(FilenameUtils.getBaseName(outPath)));
         makePathsFile(vidPaths, pathFilename);
 
         ArrayList<String> ffmpegArgs = new ArrayList<>(Arrays.asList(
@@ -140,11 +140,11 @@ public class FfmpegTools {
                 "-safe", "0",
                 "-i", pathFilename,
                 "-c", "copy",
-                output
+                outPath
         ));
 
         FfmpegTools.executeFfmpeg(ffmpegArgs);
-        return output;
+        Log.w(TAG, String.format("Merged duration: %.2f", getDuration(outPath)));
     }
 
     public static String mergeVideos(String parentName) {
@@ -152,7 +152,9 @@ public class FfmpegTools {
         List<String> vidPaths = getChildPaths(new File(FileManager.getSegmentSumDirPath(baseName)));
 
         if (vidPaths != null) {
-            return mergeVideos(vidPaths, String.format("%s/%s", FileManager.getSummarisedDirPath(), parentName));
+            String outPath = String.format("%s/%s", FileManager.getSummarisedDirPath(), parentName);
+            mergeVideos(vidPaths, outPath);
+            return outPath;
         }
         return null;
     }

@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     }
 
     private void cleanVideoDirectories() {
+        // TODO uncomment after testing
 //        rawFootageFragment.cleanRepository(this);
         processingFragment.cleanRepository(this);
         summarisedVideoFragment.cleanRepository(this);

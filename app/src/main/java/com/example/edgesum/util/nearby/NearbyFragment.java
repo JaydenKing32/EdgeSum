@@ -403,18 +403,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
     }
 
-    public void sendLast(int lastN) {
-        for (int i = 0; i < lastN; i++) {
-            if (transferQueue.isEmpty()) {
-                Log.i(TAG, "Transfer queue is empty");
-                return;
-            }
-
-            Message message = transferQueue.remove();
-            sendFile(message, getFastestEndpoint());
-        }
-    }
-
     private void sendFile(Message message, Endpoint toEndpoint) {
         if (message == null || toEndpoint == null) {
             Log.e(TAG, "No message or endpoint selected");
@@ -799,10 +787,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
                     if (isSeg) {
                         if (handleSegment(filename)) {
-                            Log.d(TAG, "Successfully merged summarised video segments");
-                            videoSegments.remove(FfmpegTools.getBaseName(filename));
-                        } else {
-                            Log.v(TAG, "Video segment merge failure");
+                            String baseName = FfmpegTools.getBaseName(filename);
+                            Log.v(TAG, String.format("Removing video segment map for %s", baseName));
+                            videoSegments.remove(baseName);
                         }
                         return;
                     }
