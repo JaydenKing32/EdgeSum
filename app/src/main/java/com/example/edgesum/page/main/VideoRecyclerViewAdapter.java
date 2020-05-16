@@ -82,7 +82,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     void sendVideos(Selection<Long> positions) {
         if (transferCallback.isConnected()) {
             for (Long pos : positions) {
-                transferCallback.splitAndQueue(context, videos.get(pos.intValue()).getData());
+                transferCallback.addVideo(videos.get(pos.intValue()));
             }
             transferCallback.nextTransfer();
         } else {
@@ -134,6 +134,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     }
 
     public void uploadWithTransferUtility(String path) {
+        //noinspection deprecation
         TransferUtility transferUtility =
                 TransferUtility.builder()
                         .context(context)

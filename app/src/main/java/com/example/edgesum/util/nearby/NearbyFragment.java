@@ -15,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.collection.SimpleArrayMap;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.edgesum.R;
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.RemoveByNameEvent;
 import com.example.edgesum.event.RemoveEvent;
@@ -56,6 +58,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -274,15 +277,55 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         return discoveredEndpoints.values().stream().filter(e -> e.connected).count();
     }
 
-    @Override
-    public void queueVideo(Video video, Command command) {
+    private void queueVideo(Video video, Command command) {
         transferQueue.add(new Message(video, command));
     }
 
     @Override
-    public int splitAndQueue(Context context, String videoPath) {
+    public void addVideo(Video video) {
+        Context context = getContext();
+        if (context == null) {
+            Log.e(TAG, "No context");
+            return;
+        }
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean segmentationEnabled = pref.getBoolean(getString(R.string.enable_segment_key), false);
+        int segNum = pref.getInt(getString(R.string.manual_segment_key), -1);
+
+        if (segmentationEnabled && segNum > 2) {
+            int segCount = splitAndQueue(video.getData(), segNum);
+            if (segCount != segNum) {
+                Log.w(TAG, String.format("Number of segmented videos (%d) does not match intended value (%d)",
+                        segCount, segNum));
+            }
+        } else {
+            queueVideo(video, Command.SUMMARISE);
+        }
+    }
+
+    @Override
+    public void returnVideo(Video video) {
+        List<Endpoint> endpoints = getConnectedEndpoints();
+        Message message = new Message(video, Command.RETURN);
+
+        // Workers should only have a single connection to the master endpoint
+        if (endpoints.size() == 1) {
+            sendFile(message, endpoints.get(0));
+        } else {
+            Log.e(TAG, "Non-worker attempting to return a video");
+        }
+    }
+
+    private int splitAndQueue(String videoPath, int segNum) {
+        Context context = getContext();
+        if (context == null) {
+            Log.e(TAG, "No context");
+            return -1;
+        }
+
         String baseVideoName = FilenameUtils.getBaseName(videoPath);
-        List<Video> videos = FfmpegTools.splitAndReturn(context, videoPath, FfmpegTools.SEGMENT_NUM);
+        List<Video> videos = FfmpegTools.splitAndReturn(context, videoPath, segNum);
 
         if (videos == null || videos.size() == 0) {
             Log.e(TAG, String.format("Could not split %s", baseVideoName));
@@ -307,8 +350,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         segmentMap.put(segment.getName(), segment);
     }
 
-    @Override
-    public void initialTransfer() {
+    private void transferToAllEndpoints() {
         List<Endpoint> connectedEndpoints = getConnectedEndpoints();
 
         if (connectedEndpoints.size() == 0) {
@@ -329,78 +371,131 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
     }
 
-    private Endpoint getFastestEndpoint() {
+    /**
+     * @return the endpoint which has completed the most summarisations
+     */
+    private Endpoint getBestEndpoint() {
         List<Endpoint> connectedEndpoints = getConnectedEndpoints();
-        int minCount = -1;
-        int bestCount = minCount;
-        Endpoint fastest = null;
+        int bestComplete = Integer.MIN_VALUE;
+        int minJobs = Integer.MAX_VALUE;
+        Endpoint best = null;
 
         for (Endpoint endpoint : connectedEndpoints) {
-            if (!endpoint.isActive() && endpoint.completeCount > bestCount) {
-                bestCount = endpoint.completeCount;
-                fastest = endpoint;
+            if (!endpoint.isActive() && endpoint.completeCount > bestComplete) {
+                bestComplete = endpoint.completeCount;
+                best = endpoint;
             }
         }
 
-        if (bestCount > minCount) {
-            return fastest;
+        if (best != null) {
+            return best;
         }
 
         for (Endpoint endpoint : connectedEndpoints) {
-            if (endpoint.completeCount > bestCount) {
-                bestCount = endpoint.completeCount;
-                fastest = endpoint;
+            if (endpoint.completeCount > bestComplete ||
+                    endpoint.completeCount == bestComplete && endpoint.activeTransfers.size() < minJobs) {
+                bestComplete = endpoint.completeCount;
+                minJobs = endpoint.activeTransfers.size();
+                best = endpoint;
             }
         }
 
-        return fastest;
+        return best;
     }
 
-    public void sendToEarliestEndpoint() {
+    /**
+     * @return the endpoint with the smallest job queue
+     */
+    private Endpoint getLeastBusyEndpoint() {
+        return getConnectedEndpoints().stream().min(Comparator.comparing(e -> e.activeTransfers.size())).orElse(null);
+    }
+
+    /**
+     * send messages to endpoints in the order that endpoints have completed jobs
+     */
+    private void transferToEarliestEndpoint() {
         long connectedCount = getConnectedCount();
 
-        if (transferCount < connectedCount && transferQueue.size() == connectedCount) {
-            initialTransfer();
+        if (transferCount < connectedCount && transferQueue.size() >= connectedCount) {
+            transferToAllEndpoints();
         } else if (transferCount >= connectedCount) {
-            if (!transferQueue.isEmpty()) {
-                Message message = transferQueue.remove();
-
-                if (!endpointQueue.isEmpty()) {
-                    Endpoint toEndpoint = endpointQueue.remove();
-                    sendFile(message, toEndpoint);
-                } else {
-                    Log.i(TAG, "Endpoint Queue is empty");
-                    sendFile(message, getFastestEndpoint());
-                }
-            } else {
+            if (transferQueue.isEmpty()) {
                 Log.i(TAG, "Transfer queue is empty");
+                return;
             }
+            Message message = transferQueue.remove();
+
+            if (endpointQueue.isEmpty()) {
+                Log.i(TAG, "Endpoint queue is empty");
+                sendFile(message, getBestEndpoint());
+            } else {
+                Endpoint toEndpoint = endpointQueue.remove();
+                sendFile(message, toEndpoint);
+            }
+        } else {
+            Log.d(TAG, "Less queued transfers than connected endpoints");
         }
     }
 
     @Override
     public void nextTransfer() {
-        if (!transferQueue.isEmpty()) {
-            Message message = transferQueue.remove();
-            sendFile(message, getFastestEndpoint());
-        } else {
+        if (transferQueue.isEmpty()) {
             Log.i(TAG, "Transfer queue is empty");
+            return;
+        }
+
+        Context context = getContext();
+        if (context == null) {
+            Log.e(TAG, "No context");
+            return;
+        }
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        Algorithm defaultAlgorithm = Algorithm.best;
+        String algorithmKey = getString(R.string.scheduling_algorithm_key);
+        Algorithm selectedAlgorithm = Algorithm.valueOf(pref.getString(algorithmKey, defaultAlgorithm.name()));
+
+        switch (selectedAlgorithm) {
+            case best:
+                sendFile(transferQueue.remove(), getBestEndpoint());
+                break;
+            case least_busy:
+                sendFile(transferQueue.remove(), getLeastBusyEndpoint());
+                break;
+            case ordered:
+                transferToEarliestEndpoint();
+            case simple_return:
+                // Handled in onPayloadReceived with nextTransferOrQuickReturn
+            default:
         }
     }
 
-    private void nextTransfer(String toEndpointId) {
+    private void nextTransferOrQuickReturn(Context context, String toEndpointId) {
+        boolean quickReturn = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(getString(R.string.scheduling_algorithm_key), "")
+                .equals(getString(R.string.simple_return_algorithm_key));
+
+        if (quickReturn) {
+            nextTransferTo(toEndpointId);
+        } else {
+            nextTransfer();
+        }
+    }
+
+    private void nextTransferTo(String toEndpointId) {
         if (getConnectedEndpoints().size() == 0) {
             Log.e(TAG, "Not connected to any devices");
             return;
         }
 
-        if (!transferQueue.isEmpty()) {
-            Message message = transferQueue.remove();
-            Endpoint toEndpoint = discoveredEndpoints.get(toEndpointId);
-            sendFile(message, toEndpoint);
-        } else {
+        if (transferQueue.isEmpty()) {
             Log.i(TAG, "Transfer queue is empty");
+            return;
         }
+
+        Message message = transferQueue.remove();
+        Endpoint toEndpoint = discoveredEndpoints.get(toEndpointId);
+        sendFile(message, toEndpoint);
     }
 
     private void sendFile(Message message, Endpoint toEndpoint) {
@@ -604,7 +699,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         endpointQueue.add(fromEndpoint);
 
                         processFilePayload(payloadId, endpointId);
-                        nextTransfer(endpointId);
+                        nextTransferOrQuickReturn(context, endpointId);
                         break;
                     case COMPLETE:
                         videoName = parts[1];
@@ -641,7 +736,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             handleSegment(videoName);
                         }
 
-                        nextTransfer(endpointId);
+                        nextTransferOrQuickReturn(context, endpointId);
                         break;
                 }
             } else if (payload.getType() == Payload.Type.FILE) {

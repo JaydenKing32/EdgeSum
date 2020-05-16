@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class FfmpegTools {
     private static final String TAG = FfmpegTools.class.getSimpleName();
     private static final char SEGMENT_SEPARATOR = '!';
-    public static final int SEGMENT_NUM = 4; // TODO Make into preference value
 
     public static void executeFfmpeg(ArrayList<String> ffmpegArgs) {
         Log.i(TAG, String.format("Running ffmpeg with:\n  %s", TextUtils.join(" ", ffmpegArgs)));

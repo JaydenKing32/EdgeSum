@@ -8,7 +8,6 @@ import android.util.Log;
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.nearby.Message;
 import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
@@ -42,7 +41,7 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Void> {
 
             if (transferCallback.isConnected()) {
                 EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                transferCallback.queueVideo(video, Message.Command.SUMMARISE);
+                transferCallback.addVideo(video);
                 transferCallback.nextTransfer();
             } else {
                 EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));

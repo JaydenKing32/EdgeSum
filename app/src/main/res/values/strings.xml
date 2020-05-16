@@ -11,8 +11,9 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->
-
-    <string name="summarisation_header">Summarisation</string>
+    <string name="workflow_header">Workflow</string>
+    <string name="video_header">Video</string>
+    <string name="segmentation_header">Segmentation</string>
 
     <!-- Summarisation Preferences -->
     <string name="auto_retrieval_title">Auto Retrieval</string>
@@ -50,4 +51,51 @@
     <string name="settings">Settings</string>
     <string name="logout">Logout</string>
     <string name="clean_directories">Clean Directories</string>
+    <string name="enable_segment_key">enable_segment</string>
+    <string name="auto_segment_key">auto_segment</string>
+    <string name="manual_segment_key">manual_segment</string>
+    <string name="enable_segment_summary_off">Send video segments to worker phones</string>
+    <string name="enable_segment_summary_on">Send whole video files to worker phones</string>
+    <string name="auto_segment_summary">Number of segments a video is split into will be determined by the number of connected worker phones</string>
+    <string name="enable_segment_title">Enable Segmentation</string>
+    <string name="auto_segment_title">Auto Segment Number</string>
+    <string name="manual_segment_title">Manual Segment Number</string>
+
+    <string name="scheduling_algorithm_title">Scheduling Algorithm</string>
+    <string name="best_algorithm_title">Best</string>
+    <string name="least_busy_algorithm_title">Least Busy</string>
+    <string name="ordered_algorithm_title">Ordered</string>
+    <string name="simple_return_algorithm_title">Quick Return</string>
+
+    <string name="best_algorithm_key">best</string>
+    <string name="least_busy_algorithm_key">least_busy</string>
+    <string name="ordered_algorithm_key">ordered</string>
+    <string name="simple_return_algorithm_key">simple_return</string>
+    <string name="scheduling_algorithm_key">scheduling_algorithm</string>
+
+
+    <!-- String Arrays -->
+    <string-array name="speed_values">
+        <item>ultrafast</item>
+        <item>superfast</item>
+        <item>veryfast</item>
+        <item>faster</item>
+        <item>fast</item>
+        <item>medium</item>
+        <item>slow</item>
+        <item>slower</item>
+        <item>veryslow</item>
+    </string-array>
+    <string-array name="algorithm_titles">
+        <item>@string/best_algorithm_title</item>
+        <item>@string/least_busy_algorithm_title</item>
+        <item>@string/ordered_algorithm_title</item>
+        <item>@string/simple_return_algorithm_title</item>
+    </string-array>
+    <string-array name="algorithm_keys">
+        <item>@string/best_algorithm_key</item>
+        <item>@string/least_busy_algorithm_key</item>
+        <item>@string/ordered_algorithm_key</item>
+        <item>@string/simple_return_algorithm_key</item>
+    </string-array>
 </resources>

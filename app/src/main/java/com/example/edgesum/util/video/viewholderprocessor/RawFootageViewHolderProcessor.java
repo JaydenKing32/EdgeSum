@@ -33,9 +33,7 @@ public class RawFootageViewHolderProcessor implements VideoViewHolderProcessor {
             Log.v(TAG, String.format("User selected %s", video));
 
             if (transferCallback.isConnected()) {
-                // TODO Abstract out adding videos to queue and starting transfers to standardise for all techniques
-                //  Techniques should be user-selectable, e.g. splitting or not splitting should be a preference setting
-                transferCallback.splitAndQueue(context, video.getData());
+                transferCallback.addVideo(video);
                 transferCallback.nextTransfer();
 
                 EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));

@@ -8,8 +8,7 @@ import android.util.Log;
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.nearby.Message;
-import com.example.edgesum.util.nearby.NearbyFragment;
+import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -50,11 +49,11 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             "20200312_195430.mp4"
     };
     private static final Set<String> downloadedVideos = new HashSet<>();
-    private final WeakReference<NearbyFragment> nearbyFragment;
+    private final WeakReference<TransferCallback> transferCallback;
 
-    public DownloadTestVideosTask(NearbyFragment nearbyFragment, Context context) {
+    public DownloadTestVideosTask(TransferCallback transferCallback, Context context) {
         super(context);
-        this.nearbyFragment = new WeakReference<>(nearbyFragment);
+        this.transferCallback = new WeakReference<>(transferCallback);
 
         this.downloadCallback = (video) -> {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -65,10 +64,10 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
                 Log.d(TAG, String.format("Completed downloading %s", video.getName()));
             }
 
-            if (nearbyFragment.isConnected()) {
+            if (transferCallback.isConnected()) {
                 EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                nearbyFragment.queueVideo(video, Message.Command.SUMMARISE);
-                nearbyFragment.sendToEarliestEndpoint();
+                transferCallback.addVideo(video);
+                transferCallback.nextTransfer();
             } else {
                 EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
 
@@ -89,6 +88,7 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
         //List<String> allVideos = dash.getFilenames();
         List<String> allVideos = Arrays.asList(testVideos);
 
+        //noinspection ConstantConditions
         if (allVideos == null || allVideos.size() == 0) {
             Log.e(TAG, "Couldn't download videos");
             return null;
@@ -110,7 +110,7 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             dash.downloadVideo(toDownload, downloadManager, context);
         } else {
             Log.d(TAG, "No new videos");
-            nearbyFragment.get().stopDashDownload();
+            transferCallback.get().stopDashDownload();
         }
         return null;
     }
