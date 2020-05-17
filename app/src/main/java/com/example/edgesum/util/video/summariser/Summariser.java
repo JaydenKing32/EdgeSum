@@ -66,7 +66,6 @@ class Summariser {
         // Config.setLogLevel(Level.AV_LOG_WARNING);
 
         ArrayList<Double[]> activeTimes = getActiveTimes();
-        ArrayList<String> ffmpegArgs;
 
         if (activeTimes == null) {
             // Testing purposes: Video file is completely active, so just copy it
@@ -80,22 +79,15 @@ class Summariser {
             }
         }
 
-        switch (activeTimes.size()) {
-            case 0:
-                // Video file is completely inactive, so ignore it, don't copy it
-                Log.w(TAG, "No activity detected");
-                return printResult(start, false);
-            case 1:
-                // One active scene found, extract that scene and copy it
-                Double[] times = activeTimes.get(0);
-                ffmpegArgs = getArgumentsOneScene(times[0], times[1]);
-                Log.w(TAG, "One active section found");
-                break;
-            default:
-                // Multiple active scenes found, extract them and combine them into a summarised video
-                ffmpegArgs = getArgumentsMultipleScenes(activeTimes);
-                Log.w(TAG, String.format("%d active sections found", activeTimes.size()));
+        if (activeTimes.size() == 0) {
+            // Video file is completely inactive, so ignore it, don't copy it
+            Log.w(TAG, "No activity detected");
+            return printResult(start, false);
         }
+
+        // One or more active scenes found, extract them and combine them into a summarised video
+        ArrayList<String> ffmpegArgs = getSummarisationArguments(activeTimes);
+        Log.w(TAG, String.format("%d active sections found", activeTimes.size()));
 
         FfmpegTools.executeFfmpeg(ffmpegArgs);
         return printResult(start, true);
@@ -126,19 +118,8 @@ class Summariser {
         return isOutVid;
     }
 
-    private ArrayList<String> getArgumentsOneScene(Double start, Double end) {
-        return new ArrayList<>(Arrays.asList(
-                "-y", // Skip prompts
-                "-ss", start.toString(),
-                "-to", end.toString(),
-                "-i", inPath,
-                "-c", "copy",
-                getOutPath()
-        ));
-    }
-
     // https://superuser.com/a/1230097/911563
-    private ArrayList<String> getArgumentsMultipleScenes(ArrayList<Double[]> activeTimes) {
+    private ArrayList<String> getSummarisationArguments(ArrayList<Double[]> activeTimes) {
         ArrayList<String> ffmpegArgs = new ArrayList<>(Arrays.asList(
                 "-y", // Skip prompts
                 "-i", inPath,
@@ -228,9 +209,9 @@ class Summariser {
     }
 
     private void detectFreeze() {
-        FFmpeg.execute(String.format("-i %s -vf %s -f null -",
-                inPath, String.format(Locale.ENGLISH,
-                        "freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=%s", noise, duration, freezeFilePath))
+        FFmpeg.execute(String.format(Locale.ENGLISH,
+                "-i %s -vf freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=%s -f null -",
+                inPath, noise, duration, freezeFilePath)
         );
     }
 
