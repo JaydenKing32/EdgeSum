@@ -63,11 +63,13 @@
 
     <string name="scheduling_algorithm_title">Scheduling Algorithm</string>
     <string name="best_algorithm_title">Best</string>
+    <string name="fastest_algorithm_title">Fastest</string>
     <string name="least_busy_algorithm_title">Least Busy</string>
     <string name="ordered_algorithm_title">Ordered</string>
     <string name="simple_return_algorithm_title">Quick Return</string>
 
     <string name="best_algorithm_key">best</string>
+    <string name="fastest_algorithm_key">fastest</string>
     <string name="least_busy_algorithm_key">least_busy</string>
     <string name="ordered_algorithm_key">ordered</string>
     <string name="simple_return_algorithm_key">simple_return</string>
@@ -88,12 +90,14 @@
     </string-array>
     <string-array name="algorithm_titles">
         <item>@string/best_algorithm_title</item>
+        <item>@string/fastest_algorithm_title</item>
         <item>@string/least_busy_algorithm_title</item>
         <item>@string/ordered_algorithm_title</item>
         <item>@string/simple_return_algorithm_title</item>
     </string-array>
     <string-array name="algorithm_keys">
         <item>@string/best_algorithm_key</item>
+        <item>@string/fastest_algorithm_key</item>
         <item>@string/least_busy_algorithm_key</item>
         <item>@string/ordered_algorithm_key</item>
         <item>@string/simple_return_algorithm_key</item>

@@ -385,13 +385,13 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
      */
     private Endpoint getBestEndpoint() {
         List<Endpoint> connectedEndpoints = getConnectedEndpoints();
-        int bestComplete = Integer.MIN_VALUE;
+        int maxComplete = Integer.MIN_VALUE;
         int minJobs = Integer.MAX_VALUE;
         Endpoint best = null;
 
         for (Endpoint endpoint : connectedEndpoints) {
-            if (!endpoint.isActive() && endpoint.completeCount > bestComplete) {
-                bestComplete = endpoint.completeCount;
+            if (!endpoint.isActive() && endpoint.completeCount > maxComplete) {
+                maxComplete = endpoint.completeCount;
                 best = endpoint;
             }
         }
@@ -400,11 +400,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             return best;
         }
 
+        // No free workers, so just choose the one with the most completed jobs, use job queue length as tiebreaker
         for (Endpoint endpoint : connectedEndpoints) {
-            if (endpoint.completeCount > bestComplete ||
-                    (endpoint.completeCount == bestComplete && endpoint.activeTransfers.size() < minJobs)) {
-                bestComplete = endpoint.completeCount;
-                minJobs = endpoint.activeTransfers.size();
+            if (endpoint.completeCount > maxComplete ||
+                    (endpoint.completeCount == maxComplete && endpoint.getJobCount() < minJobs)) {
+                maxComplete = endpoint.completeCount;
+                minJobs = endpoint.getJobCount();
                 best = endpoint;
             }
         }
@@ -413,10 +414,43 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     /**
+     * @return an inactive endpoint with the most completed summarisations, or the endpoint with the shortest job queue
+     */
+    private Endpoint getFastestEndpoint() {
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        int maxComplete = Integer.MIN_VALUE;
+        int minJobs = Integer.MAX_VALUE;
+        Endpoint fastest = null;
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (!endpoint.isActive() && endpoint.completeCount > maxComplete) {
+                maxComplete = endpoint.completeCount;
+                fastest = endpoint;
+            }
+        }
+
+        if (fastest != null) {
+            return fastest;
+        }
+
+        // No free workers, so just choose the one with the shortest job queue, use completion count as tiebreaker
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (endpoint.getJobCount() < minJobs ||
+                    (endpoint.getJobCount() == minJobs && endpoint.completeCount > maxComplete)) {
+                maxComplete = endpoint.completeCount;
+                minJobs = endpoint.getJobCount();
+                fastest = endpoint;
+            }
+        }
+
+        return fastest;
+    }
+
+    /**
      * @return the endpoint with the smallest job queue
      */
     private Endpoint getLeastBusyEndpoint() {
-        return getConnectedEndpoints().stream().min(Comparator.comparing(e -> e.activeTransfers.size())).orElse(null);
+        return getConnectedEndpoints().stream().min(Comparator.comparing(Endpoint::getJobCount)).orElse(null);
     }
 
     /**
@@ -436,7 +470,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
             if (endpointQueue.isEmpty()) {
                 Log.i(TAG, "Endpoint queue is empty");
-                sendFile(message, getBestEndpoint());
+                sendFile(message, getLeastBusyEndpoint());
             } else {
                 Endpoint toEndpoint = endpointQueue.remove();
                 sendFile(message, toEndpoint);
@@ -469,13 +503,25 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             case best:
                 sendFile(transferQueue.remove(), getBestEndpoint());
                 break;
+            case fastest:
+                sendFile(transferQueue.remove(), getFastestEndpoint());
+                break;
             case least_busy:
                 sendFile(transferQueue.remove(), getLeastBusyEndpoint());
                 break;
             case ordered:
                 transferToEarliestEndpoint();
             case simple_return:
-                // Handled in onPayloadReceived with nextTransferOrQuickReturn
+                // nextTransfer should only be called during the initial transfer with simple_return,
+                //  all subsequent transfers will be handled by nextTransferOrQuickReturn
+                int connectedCount = getConnectedCount();
+
+                if (transferCount < connectedCount && transferQueue.size() >= connectedCount) {
+                    transferToAllEndpoints();
+                } else {
+                    Log.d(TAG, "In nextTransfer with simple_return; transferQueue is too small to start");
+                }
+                break;
             default:
         }
     }
@@ -561,7 +607,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         // Finally, send the file payload.
         connectionsClient.sendPayload(toEndpoint.id, filePayload);
-        toEndpoint.activeTransfers.add(uri.getLastPathSegment());
+        toEndpoint.addJob(uri.getLastPathSegment());
     }
 
     @Override
@@ -706,7 +752,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         }
 
                         fromEndpoint.completeCount++;
-                        fromEndpoint.activeTransfers.remove(videoName);
+                        fromEndpoint.removeJob(videoName);
                         endpointQueue.add(fromEndpoint);
 
                         processFilePayload(payloadId, endpointId);
@@ -736,7 +782,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         }
 
                         fromEndpoint.completeCount++;
-                        fromEndpoint.activeTransfers.remove(videoName);
+                        fromEndpoint.removeJob(videoName);
                         endpointQueue.add(fromEndpoint);
 
                         if (!isSegmentedVideo(videoName)) {

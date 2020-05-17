@@ -12,7 +12,7 @@ class Endpoint {
     final String name;
     boolean connected;
     Integer completeCount = 0;
-    final List<String> activeTransfers = new ArrayList<>();
+    private final List<String> jobList = new ArrayList<>();
 
     Endpoint(String id, String name, boolean connected) {
         this.id = id;
@@ -27,7 +27,19 @@ class Endpoint {
     }
 
     public boolean isActive() {
-        return !activeTransfers.isEmpty();
+        return !jobList.isEmpty();
+    }
+
+    void addJob(String videoName) {
+        jobList.add(videoName);
+    }
+
+    void removeJob(String videoName) {
+        jobList.remove(videoName);
+    }
+
+    int getJobCount() {
+        return jobList.size();
     }
 
     @Override
