@@ -139,11 +139,11 @@ public class Video implements Parcelable {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Video.Media.TITLE, name);
         values.put(MediaStore.Video.Media.MIME_TYPE, mimeType);
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "");
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        values.put(MediaStore.Video.Media.DISPLAY_NAME, "player");
+        values.put(MediaStore.Video.Media.DESCRIPTION, "");
+        values.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+            values.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis());
         }
         values.put(MediaStore.Video.Media.DATA, path);
         context.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);

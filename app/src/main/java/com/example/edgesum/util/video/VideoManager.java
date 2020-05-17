@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
-import android.provider.MediaStore;
+import android.provider.MediaStore.Video.Media;
 import android.util.Log;
 
 import com.example.edgesum.model.Video;
@@ -28,14 +28,15 @@ public class VideoManager {
 
     public static List<Video> getAllVideoFromExternalStorageFolder(Context context, File file) {
         Log.v(TAG, "getAllVideoFromExternalStorageFolder");
-        String[] projection = {MediaStore.Video.Media._ID,
-                MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.DISPLAY_NAME,
-                MediaStore.Video.Media.SIZE,
-                MediaStore.Video.Media.MIME_TYPE
+        String[] projection = {
+                Media._ID,
+                Media.DATA,
+                Media.DISPLAY_NAME,
+                Media.SIZE,
+                Media.MIME_TYPE
         };
         if (DeviceExternalStorage.externalStorageIsReadable()) {
-            String selection = MediaStore.Video.Media.DATA + " LIKE ? ";
+            String selection = Media.DATA + " LIKE ? ";
             String[] selectionArgs = new String[]{"%" + file.getAbsolutePath() + "%"};
             Log.d("VideoManager", file.getAbsolutePath());
             return getVideosFromExternalStorage(context, projection, selection, selectionArgs, null);
@@ -70,15 +71,16 @@ public class VideoManager {
     }
 
     private static Video getVideoFromFile(Context context, File file) {
-        String[] projection = {MediaStore.Video.Media._ID,
-                MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.DISPLAY_NAME,
-                MediaStore.Video.Media.SIZE,
-                MediaStore.Video.Media.MIME_TYPE
+        String[] projection = {
+                Media._ID,
+                Media.DATA,
+                Media.DISPLAY_NAME,
+                Media.SIZE,
+                Media.MIME_TYPE
         };
-        String selection = MediaStore.Video.Media.DATA + "=?";
+        String selection = Media.DATA + "=?";
         String[] selectionArgs = new String[]{file.getAbsolutePath()};
-        Cursor videoCursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+        Cursor videoCursor = context.getContentResolver().query(Media.EXTERNAL_CONTENT_URI,
                 projection, selection, selectionArgs, null);
 
         if (videoCursor == null || !videoCursor.moveToFirst()) {
@@ -92,16 +94,16 @@ public class VideoManager {
 
     public static Video getVideoFromPath(Context context, String path) {
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Video.Media.TITLE, FilenameUtils.getBaseName(path));
-        values.put(MediaStore.Video.Media.MIME_TYPE, String.format("video/%s", FileManager.VIDEO_EXTENSION));
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "");
-        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        values.put(Media.TITLE, FilenameUtils.getBaseName(path));
+        values.put(Media.MIME_TYPE, String.format("video/%s", FilenameUtils.getExtension(path).toLowerCase()));
+        values.put(Media.DISPLAY_NAME, "player");
+        values.put(Media.DESCRIPTION, "");
+        values.put(Media.DATE_ADDED, System.currentTimeMillis());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+            values.put(Media.DATE_TAKEN, System.currentTimeMillis());
         }
-        values.put(MediaStore.Video.Media.DATA, path);
-        context.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+        values.put(Media.DATA, path);
+        context.getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, values);
 
         return getVideoFromFile(context, new File(path));
     }
@@ -116,7 +118,7 @@ public class VideoManager {
 
     private static List<Video> getVideosFromExternalStorage(Context context, String[] projection, String selection,
                                                             String[] selectionArgs, String sortOrder) {
-        Cursor videoCursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+        Cursor videoCursor = context.getContentResolver().query(Media.EXTERNAL_CONTENT_URI,
                 projection, selection, selectionArgs, sortOrder);
 
         if (videoCursor != null) {
@@ -149,11 +151,11 @@ public class VideoManager {
         Log.v(TAG, "videoFromCursor");
         Video video = null;
         try {
-            String id = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID));
-            String name = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-            String data = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
-            BigInteger size = new BigInteger(cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE)));
-            String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
+            String id = cursor.getString(cursor.getColumnIndex(Media._ID));
+            String name = cursor.getString(cursor.getColumnIndex(Media.DISPLAY_NAME));
+            String data = cursor.getString(cursor.getColumnIndex(Media.DATA));
+            BigInteger size = new BigInteger(cursor.getString(cursor.getColumnIndex(Media.SIZE)));
+            String mimeType = cursor.getString(cursor.getColumnIndex(Media.MIME_TYPE));
             video = new Video(id, name, data, mimeType, size);
         } catch (Exception e) {
             e.printStackTrace();

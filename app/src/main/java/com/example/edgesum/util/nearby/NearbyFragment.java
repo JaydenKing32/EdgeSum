@@ -273,8 +273,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         return discoveredEndpoints.values().stream().filter(e -> e.connected).collect(Collectors.toList());
     }
 
-    private long getConnectedCount() {
-        return discoveredEndpoints.values().stream().filter(e -> e.connected).count();
+    private int getConnectedCount() {
+        // Should never come close to INT_MAX endpoints, but count() returns a long, should be fine to cast down to int
+        return (int) discoveredEndpoints.values().stream().filter(e -> e.connected).count();
     }
 
     private void queueVideo(Video video, Command command) {
@@ -291,17 +292,25 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         boolean segmentationEnabled = pref.getBoolean(getString(R.string.enable_segment_key), false);
-        int segNum = pref.getInt(getString(R.string.manual_segment_key), -1);
+        boolean autoSegmentation = pref.getBoolean(getString(R.string.auto_segment_key), false);
+        int segNum = autoSegmentation ?
+                getConnectedCount() :
+                pref.getInt(getString(R.string.manual_segment_key), -1);
 
-        if (segmentationEnabled && segNum > 2) {
-            int segCount = splitAndQueue(video.getData(), segNum);
-            if (segCount != segNum) {
-                Log.w(TAG, String.format("Number of segmented videos (%d) does not match intended value (%d)",
-                        segCount, segNum));
+        if (segmentationEnabled) {
+            if (segNum > 2) {
+                int segCount = splitAndQueue(video.getData(), segNum);
+                if (segCount != segNum) {
+                    Log.w(TAG, String.format("Number of segmented videos (%d) does not match intended value (%d)",
+                            segCount, segNum));
+                }
+                return;
+            } else {
+                Log.i(TAG, String.format("Segmentation count too low (%d), just summarizing whole video instead",
+                        segNum));
             }
-        } else {
-            queueVideo(video, Command.SUMMARISE);
         }
+        queueVideo(video, Command.SUMMARISE);
     }
 
     @Override
@@ -393,7 +402,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         for (Endpoint endpoint : connectedEndpoints) {
             if (endpoint.completeCount > bestComplete ||
-                    endpoint.completeCount == bestComplete && endpoint.activeTransfers.size() < minJobs) {
+                    (endpoint.completeCount == bestComplete && endpoint.activeTransfers.size() < minJobs)) {
                 bestComplete = endpoint.completeCount;
                 minJobs = endpoint.activeTransfers.size();
                 best = endpoint;
@@ -414,7 +423,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
      * send messages to endpoints in the order that endpoints have completed jobs
      */
     private void transferToEarliestEndpoint() {
-        long connectedCount = getConnectedCount();
+        int connectedCount = getConnectedCount();
 
         if (transferCount < connectedCount && transferQueue.size() >= connectedCount) {
             transferToAllEndpoints();
@@ -454,6 +463,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         Algorithm defaultAlgorithm = Algorithm.best;
         String algorithmKey = getString(R.string.scheduling_algorithm_key);
         Algorithm selectedAlgorithm = Algorithm.valueOf(pref.getString(algorithmKey, defaultAlgorithm.name()));
+        Log.v(TAG, String.format("nextTransfer with selected algorithm: %s", selectedAlgorithm.name()));
 
         switch (selectedAlgorithm) {
             case best:
@@ -476,6 +486,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 .equals(getString(R.string.simple_return_algorithm_key));
 
         if (quickReturn) {
+            Log.v(TAG, String.format("Quick return to %s", toEndpointId));
             nextTransferTo(toEndpointId);
         } else {
             nextTransfer();

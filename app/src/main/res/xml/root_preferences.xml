@@ -107,6 +107,7 @@
             android:id="@+id/manual_segment_preference"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:max="10"
             app:defaultValue="true"
             app:dependency="@string/enable_segment_key"
             app:key="@string/manual_segment_key"
