@@ -16,4 +16,6 @@ public interface TransferCallback {
     void stopDashDownload();
 
     boolean isConnected();
+
+    void printPreferences();
 }

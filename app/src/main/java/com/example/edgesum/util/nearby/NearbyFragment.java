@@ -59,8 +59,10 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.StringJoiner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -73,6 +75,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     private static final Strategy STRATEGY = Strategy.P2P_STAR;
     private static final String SERVICE_ID = "com.example.edgesum";
     private static final String LOCAL_NAME_KEY = "LOCAL_NAME";
+    private static final Algorithm DEFAULT_ALGORITHM = Algorithm.best;
     private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
     private final Queue<Message> transferQueue = new LinkedList<>();
     private final Queue<Endpoint> endpointQueue = new LinkedList<>();
@@ -319,6 +322,39 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
     }
 
+    @Override
+    public void printPreferences() {
+        Context context = getContext();
+        if (context == null) {
+            Log.e(TAG, "No context");
+            return;
+        }
+        StringJoiner prefMessage = new StringJoiner("\n  ");
+        prefMessage.add("Preferences:");
+
+        // Add segmentation prefs to SummariserPrefs?
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        String algorithmKey = getString(R.string.scheduling_algorithm_key);
+        Algorithm selectedAlgorithm = Algorithm.valueOf(pref.getString(algorithmKey, DEFAULT_ALGORITHM.name()));
+        boolean segmentationEnabled = pref.getBoolean(getString(R.string.enable_segment_key), false);
+        boolean autoSegmentation = pref.getBoolean(getString(R.string.auto_segment_key), false);
+        int segNum = autoSegmentation ?
+                getConnectedCount() :
+                pref.getInt(getString(R.string.manual_segment_key), -1);
+        SummariserPrefs sumPref = SummariserPrefs.extractPreferences(context);
+
+        prefMessage.add(String.format("Algorithm: %s", selectedAlgorithm.name()));
+        prefMessage.add(String.format("Segmentation: %s", segmentationEnabled));
+        prefMessage.add(String.format("Auto segmentation: %s", autoSegmentation));
+        prefMessage.add(String.format("Segment number: %s", segNum));
+        prefMessage.add(String.format(Locale.ENGLISH, "Noise tolerance: %.2f", sumPref.noise));
+        prefMessage.add(String.format( "Freeze duration: %s", sumPref.duration));
+        prefMessage.add(String.format(Locale.ENGLISH, "Quality: %d", sumPref.quality));
+        prefMessage.add(String.format( "Speed: %s", sumPref.speed));
+
+        Log.w(TAG, prefMessage.toString());
+    }
+
     private int splitAndQueue(String videoPath, int segNum) {
         Context context = getContext();
         if (context == null) {
@@ -487,9 +523,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        Algorithm defaultAlgorithm = Algorithm.best;
         String algorithmKey = getString(R.string.scheduling_algorithm_key);
-        Algorithm selectedAlgorithm = Algorithm.valueOf(pref.getString(algorithmKey, defaultAlgorithm.name()));
+        Algorithm selectedAlgorithm = Algorithm.valueOf(pref.getString(algorithmKey, DEFAULT_ALGORITHM.name()));
         Log.v(TAG, String.format("nextTransfer with selected algorithm: %s", selectedAlgorithm.name()));
 
         switch (selectedAlgorithm) {
