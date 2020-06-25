@@ -56,7 +56,7 @@ if [[ ! -d "${verbose_dir}" ]]; then
 fi
 if [[ -z ${serials} ]]; then
     # Get `adb.exe devices` output, remove \r and "device", skip first line
-    serials=$(tail -n +2 <<<"$(adb.exe devices | sed -r 's/(device)?\r$//')")
+    serials=$(tail -n +2 <<<"$(adb.exe devices | sed -r 's/(emulator.*)?(device)?\r$//')")
 fi
 if [[ -z ${verbosity} ]]; then
     verbosity="W"
