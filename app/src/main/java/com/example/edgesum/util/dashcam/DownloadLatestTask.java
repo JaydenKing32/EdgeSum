@@ -2,7 +2,6 @@ package com.example.edgesum.util.dashcam;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 
 import com.example.edgesum.event.AddEvent;
@@ -31,13 +30,9 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Void> {
         super(context);
 
         this.downloadCallback = (video) -> {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                long duration = Duration.between(start, Instant.now()).toMillis();
-                String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
-                Log.w(TAG, String.format("Completed downloading %s in %ss", video.getName(), time));
-            } else {
-                Log.d(TAG, String.format("Completed downloading %s", video.getName()));
-            }
+            long duration = Duration.between(start, Instant.now()).toMillis();
+            String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
+            Log.w(TAG, String.format("Completed downloading %s in %ss", video.getName(), time));
 
             if (transferCallback.isConnected()) {
                 EventBus.getDefault().post(new AddEvent(video, Type.RAW));
@@ -75,10 +70,7 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Void> {
             downloadedVideos.add(toDownload);
             Context context = weakReference.get();
             DashDownloadManager downloadManager = DashDownloadManager.getInstance(context, downloadCallback);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                start = Instant.now();
-            }
+            start = Instant.now();
 
             dash.downloadVideo(toDownload, downloadManager, context);
         } else {

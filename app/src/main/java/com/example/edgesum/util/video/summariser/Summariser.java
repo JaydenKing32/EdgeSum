@@ -1,6 +1,5 @@
 package com.example.edgesum.util.video.summariser;
 
-import android.os.Build;
 import android.util.Log;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
@@ -57,10 +56,7 @@ class Summariser {
      * @return true if a summary video is created, false if no video is created
      */
     boolean summarise() {
-        Instant start = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            start = Instant.now();
-        }
+        Instant start = Instant.now();
 
         // Don't suppress ffmpeg-mobile logs, seems to interfere with FFmpeg.getMediaInformation
         // Config.setLogLevel(Level.AV_LOG_WARNING);
@@ -100,10 +96,8 @@ class Summariser {
         result.add(String.format(Locale.ENGLISH, "filename: %s.%s",
                 FilenameUtils.getBaseName(inPath), FilenameUtils.getExtension(inPath)));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            result.add(String.format(Locale.ENGLISH, "time: %ss",
-                    DurationFormatUtils.formatDuration(Duration.between(start, Instant.now()).toMillis(), "ss.SSS")));
-        }
+        result.add(String.format(Locale.ENGLISH, "time: %ss",
+                DurationFormatUtils.formatDuration(Duration.between(start, Instant.now()).toMillis(), "ss.SSS")));
         result.add(String.format(Locale.ENGLISH, "original duration: %.2f", FfmpegTools.getDuration(inPath)));
 
         if (isOutVid) {

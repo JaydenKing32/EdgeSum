@@ -1,12 +1,10 @@
 package com.example.edgesum.util.nearby;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -89,7 +87,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     // https://stackoverflow.com/questions/38142819/make-a-list-of-hashmap-type-in-recycler-view-adapter
     private final LinkedHashMap<String, Endpoint> discoveredEndpoints = new LinkedHashMap<>();
     private ConnectionsClient connectionsClient;
-    protected RecyclerView.Adapter deviceAdapter;
+    protected DeviceListAdapter deviceAdapter;
     protected String localName = null;
 
     private int transferCount = 0;
@@ -110,11 +108,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     private void setLocalName(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            @SuppressLint("MissingPermission")
-            String sn = Build.getSerial();
-            localName = String.format("%s [%s]", DeviceName.getDeviceName(), sn.substring(sn.length() - 4));
-        } else if (localName == null) {
+        if (localName == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(LOCAL_NAME_KEY, Context.MODE_PRIVATE);
             String uniqueId = sharedPrefs.getString(LOCAL_NAME_KEY, null);
             if (uniqueId == null) {
@@ -729,10 +723,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     case SUMMARISE_SEGMENT:
                         Log.v(TAG, String.format("Started downloading %s", message));
                         payloadId = addPayloadFilename(parts);
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            startTimes.put(payloadId, Instant.now());
-                        }
+                        startTimes.put(payloadId, Instant.now());
 
                         processFilePayload(payloadId, endpointId);
                         break;
@@ -740,10 +731,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         videoName = parts[2];
                         Log.v(TAG, String.format("Started downloading %s", videoName));
                         payloadId = addPayloadFilename(parts);
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            startTimes.put(payloadId, Instant.now());
-                        }
+                        startTimes.put(payloadId, Instant.now());
 
                         fromEndpoint = discoveredEndpoints.get(endpointId);
                         if (fromEndpoint == null) {
@@ -882,13 +870,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             Command command = filePayloadCommands.get(payloadId);
 
             if (filePayload != null && filename != null && command != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    long duration = Duration.between(startTimes.remove(payloadId), Instant.now()).toMillis();
-                    String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
-                    Log.w(TAG, String.format("Completed downloading %s in %ss", filename, time));
-                } else {
-                    Log.w(TAG, String.format("Completed downloading %s", filename));
-                }
+                long duration = Duration.between(startTimes.remove(payloadId), Instant.now()).toMillis();
+                String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
+                Log.w(TAG, String.format("Completed downloading %s in %ss", filename, time));
+
                 completedFilePayloads.remove(payloadId);
                 filePayloadFilenames.remove(payloadId);
                 filePayloadCommands.remove(payloadId);

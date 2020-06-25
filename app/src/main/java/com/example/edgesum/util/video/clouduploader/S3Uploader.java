@@ -1,7 +1,6 @@
 package com.example.edgesum.util.video.clouduploader;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,9 +24,7 @@ public class S3Uploader implements CloudUploader {
 
     @Override
     public void upload(Context context, String videoPath) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            start = Instant.now();
-        }
+        start = Instant.now();
         uploadWithTransferUtility(context, videoPath);
     }
 
@@ -60,10 +57,8 @@ public class S3Uploader implements CloudUploader {
                         // Handle a completed upload.
                         Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post(new RemoveByPathEvent(path, Type.SUMMARISED));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            Log.i("UploadToS3", String.format("Uploaded %s in %ds", name,
-                                    Duration.between(start, Instant.now()).getSeconds()));
-                        }
+                        Log.i("UploadToS3", String.format("Uploaded %s in %ds", name,
+                                Duration.between(start, Instant.now()).getSeconds()));
                     }
                 }
 
