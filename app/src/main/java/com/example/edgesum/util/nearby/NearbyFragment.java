@@ -350,9 +350,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         prefMessage.add(String.format("Auto segmentation: %s", autoSegmentation));
         prefMessage.add(String.format("Segment number: %s", segNum));
         prefMessage.add(String.format(Locale.ENGLISH, "Noise tolerance: %.2f", sumPref.noise));
-        prefMessage.add(String.format( "Freeze duration: %s", sumPref.duration));
+        prefMessage.add(String.format("Freeze duration: %s", sumPref.duration));
         prefMessage.add(String.format(Locale.ENGLISH, "Quality: %d", sumPref.quality));
-        prefMessage.add(String.format( "Speed: %s", sumPref.speed));
+        prefMessage.add(String.format("Speed: %s", sumPref.speed));
 
         Log.w(TAG, prefMessage.toString());
     }
@@ -880,16 +880,18 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     return false;
                 }
 
-                Context context = getContext();
-                if (context == null) {
-                    Log.e(TAG, "No context");
-                    return false;
+                if (!outPath.equals(FfmpegTools.NO_VIDEO)) {
+                    Context context = getContext();
+                    if (context == null) {
+                        Log.e(TAG, "No context");
+                        return false;
+                    }
+
+                    video.insertMediaValues(context, outPath);
+                    Video mergedVideo = VideoManager.getVideoFromPath(context, outPath);
+                    EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
                 }
 
-                video.insertMediaValues(context, outPath);
-                Video mergedVideo = VideoManager.getVideoFromPath(context, outPath);
-                EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
-                EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.PROCESSING));
                 EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.RAW));
                 return true;
             } else {
@@ -1000,7 +1002,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         @Override
         public void onPayloadTransferUpdate(@NonNull String endpointId, @NonNull PayloadTransferUpdate update) {
             int progress = (int) (100.0 * (update.getBytesTransferred() / (double) update.getTotalBytes()));
-            Log.d(TAG, String.format("Transfer to endpoint %s: %d%%", endpointId, progress));
+            Log.v(TAG, String.format("Transfer to endpoint %s: %d%%", endpointId, progress));
 
             if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
                 long payloadId = update.getPayloadId();

@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class FfmpegTools {
     private static final String TAG = FfmpegTools.class.getSimpleName();
     private static final char SEGMENT_SEPARATOR = '!';
+    public static final String NO_VIDEO = "NO_VIDEO";
 
     public static void executeFfmpeg(ArrayList<String> ffmpegArgs) {
         Log.i(TAG, String.format("Running ffmpeg with:\n  %s", TextUtils.join(" ", ffmpegArgs)));
@@ -115,19 +116,19 @@ public class FfmpegTools {
         }
     }
 
-    private static void mergeVideos(List<String> vidPaths, String outPath) {
+    private static boolean mergeVideos(List<String> vidPaths, String outPath) {
         Log.d(TAG, String.format("Merging %s", outPath));
 
         if (vidPaths == null || vidPaths.size() == 0) {
             Log.d(TAG, "No split videos to merge");
-            return;
+            return false;
         }
         if (vidPaths.size() == 1) { // Only one video, no need to merge so just copy
             try {
                 String vidPath = vidPaths.get(0);
                 Log.w(TAG, String.format("Single segment returned, duration: %.2f", getDuration(vidPath)));
                 FileManager.copy(new File(vidPath), new File(outPath));
-                return;
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -147,6 +148,7 @@ public class FfmpegTools {
 
         FfmpegTools.executeFfmpeg(ffmpegArgs);
         Log.w(TAG, String.format("Merged duration: %.2f", getDuration(outPath)));
+        return true;
     }
 
     public static String mergeVideos(String parentName) {
@@ -155,8 +157,11 @@ public class FfmpegTools {
 
         if (vidPaths != null) {
             String outPath = String.format("%s/%s", FileManager.getSummarisedDirPath(), parentName);
-            mergeVideos(vidPaths, outPath);
-            return outPath;
+            if (mergeVideos(vidPaths, outPath)) {
+                return outPath;
+            } else {
+                return NO_VIDEO;
+            }
         }
         return null;
     }
