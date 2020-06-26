@@ -54,8 +54,8 @@
     <string name="enable_segment_key">enable_segment</string>
     <string name="auto_segment_key">auto_segment</string>
     <string name="manual_segment_key">manual_segment</string>
-    <string name="enable_segment_summary_off">Send video segments to worker phones</string>
-    <string name="enable_segment_summary_on">Send whole video files to worker phones</string>
+    <string name="enable_segment_summary_off">Send whole video files to worker phones</string>
+    <string name="enable_segment_summary_on">Send video segments to worker phones</string>
     <string name="auto_segment_summary">Number of segments a video is split into will be determined by the number of connected worker phones</string>
     <string name="enable_segment_title">Enable Segmentation</string>
     <string name="auto_segment_title">Auto Segment Number</string>
