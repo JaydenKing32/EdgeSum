@@ -544,7 +544,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             case simple_return:
                 // nextTransfer should only be called during the initial transfer with simple_return,
                 //  all subsequent transfers will be handled by nextTransferOrQuickReturn
+                // Probably shouldn't be used with live video downloading, summarisation speed may be faster than
+                //  download speed
                 int connectedCount = getConnectedCount();
+                Log.v(TAG, String.format("connectedCount: %d, transferCount: %d, transferQueue size: %d",
+                        connectedCount, transferCount, transferQueue.size()));
 
                 if (transferCount < connectedCount && transferQueue.size() >= connectedCount) {
                     transferToAllEndpoints();
