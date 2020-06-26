@@ -119,7 +119,7 @@ public class DashDownloadManager {
 
         DownloadManager.Request request = new DownloadManager.Request(requestUri);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MOVIES,
-                String.format("%s%s", FileManager.RAW_DIR_NAME, requestUri.getLastPathSegment()));
+                String.format("%s/%s", FileManager.RAW_DIR_NAME, requestUri.getLastPathSegment()));
         request.allowScanningByMediaScanner();
 
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
