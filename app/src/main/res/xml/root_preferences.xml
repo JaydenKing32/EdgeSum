@@ -19,6 +19,11 @@
 
     <PreferenceCategory app:title="@string/workflow_header">
         <SwitchPreferenceCompat
+            android:defaultValue="false"
+            app:key="@string/remove_raw_key"
+            app:summary="@string/remove_raw_summary"
+            app:title="@string/remove_raw_title" />
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             app:key="auto_retrieval"
             app:summaryOff="@string/auto_retrieval_summary_off"

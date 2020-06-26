@@ -1,8 +1,13 @@
 package com.example.edgesum.util.file;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.preference.PreferenceManager;
+
+import com.example.edgesum.R;
 import com.example.edgesum.util.devicestorage.DeviceExternalStorage;
 import com.example.edgesum.util.video.FfmpegTools;
 
@@ -105,17 +110,12 @@ public class FileManager {
         return makeDirectory(new File(dir, subDirName));
     }
 
-    public static void cleanVideoDirectories() {
-        // TODO uncomment after testing
-//        for (File dir : DIRS) {
-//            try {
-//                FileUtils.cleanDirectory(dir);
-//            } catch (IOException e) {
-//                Log.e(TAG, String.format("Failed to delete %s", dir.getAbsolutePath()));
-//                e.printStackTrace();
-//            }
-//        }
-        List<File> dirs = Arrays.asList(SUMMARISED_DIR, NEARBY_DIR, SEGMENT_DIR, SEGMENT_SUM_DIR);
+    public static void cleanVideoDirectories(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        List<File> dirs = pref.getBoolean(context.getString(R.string.remove_raw_key), false) ?
+                DIRS :
+                Arrays.asList(SUMMARISED_DIR, NEARBY_DIR, SEGMENT_DIR, SEGMENT_SUM_DIR);
+
         for (File dir : dirs) {
             try {
                 FileUtils.cleanDirectory(dir);

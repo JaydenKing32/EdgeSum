@@ -1,7 +1,9 @@
 package com.example.edgesum.page.main;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService;
@@ -154,11 +157,15 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     }
 
     private void cleanVideoDirectories() {
-        // TODO uncomment after testing
-//        rawFootageFragment.cleanRepository(this);
+        Context context = getApplicationContext();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if (pref.getBoolean(getString(R.string.remove_raw_key), false)) {
+            rawFootageFragment.cleanRepository(this);
+        }
         processingFragment.cleanRepository(this);
         summarisedVideoFragment.cleanRepository(this);
-        FileManager.cleanVideoDirectories();
+        FileManager.cleanVideoDirectories(context);
     }
 
     @Override
