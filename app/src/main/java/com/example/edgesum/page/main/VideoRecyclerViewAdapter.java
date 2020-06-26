@@ -80,7 +80,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     }
 
     void sendVideos(Selection<Long> positions) {
-        transferCallback.printPreferences();
+        transferCallback.printPreferences(false);
         if (transferCallback.isConnected()) {
             for (Long pos : positions) {
                 transferCallback.addVideo(videos.get(pos.intValue()));

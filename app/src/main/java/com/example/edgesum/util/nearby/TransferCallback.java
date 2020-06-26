@@ -17,5 +17,5 @@ public interface TransferCallback {
 
     boolean isConnected();
 
-    void printPreferences();
+    void printPreferences(boolean autoDown);
 }

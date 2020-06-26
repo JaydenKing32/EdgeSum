@@ -250,6 +250,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     protected void startDashDownload() {
         Log.w(TAG, "Started downloading from dashcam");
         int delay = 20;
+        printPreferences(true);
         Log.w(TAG, String.format("Download delay: %ds", delay));
         downloadTaskExecutor.scheduleAtFixedRate(() -> new DownloadTestVideosTask(
                 this, getContext()).execute(), 0, delay, TimeUnit.SECONDS);
@@ -323,7 +324,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     @Override
-    public void printPreferences() {
+    public void printPreferences(boolean autoDown) {
         Context context = getContext();
         if (context == null) {
             Log.e(TAG, "No context");
@@ -343,6 +344,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 pref.getInt(getString(R.string.manual_segment_key), -1);
         SummariserPrefs sumPref = SummariserPrefs.extractPreferences(context);
 
+        prefMessage.add(String.format("Auto download: %s", autoDown));
         prefMessage.add(String.format("Algorithm: %s", selectedAlgorithm.name()));
         prefMessage.add(String.format("Segmentation: %s", segmentationEnabled));
         prefMessage.add(String.format("Auto segmentation: %s", autoSegmentation));
@@ -888,6 +890,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 Video mergedVideo = VideoManager.getVideoFromPath(context, outPath);
                 EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
                 EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.PROCESSING));
+                EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.RAW));
                 return true;
             } else {
                 Log.v(TAG, String.format("Received a segment of %s", baseVideoName));
