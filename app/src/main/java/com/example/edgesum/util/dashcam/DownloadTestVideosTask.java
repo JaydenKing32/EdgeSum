@@ -14,6 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.Set;
 
 public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
     private static final String TAG = DownloadTestVideosTask.class.getSimpleName();
-    private static final String[] testVideos = {
+    private static final ArrayList<String> testVideos = new ArrayList<>(Arrays.asList(
             "20200312_150643.mp4",
             "20200312_150744.mp4",
             "20200312_150844.mp4",
@@ -45,17 +46,20 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             "20200312_195230.mp4",
             "20200312_195330.mp4",
             "20200312_195430.mp4"
-    };
-    private static final Set<String> downloadedVideos = new HashSet<>();
-    private static boolean stopDownload = false;
+    ));
+    private static final Set<String> startedDownloads = new HashSet<>();
+    private static final ArrayList<String> completedDownloads = new ArrayList<>();
+    private final WeakReference<TransferCallback> transferCallback;
 
     public DownloadTestVideosTask(TransferCallback transferCallback, Context context) {
         super(context);
+        this.transferCallback = new WeakReference<>(transferCallback);
 
         this.downloadCallback = (video) -> {
             long duration = Duration.between(start, Instant.now()).toMillis();
             String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
             Log.w(TAG, String.format("Completed downloading %s in %ss", video.getName(), time));
+            completedDownloads.add(video.getName());
 
             if (transferCallback.isConnected()) {
                 EventBus.getDefault().post(new AddEvent(video, Type.RAW));
@@ -71,10 +75,6 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
                 summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
                 context.startService(summariseIntent);
             }
-
-            if (stopDownload) {
-                transferCallback.stopDashDownload();
-            }
         };
     }
 
@@ -83,20 +83,19 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
         Log.v(TAG, "Starting DownloadTestVideosTask");
         DashModel dash = DashModel.blackvue();
         //List<String> allVideos = dash.getFilenames();
-        List<String> allVideos = Arrays.asList(testVideos);
+        List<String> allVideos = testVideos;
 
-        //noinspection ConstantConditions
         if (allVideos == null || allVideos.size() == 0) {
             Log.e(TAG, "Couldn't download videos");
             return null;
         }
-        List<String> newVideos = new ArrayList<>(CollectionUtils.disjunction(allVideos, downloadedVideos));
+        List<String> newVideos = new ArrayList<>(CollectionUtils.disjunction(allVideos, startedDownloads));
         newVideos.sort(Comparator.comparing(String::toString));
 
         if (newVideos.size() != 0) {
             // Get oldest new video, allVideos should already be sorted
             String toDownload = newVideos.get(0);
-            downloadedVideos.add(toDownload);
+            startedDownloads.add(toDownload);
             Context context = weakReference.get();
             DashDownloadManager downloadManager = DashDownloadManager.getInstance(context, downloadCallback);
             start = Instant.now();
@@ -104,7 +103,10 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             dash.downloadVideo(toDownload, downloadManager, context);
         } else {
             Log.d(TAG, "No new videos");
-            stopDownload = true;
+
+            if (completedDownloads.size() == testVideos.size()) {
+                transferCallback.get().stopDashDownload();
+            }
         }
         return null;
     }
