@@ -10,14 +10,17 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.collection.SimpleArrayMap;
+
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.video.VideoManager;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.function.Consumer;
 
 /**
@@ -38,7 +41,7 @@ public class DashDownloadManager {
     private static final String TAG = DashDownloadManager.class.getSimpleName();
     private static DashDownloadManager manager = null;
     private static Consumer<Video> downloadCallback;
-    private static final Set<Long> downloadIds = new HashSet<>();
+    private static final SimpleArrayMap<Long, Instant> downloadTimes = new SimpleArrayMap<>();
 
     // https://stackoverflow.com/a/46328681/8031185
     private static final BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
@@ -49,8 +52,8 @@ public class DashDownloadManager {
             if (downloadManager != null) {
                 long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
 
-                if (downloadIds.contains(id)) {
-                    downloadIds.remove(id);
+                if (downloadTimes.containsKey(id)) {
+                    Instant start = downloadTimes.remove(id);
                     // https://stackoverflow.com/a/46328681/8031185
                     // https://stackoverflow.com/q/21477493/8031185
                     // https://stackoverflow.com/a/33192273/8031185
@@ -68,7 +71,11 @@ public class DashDownloadManager {
                                 if (path != null) {
                                     Video video = VideoManager.getVideoFromPath(context, path);
                                     downloadCallback.accept(video);
-                                    Log.v(TAG, String.format("Successfully downloaded: %s", path));
+
+                                    long duration = Duration.between(start, Instant.now()).toMillis();
+                                    String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
+                                    Log.w(TAG, String.format("Successfully downloaded %s in %ss",
+                                            video.getName(), time));
                                 } else {
                                     Log.e(TAG, "Path is null");
                                 }
@@ -125,7 +132,7 @@ public class DashDownloadManager {
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
         if (downloadManager != null) {
-            downloadIds.add(downloadManager.enqueue(request));
+            downloadTimes.put(downloadManager.enqueue(request), Instant.now());
         }
     }
 

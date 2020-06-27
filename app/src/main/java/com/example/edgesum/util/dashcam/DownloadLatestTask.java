@@ -11,11 +11,8 @@ import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -30,10 +27,6 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Void> {
         super(context);
 
         this.downloadCallback = (video) -> {
-            long duration = Duration.between(start, Instant.now()).toMillis();
-            String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
-            Log.w(TAG, String.format("Completed downloading %s in %ss", video.getName(), time));
-
             if (transferCallback.isConnected()) {
                 EventBus.getDefault().post(new AddEvent(video, Type.RAW));
                 transferCallback.addVideo(video);
@@ -70,7 +63,6 @@ public class DownloadLatestTask extends DownloadTask<Void, Void, Void> {
             downloadedVideos.add(toDownload);
             Context context = weakReference.get();
             DashDownloadManager downloadManager = DashDownloadManager.getInstance(context, downloadCallback);
-            start = Instant.now();
 
             dash.downloadVideo(toDownload, downloadManager, context);
         } else {
