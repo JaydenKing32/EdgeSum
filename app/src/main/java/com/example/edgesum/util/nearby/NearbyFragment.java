@@ -246,22 +246,23 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         connectionsClient.stopDiscovery();
     }
 
-    // https://stackoverflow.com/a/8232889/8031185
+    // https://stackoverflow.com/a/11944965/8031185
     protected void startDashDownload() {
         Context context = getContext();
         if (context == null) {
             Log.e(TAG, "No context");
             return;
         }
-        int defaultDelay = 20;
+        int defaultDelay = 1;
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         int delay = pref.getInt(getString(R.string.download_delay_key), defaultDelay);
 
         printPreferences(true);
         Log.w(TAG, String.format("Download delay: %ds", delay));
         Log.w(TAG, "Started downloading from dashcam");
-        downloadTaskExecutor.scheduleAtFixedRate(() -> new DownloadTestVideosTask(
-                this, getContext()).execute(), 0, delay, TimeUnit.SECONDS);
+
+        downloadTaskExecutor.scheduleWithFixedDelay(new DownloadTestVideosTask(
+                this, getContext()), 0, delay, TimeUnit.SECONDS);
     }
 
     public void stopDashDownload() {

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
+import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
@@ -20,9 +21,15 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
-public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
+public class DownloadTestVideosTask implements Runnable {
     private static final String TAG = DownloadTestVideosTask.class.getSimpleName();
+    private static final Set<String> startedDownloads = new HashSet<>();
+    private static final ArrayList<String> completedDownloads = new ArrayList<>();
+    private final WeakReference<Context> weakReference;
+    private final Consumer<Video> downloadCallback;
+    private final WeakReference<TransferCallback> transferCallback;
     private static final ArrayList<String> testVideos = new ArrayList<>(Arrays.asList(
             "20200312_150643.mp4",
             "20200312_150744.mp4",
@@ -44,36 +51,36 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             "20200312_195330.mp4",
             "20200312_195430.mp4"
     ));
-    private static final Set<String> startedDownloads = new HashSet<>();
-    private static final ArrayList<String> completedDownloads = new ArrayList<>();
-    private final WeakReference<TransferCallback> transferCallback;
 
     public DownloadTestVideosTask(TransferCallback transferCallback, Context context) {
-        super(context);
+        this.weakReference = new WeakReference<>(context);
         this.transferCallback = new WeakReference<>(transferCallback);
 
         this.downloadCallback = (video) -> {
-            completedDownloads.add(video.getName());
+            synchronized (this) {
+                completedDownloads.add(video.getName());
 
-            if (transferCallback.isConnected()) {
-                EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                transferCallback.addVideo(video);
-                transferCallback.nextTransfer();
-            } else {
-                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+                if (transferCallback.isConnected()) {
+                    EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                    transferCallback.addVideo(video);
+                    transferCallback.nextTransfer();
+                } else {
+                    EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
 
-                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
-                Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
-                summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
-                context.startService(summariseIntent);
+                    final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
+                    Intent summariseIntent = new Intent(context, SummariserIntentService.class);
+                    summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                    summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                    summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
+                    context.startService(summariseIntent);
+                }
+                this.notify();
             }
         };
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    public void run() {
         Log.v(TAG, "Starting DownloadTestVideosTask");
         DashModel dash = DashModel.blackvue();
         //List<String> allVideos = dash.getFilenames();
@@ -81,7 +88,7 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
 
         if (allVideos == null || allVideos.size() == 0) {
             Log.e(TAG, "Couldn't download videos");
-            return null;
+            return;
         }
         List<String> newVideos = new ArrayList<>(CollectionUtils.disjunction(allVideos, startedDownloads));
         newVideos.sort(Comparator.comparing(String::toString));
@@ -101,6 +108,13 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
                 transferCallback.get().stopDashDownload();
             }
         }
-        return null;
+
+        synchronized (this) {
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

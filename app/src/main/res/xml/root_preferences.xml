@@ -27,7 +27,7 @@
         <SeekBarPreference
             android:id="@+id/download_delay_preference"
             android:max="100"
-            app:defaultValue="20"
+            app:defaultValue="1"
             app:key="@string/download_delay_key"
             app:min="1"
             app:persistent="true"
