@@ -79,6 +79,8 @@
     <string name="remove_raw_title">Remove raw</string>
     <string name="remove_raw_summary">Remove raw videos during clean</string>
     <string name="remove_raw_key">remove_raw</string>
+    <string name="download_delay_key">download_delay</string>
+    <string name="download_delay_title">Download Delay</string>
 
 
     <!-- String Arrays -->
