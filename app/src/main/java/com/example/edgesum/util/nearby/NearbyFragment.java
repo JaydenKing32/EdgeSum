@@ -258,7 +258,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     public void stopDashDownload() {
         Log.w(TAG, "Stopped downloading from dashcam");
-        downloadTaskExecutor.shutdownNow();
+        downloadTaskExecutor.shutdown();
 
         Context context = getContext();
         if (context != null) {

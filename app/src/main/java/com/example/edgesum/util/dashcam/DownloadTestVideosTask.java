@@ -14,7 +14,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
 
-import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -48,11 +47,10 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             "20200312_195430.mp4"
     };
     private static final Set<String> downloadedVideos = new HashSet<>();
-    private final WeakReference<TransferCallback> transferCallback;
+    private static boolean stopDownload = false;
 
     public DownloadTestVideosTask(TransferCallback transferCallback, Context context) {
         super(context);
-        this.transferCallback = new WeakReference<>(transferCallback);
 
         this.downloadCallback = (video) -> {
             long duration = Duration.between(start, Instant.now()).toMillis();
@@ -72,6 +70,10 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
                 summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
                 summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
                 context.startService(summariseIntent);
+            }
+
+            if (stopDownload) {
+                transferCallback.stopDashDownload();
             }
         };
     }
@@ -102,7 +104,7 @@ public class DownloadTestVideosTask extends DownloadTask<Void, Void, Void> {
             dash.downloadVideo(toDownload, downloadManager, context);
         } else {
             Log.d(TAG, "No new videos");
-            transferCallback.get().stopDashDownload();
+            stopDownload = true;
         }
         return null;
     }
