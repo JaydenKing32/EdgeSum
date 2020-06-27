@@ -96,7 +96,7 @@ class Summariser {
         result.add("Summarisation completed");
         result.add(String.format("filename: %s.%s",
                 FilenameUtils.getBaseName(inPath), FilenameUtils.getExtension(inPath)));
-        result.add(String.format(Locale.ENGLISH, "Active sections: %d", activeCount));
+        result.add(String.format(Locale.ENGLISH, "active sections: %d", activeCount));
 
         result.add(String.format("time: %ss",
                 DurationFormatUtils.formatDuration(Duration.between(start, Instant.now()).toMillis(), "ss.SSS")));
