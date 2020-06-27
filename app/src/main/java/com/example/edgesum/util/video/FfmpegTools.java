@@ -123,10 +123,12 @@ public class FfmpegTools {
             Log.d(TAG, "No split videos to merge");
             return false;
         }
+        String baseName = FilenameUtils.getBaseName(outPath);
         if (vidPaths.size() == 1) { // Only one video, no need to merge so just copy
             try {
                 String vidPath = vidPaths.get(0);
-                Log.w(TAG, String.format("Single segment returned, duration: %.2f", getDuration(vidPath)));
+                Log.w(TAG, String.format("Single segment returned, duration of %s: %.2f",
+                        baseName, getDuration(vidPath)));
                 FileManager.copy(new File(vidPath), new File(outPath));
                 return true;
             } catch (IOException e) {
@@ -134,7 +136,7 @@ public class FfmpegTools {
             }
         }
         String pathFilename = String.format("%s/paths.txt",
-                FileManager.getSegmentDirPath(FilenameUtils.getBaseName(outPath)));
+                FileManager.getSegmentDirPath(baseName));
         makePathsFile(vidPaths, pathFilename);
 
         ArrayList<String> ffmpegArgs = new ArrayList<>(Arrays.asList(
@@ -147,7 +149,7 @@ public class FfmpegTools {
         ));
 
         FfmpegTools.executeFfmpeg(ffmpegArgs);
-        Log.w(TAG, String.format("Merged duration: %.2f", getDuration(outPath)));
+        Log.w(TAG, String.format("Merged duration of %s: %.2f", baseName, getDuration(outPath)));
         return true;
     }
 
