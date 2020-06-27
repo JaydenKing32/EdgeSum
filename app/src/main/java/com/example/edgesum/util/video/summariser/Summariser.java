@@ -68,35 +68,37 @@ class Summariser {
             try {
                 Log.w(TAG, "Whole video is active");
                 FileManager.copy(new File(inPath), new File(getOutPath()));
-                return printResult(start, true);
+                return printResult(start, true, -1);
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }
         }
+        int activeCount = activeTimes.size();
 
-        if (activeTimes.size() == 0) {
+        if (activeCount == 0) {
             // Video file is completely inactive, so ignore it, don't copy it
             Log.w(TAG, "No activity detected");
-            return printResult(start, false);
+            return printResult(start, false, 0);
         }
 
         // One or more active scenes found, extract them and combine them into a summarised video
         ArrayList<String> ffmpegArgs = getSummarisationArguments(activeTimes);
-        Log.w(TAG, String.format("%d active sections found", activeTimes.size()));
+        Log.w(TAG, String.format("%d active sections found", activeCount));
 
         FfmpegTools.executeFfmpeg(ffmpegArgs);
-        return printResult(start, true);
+        return printResult(start, true, activeCount);
     }
 
-    private boolean printResult(Instant start, boolean isOutVid) {
+    private boolean printResult(Instant start, boolean isOutVid, int activeCount) {
         StringJoiner result = new StringJoiner("\n  ");
 
         result.add("Summarisation completed");
-        result.add(String.format(Locale.ENGLISH, "filename: %s.%s",
+        result.add(String.format("filename: %s.%s",
                 FilenameUtils.getBaseName(inPath), FilenameUtils.getExtension(inPath)));
+        result.add(String.format(Locale.ENGLISH, "Active sections: %d", activeCount));
 
-        result.add(String.format(Locale.ENGLISH, "time: %ss",
+        result.add(String.format("time: %ss",
                 DurationFormatUtils.formatDuration(Duration.between(start, Instant.now()).toMillis(), "ss.SSS")));
         result.add(String.format(Locale.ENGLISH, "original duration: %.2f", FfmpegTools.getDuration(inPath)));
 
