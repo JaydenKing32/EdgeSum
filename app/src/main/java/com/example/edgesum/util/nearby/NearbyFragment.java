@@ -350,9 +350,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         prefMessage.add(String.format("Auto segmentation: %s", autoSegmentation));
         prefMessage.add(String.format("Segment number: %s", segNum));
         prefMessage.add(String.format(Locale.ENGLISH, "Noise tolerance: %.2f", sumPref.noise));
-        prefMessage.add(String.format("Freeze duration: %s", sumPref.duration));
         prefMessage.add(String.format(Locale.ENGLISH, "Quality: %d", sumPref.quality));
         prefMessage.add(String.format("Speed: %s", sumPref.speed));
+        prefMessage.add(String.format(Locale.ENGLISH, "Freeze duration: %.2f", sumPref.duration));
 
         Log.w(TAG, prefMessage.toString());
     }

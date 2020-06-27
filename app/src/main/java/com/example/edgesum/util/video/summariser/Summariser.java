@@ -104,6 +104,10 @@ class Summariser {
             result.add(String.format(Locale.ENGLISH, "summarised duration: %.2f",
                     FfmpegTools.getDuration(getOutPath())));
         }
+        result.add(String.format(Locale.ENGLISH, "noise tolerance: %.2f", noise));
+        result.add(String.format(Locale.ENGLISH, "quality: %d", quality));
+        result.add(String.format("speed: %s", speed));
+        result.add(String.format(Locale.ENGLISH, "freeze duration: %.2f", duration));
 
         Log.w(TAG, result.toString());
         return isOutVid;
