@@ -18,7 +18,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/workflow_header">
-        <SwitchPreferenceCompat
+        <CheckBoxPreference
             android:id="@+id/remove_raw_preference"
             android:defaultValue="false"
             app:key="@string/remove_raw_key"
@@ -60,6 +60,12 @@
             app:persistent="true"
             app:title="@string/scheduling_algorithm_title"
             app:useSimpleSummaryProvider="true" />
+        <CheckBoxPreference
+            android:id="@+id/fast_scheduling_preference"
+            android:defaultValue="false"
+            app:key="@string/fast_scheduling_key"
+            app:summary="@string/fast_scheduling_summary"
+            app:title="@string/fast_scheduling_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/video_header">

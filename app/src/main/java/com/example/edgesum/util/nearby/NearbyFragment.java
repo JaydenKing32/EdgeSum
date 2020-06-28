@@ -352,6 +352,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         String algorithmKey = getString(R.string.scheduling_algorithm_key);
         Algorithm selectedAlgorithm = Algorithm.valueOf(pref.getString(algorithmKey, DEFAULT_ALGORITHM.name()));
+        boolean fastScheduling = pref.getBoolean(getString(R.string.fast_scheduling_key), false);
         boolean segmentationEnabled = pref.getBoolean(getString(R.string.enable_segment_key), false);
         boolean autoSegmentation = pref.getBoolean(getString(R.string.auto_segment_key), false);
         int segNum = autoSegmentation ?
@@ -361,6 +362,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         prefMessage.add(String.format("Auto download: %s", autoDown));
         prefMessage.add(String.format("Algorithm: %s", selectedAlgorithm.name()));
+        prefMessage.add(String.format("Fast scheduling: %s", fastScheduling));
         prefMessage.add(String.format("Segmentation: %s", segmentationEnabled));
         prefMessage.add(String.format("Auto segmentation: %s", autoSegmentation));
         prefMessage.add(String.format("Segment number: %s", segNum));
@@ -810,6 +812,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
                             EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
                             EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+                        }
+
+                        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+                        boolean fastScheduling = pref.getBoolean(getString(R.string.fast_scheduling_key), false);
+                        if (fastScheduling) {
+                            nextTransferOrQuickReturn(context, endpointId);
                         }
 
                         break;
