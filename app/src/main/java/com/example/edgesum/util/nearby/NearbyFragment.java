@@ -1,10 +1,12 @@
 package com.example.edgesum.util.nearby;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -110,7 +112,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     private void setLocalName(Context context) {
-        if (localName == null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            @SuppressLint("MissingPermission")
+            String sn = Build.getSerial();
+            localName = String.format("%s [%s]", DeviceName.getDeviceName(), sn.substring(sn.length() - 4));
+        } else if (localName == null) {
             SharedPreferences sharedPrefs = context.getSharedPreferences(LOCAL_NAME_KEY, Context.MODE_PRIVATE);
             String uniqueId = sharedPrefs.getString(LOCAL_NAME_KEY, null);
             if (uniqueId == null) {
@@ -138,7 +144,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 @Override
                 public void onEndpointLost(@NonNull String endpointId) {
                     // A previously discovered endpoint has gone away.
-                    Log.d(TAG, String.format("Lost endpoint %s", endpointId));
+                    Log.d(TAG, String.format("Lost endpoint %s", discoveredEndpoints.get(endpointId)));
 
                     if (discoveredEndpoints.containsKey(endpointId)) {
                         discoveredEndpoints.remove(endpointId);
@@ -152,7 +158,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 @Override
                 public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
                     Log.d(TAG, String.format("Initiated connection with %s: %s",
-                            endpointId, connectionInfo.getEndpointName()));
+                            discoveredEndpoints.get(endpointId), connectionInfo.getEndpointName()));
 
                     if (!discoveredEndpoints.containsKey(endpointId)) {
                         discoveredEndpoints.put(endpointId, new Endpoint(endpointId, connectionInfo.getEndpointName()));
@@ -182,8 +188,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     switch (result.getStatus().getStatusCode()) {
                         case ConnectionsStatusCodes.STATUS_OK:
                             // We're connected! Can now start sending and receiving data.
-                            Log.i(TAG, String.format("Connected to %s", endpointId));
                             Endpoint endpoint = discoveredEndpoints.get(endpointId);
+                            Log.i(TAG, String.format("Connected to %s", endpoint));
 
                             if (endpoint != null) {
                                 endpoint.connected = true;
@@ -192,7 +198,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                             // The connection was rejected by one or both sides.
-                            Log.i(TAG, String.format("Connection rejected by %s", endpointId));
+                            Log.i(TAG, String.format("Connection rejected by %s", discoveredEndpoints.get(endpointId)));
                             break;
                         case ConnectionsStatusCodes.STATUS_ERROR:
                             // The connection broke before it was able to be accepted.
@@ -206,8 +212,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 @Override
                 public void onDisconnected(@NonNull String endpointId) {
                     // We've been disconnected from this endpoint. No more data can be sent or received.
-                    Log.d(TAG, String.format("Disconnected from %s", endpointId));
                     Endpoint endpoint = discoveredEndpoints.get(endpointId);
+                    Log.d(TAG, String.format("Disconnected from %s", endpoint));
 
                     if (endpoint != null) {
                         endpoint.connected = false;
@@ -575,7 +581,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 .equals(getString(R.string.simple_return_algorithm_key));
 
         if (quickReturn) {
-            Log.v(TAG, String.format("Quick return to %s", toEndpointId));
+            Log.v(TAG, String.format("Quick return to %s", discoveredEndpoints.get(toEndpointId)));
             nextTransferTo(toEndpointId);
         } else {
             nextTransfer();
@@ -756,7 +762,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 String videoName;
                 String videoPath;
                 Video video;
-                Endpoint fromEndpoint;
+
+                Endpoint fromEndpoint = discoveredEndpoints.get(endpointId);
+                if (fromEndpoint == null) {
+                    Log.e(TAG, String.format("Failed to retrieve endpoint %s", endpointId));
+                    return;
+                }
 
                 Context context = getContext();
                 if (context == null) {
@@ -770,7 +781,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         break;
                     case SUMMARISE:
                     case SUMMARISE_SEGMENT:
-                        Log.v(TAG, String.format("Started downloading %s", message));
+                        Log.v(TAG, String.format("Started downloading %s from %s", message, fromEndpoint));
                         payloadId = addPayloadFilename(parts);
                         startTimes.put(payloadId, Instant.now());
 
@@ -778,15 +789,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         break;
                     case RETURN:
                         videoName = parts[2];
-                        Log.v(TAG, String.format("Started downloading %s", videoName));
+                        Log.v(TAG, String.format("Started downloading %s from %s", videoName, fromEndpoint));
                         payloadId = addPayloadFilename(parts);
                         startTimes.put(payloadId, Instant.now());
-
-                        fromEndpoint = discoveredEndpoints.get(endpointId);
-                        if (fromEndpoint == null) {
-                            Log.e(TAG, String.format("Failed to retrieve endpoint %s", endpointId));
-                            return;
-                        }
 
                         fromEndpoint.completeCount++;
                         fromEndpoint.removeJob(videoName);
@@ -797,7 +802,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         break;
                     case COMPLETE:
                         videoName = parts[1];
-                        Log.d(TAG, String.format("Endpoint %s has finished downloading %s", endpointId, videoName));
+                        Log.d(TAG, String.format("%s has finished downloading %s", fromEndpoint, videoName));
 
                         if (!isSegmentedVideo(videoName)) {
                             videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
@@ -810,13 +815,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         break;
                     case NO_ACTIVITY:
                         videoName = parts[1];
-                        Log.d(TAG, String.format("%s contained no activity", videoName));
-
-                        fromEndpoint = discoveredEndpoints.get(endpointId);
-                        if (fromEndpoint == null) {
-                            Log.e(TAG, String.format("Failed to retrieve endpoint %s", endpointId));
-                            return;
-                        }
+                        Log.d(TAG, String.format("%s from %s contained no activity", videoName, fromEndpoint));
 
                         fromEndpoint.completeCount++;
                         fromEndpoint.removeJob(videoName);
@@ -924,7 +923,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             if (filePayload != null && filename != null && command != null) {
                 long duration = Duration.between(startTimes.remove(payloadId), Instant.now()).toMillis();
                 String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
-                Log.w(TAG, String.format("Completed downloading %s in %ss", filename, time));
+                Log.w(TAG, String.format("Completed downloading %s from %s in %ss",
+                        filename, discoveredEndpoints.get(fromEndpointId), time));
 
                 completedFilePayloads.remove(payloadId);
                 filePayloadFilenames.remove(payloadId);
@@ -1015,7 +1015,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         @Override
         public void onPayloadTransferUpdate(@NonNull String endpointId, @NonNull PayloadTransferUpdate update) {
             int progress = (int) (100.0 * (update.getBytesTransferred() / (double) update.getTotalBytes()));
-            Log.v(TAG, String.format("Transfer to endpoint %s: %d%%", endpointId, progress));
+            Log.v(TAG, String.format("Transfer to %s: %d%%", endpointId, progress));
 
             if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
                 long payloadId = update.getPayloadId();
