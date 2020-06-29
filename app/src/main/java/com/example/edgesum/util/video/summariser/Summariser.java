@@ -102,10 +102,9 @@ class Summariser {
                 DurationFormatUtils.formatDuration(Duration.between(start, Instant.now()).toMillis(), "ss.SSS")));
         result.add(String.format(Locale.ENGLISH, "original duration: %.2f", FfmpegTools.getDuration(inPath)));
 
-        if (isOutVid) {
-            result.add(String.format(Locale.ENGLISH, "summarised duration: %.2f",
-                    FfmpegTools.getDuration(getOutPath())));
-        }
+        double outDur = isOutVid ? FfmpegTools.getDuration(getOutPath()) : -1.0;
+        result.add(String.format(Locale.ENGLISH, "summarised duration: %.2f", outDur));
+
         result.add(String.format(Locale.ENGLISH, "noise tolerance: %.2f", noise));
         result.add(String.format(Locale.ENGLISH, "quality: %d", quality));
         result.add(String.format("speed: %s", speed));
