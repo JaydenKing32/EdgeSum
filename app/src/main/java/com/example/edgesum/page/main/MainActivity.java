@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
         processingFragment.cleanRepository(this);
         summarisedVideoFragment.cleanRepository(this);
         FileManager.cleanVideoDirectories(context);
+        scanVideoDirectories();
     }
 
     @Override

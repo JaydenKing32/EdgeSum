@@ -118,7 +118,7 @@ public class FileManager {
 
         for (File dir : dirs) {
             try {
-                FileUtils.cleanDirectory(dir);
+                FileUtils.deleteDirectory(dir);
             } catch (IOException e) {
                 Log.e(TAG, String.format("Failed to delete %s", dir.getAbsolutePath()));
                 e.printStackTrace();
