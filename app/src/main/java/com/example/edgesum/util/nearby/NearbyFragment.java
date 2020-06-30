@@ -158,7 +158,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 @Override
                 public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
                     Log.d(TAG, String.format("Initiated connection with %s: %s",
-                            discoveredEndpoints.get(endpointId), connectionInfo.getEndpointName()));
+                            endpointId, connectionInfo.getEndpointName()));
 
                     if (!discoveredEndpoints.containsKey(endpointId)) {
                         discoveredEndpoints.put(endpointId, new Endpoint(endpointId, connectionInfo.getEndpointName()));
