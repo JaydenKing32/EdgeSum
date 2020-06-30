@@ -70,12 +70,13 @@ public class DashDownloadManager {
 
                                 if (path != null) {
                                     Video video = VideoManager.getVideoFromPath(context, path);
-                                    downloadCallback.accept(video);
 
                                     long duration = Duration.between(start, Instant.now()).toMillis();
                                     String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
                                     Log.w(TAG, String.format("Successfully downloaded %s in %ss",
                                             video.getName(), time));
+
+                                    downloadCallback.accept(video);
                                 } else {
                                     Log.e(TAG, "Path is null");
                                 }
