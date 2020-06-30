@@ -845,10 +845,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 String.format("%s/%s", FileManager.getSegmentSumDirPath(), videoFile.getName())
                 : String.format("%s/%s", FileManager.getSummarisedDirPath(), videoFile.getName());
 
-        summarise(context, videoFile, prefs, outPath);
+        summarise(context, videoFile, prefs, outPath, false);
     }
 
-    void summarise(Context context, File videoFile, SummariserPrefs prefs, String outPath) {
+    void summarise(Context context, File videoFile, SummariserPrefs prefs, String outPath, boolean sendVideo) {
         Log.d(TAG, String.format("Summarising %s", videoFile.getName()));
 
         Video video = VideoManager.getVideoFromPath(context, videoFile.getAbsolutePath());
@@ -859,6 +859,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
         intent.putExtra(SummariserIntentService.OUTPUT_KEY, outPath);
         intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
+        intent.putExtra(SummariserIntentService.SEND_VIDEO_KEY, sendVideo);
         intent.putExtra(SummariserPrefs.NOISE_KEY, prefs.noise);
         intent.putExtra(SummariserPrefs.DURATION_KEY, prefs.duration);
         intent.putExtra(SummariserPrefs.QUALITY_KEY, prefs.quality);
@@ -1036,7 +1037,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     String outPath = (command.equals(Command.SUMMARISE_SEGMENT)) ?
                             String.format("%s/%s", FileManager.getSegmentSumDirPath(), videoFile.getName()) :
                             String.format("%s/%s", FileManager.getSummarisedDirPath(), videoFile.getName());
-                    summarise(getContext(), videoFile, prefs, outPath);
+                    summarise(getContext(), videoFile, prefs, outPath, true);
 
                 } else if (command.equals(Command.RETURN)) {
                     boolean isSeg = isSegmentedVideo(filename);

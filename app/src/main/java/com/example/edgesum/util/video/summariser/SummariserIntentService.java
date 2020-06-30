@@ -26,6 +26,7 @@ public class SummariserIntentService extends IntentService {
     public static final String TYPE_KEY = "type";
     public static final String LOCAL_TYPE = "local";
     public static final String NETWORK_TYPE = "network";
+    public static final String SEND_VIDEO_KEY = "sendVideo";
 
     public static TransferCallback transferCallback;
 
@@ -48,6 +49,7 @@ public class SummariserIntentService extends IntentService {
         Video video = intent.getParcelableExtra(VIDEO_KEY);
         String output = intent.getStringExtra(OUTPUT_KEY);
         String type = intent.getStringExtra(TYPE_KEY);
+        boolean sendVideo = intent.getBooleanExtra(SEND_VIDEO_KEY, true);
 
         if (video == null) {
             Log.e(TAG, "Video not specified");
@@ -72,12 +74,14 @@ public class SummariserIntentService extends IntentService {
             Video sumVid = VideoManager.getVideoFromPath(getApplicationContext(), output);
             EventBus.getDefault().post(new AddEvent(sumVid, Type.SUMMARISED));
 
-            if (type.equals(NETWORK_TYPE)) {
+            if (sendVideo && type.equals(NETWORK_TYPE)) {
                 transferCallback.returnVideo(sumVid);
             }
-        } else if (type.equals(NETWORK_TYPE)) {
-            transferCallback.handleSegment(video.getName());
+        } else if (sendVideo && type.equals(NETWORK_TYPE)) {
             transferCallback.sendCommandMessageToAll(Message.Command.NO_ACTIVITY, video.getName());
+        }
+        if (!sendVideo && type.equals(NETWORK_TYPE)) {
+            transferCallback.handleSegment(video.getName());
         }
         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
 
