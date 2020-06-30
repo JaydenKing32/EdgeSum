@@ -840,10 +840,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
 
         File videoFile = new File(message.video.getData());
-        SummariserPrefs prefs = SummariserPrefs.extractPreferences(context);
+        String filename = videoFile.getName();
         String outPath = message.command.equals(Command.SUMMARISE_SEGMENT) ?
-                String.format("%s/%s", FileManager.getSegmentSumDirPath(), videoFile.getName())
-                : String.format("%s/%s", FileManager.getSummarisedDirPath(), videoFile.getName());
+                String.format("%s/%s", FileManager.getSegmentSumSubDirPath(filename), filename)
+                : String.format("%s/%s", FileManager.getSummarisedDirPath(), filename);
+        SummariserPrefs prefs = SummariserPrefs.extractPreferences(context);
 
         summarise(context, videoFile, prefs, outPath, false);
     }
@@ -1035,7 +1036,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     }
 
                     String outPath = (command.equals(Command.SUMMARISE_SEGMENT)) ?
-                            String.format("%s/%s", FileManager.getSegmentSumDirPath(), videoFile.getName()) :
+                            String.format("%s/%s", FileManager.getSegmentSumSubDirPath(filename), videoFile.getName()) :
                             String.format("%s/%s", FileManager.getSummarisedDirPath(), videoFile.getName());
                     summarise(getContext(), videoFile, prefs, outPath, true);
 
