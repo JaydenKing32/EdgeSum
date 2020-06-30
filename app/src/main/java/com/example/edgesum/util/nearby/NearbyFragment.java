@@ -825,6 +825,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             }
 
             EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.RAW));
+            EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.PROCESSING));
             Log.v(TAG, String.format("Removing video segment map for %s", baseVideoName));
             videoSegments.remove(baseVideoName);
         } else {

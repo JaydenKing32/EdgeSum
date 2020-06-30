@@ -72,8 +72,10 @@ public class SummariserIntentService extends IntentService {
 
         if (isVideo) {
             Video sumVid = VideoManager.getVideoFromPath(getApplicationContext(), output);
-            EventBus.getDefault().post(new AddEvent(sumVid, Type.SUMMARISED));
 
+            if (sumVid.getData().contains(FileManager.getSummarisedDirPath())) {
+                EventBus.getDefault().post(new AddEvent(sumVid, Type.SUMMARISED));
+            }
             if (sendVideo && type.equals(NETWORK_TYPE)) {
                 transferCallback.returnVideo(sumVid);
             }
