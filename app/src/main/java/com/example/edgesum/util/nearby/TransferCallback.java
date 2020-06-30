@@ -19,5 +19,5 @@ public interface TransferCallback {
 
     void printPreferences(boolean autoDown);
 
-    boolean handleSegment(String videoName);
+    void handleSegment(String videoName);
 }

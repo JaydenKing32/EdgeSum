@@ -778,28 +778,28 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     @Override
-    public boolean handleSegment(String videoName) {
+    public void handleSegment(String videoName) {
         if (videoSegments.size() == 0) { // Not master device
             Log.v(TAG, "Worker device attempted to handle video segments");
-            return false;
+            return;
         }
 
         String baseVideoName = FfmpegTools.getBaseName(videoName);
         LinkedHashMap<String, Video> vidMap = videoSegments.get(baseVideoName);
         if (vidMap == null) {
             Log.d(TAG, "Couldn't retrieve video map");
-            return false;
+            return;
         }
         if (vidMap.size() == 0) { // Video segment map is already empty,
             Log.v(TAG, String.format("Removing video segment map for %s", baseVideoName));
             videoSegments.remove(baseVideoName);
-            return true;
+            return;
         }
 
         Video video = vidMap.remove(videoName);
         if (video == null) {
             Log.d(TAG, "Couldn't retrieve video");
-            return false;
+            return;
         }
 
         if (vidMap.size() == 0) {
@@ -809,14 +809,14 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
             if (outPath == null) {
                 Log.e(TAG, "Couldn't merge videos");
-                return false;
+                return;
             }
 
             if (!outPath.equals(FfmpegTools.NO_VIDEO)) {
                 Context context = getContext();
                 if (context == null) {
                     Log.e(TAG, "No context");
-                    return false;
+                    return;
                 }
 
                 video.insertMediaValues(context, outPath);
@@ -827,10 +827,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.RAW));
             Log.v(TAG, String.format("Removing video segment map for %s", baseVideoName));
             videoSegments.remove(baseVideoName);
-            return true;
         } else {
             Log.v(TAG, String.format("Received a segment of %s", baseVideoName));
-            return false;
         }
     }
 
