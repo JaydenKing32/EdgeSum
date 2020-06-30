@@ -5,5 +5,6 @@ public enum Algorithm {
     fastest,
     least_busy,
     ordered,
+    best_or_local,
     simple_return
 }

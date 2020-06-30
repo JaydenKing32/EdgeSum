@@ -528,6 +528,34 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
     }
 
+    /**
+     * send next video to an inactive endpoint with the most completed summarisations, or summarise video locally if
+     * all endpoints are busy
+     */
+    private void transferToBestOrLocal() {
+        if (transferQueue.isEmpty()) {
+            Log.i(TAG, "Transfer queue is empty");
+            return;
+        }
+        Message message = transferQueue.remove();
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        int maxComplete = Integer.MIN_VALUE;
+        Endpoint best = null;
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (!endpoint.isActive() && endpoint.completeCount > maxComplete) {
+                maxComplete = endpoint.completeCount;
+                best = endpoint;
+            }
+        }
+
+        if (best != null) {
+            sendFile(message, best);
+        } else {
+            summarise(message);
+        }
+    }
+
     @Override
     public void nextTransfer() {
         if (transferQueue.isEmpty()) {
@@ -558,6 +586,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 break;
             case ordered:
                 transferToEarliestEndpoint();
+                break;
+            case best_or_local:
+                transferToBestOrLocal();
+                break;
             case simple_return:
                 // nextTransfer should only be called during the initial transfer with simple_return,
                 //  all subsequent transfers will be handled by nextTransferOrQuickReturn
@@ -745,6 +777,97 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         void onFragmentInteraction(String name);
     }
 
+    @Override
+    public boolean handleSegment(String videoName) {
+        if (videoSegments.size() == 0) { // Not master device
+            Log.v(TAG, "Worker device attempted to handle video segments");
+            return false;
+        }
+
+        String baseVideoName = FfmpegTools.getBaseName(videoName);
+        LinkedHashMap<String, Video> vidMap = videoSegments.get(baseVideoName);
+        if (vidMap == null) {
+            Log.d(TAG, "Couldn't retrieve video map");
+            return false;
+        }
+        if (vidMap.size() == 0) { // Video segment map is already empty,
+            Log.v(TAG, String.format("Removing video segment map for %s", baseVideoName));
+            videoSegments.remove(baseVideoName);
+            return true;
+        }
+
+        Video video = vidMap.remove(videoName);
+        if (video == null) {
+            Log.d(TAG, "Couldn't retrieve video");
+            return false;
+        }
+
+        if (vidMap.size() == 0) {
+            Log.d(TAG, String.format("Received all summarised video segments of %s", baseVideoName));
+            String parentName = String.format("%s.%s", baseVideoName, FilenameUtils.getExtension(video.getName()));
+            String outPath = FfmpegTools.mergeVideos(parentName);
+
+            if (outPath == null) {
+                Log.e(TAG, "Couldn't merge videos");
+                return false;
+            }
+
+            if (!outPath.equals(FfmpegTools.NO_VIDEO)) {
+                Context context = getContext();
+                if (context == null) {
+                    Log.e(TAG, "No context");
+                    return false;
+                }
+
+                video.insertMediaValues(context, outPath);
+                Video mergedVideo = VideoManager.getVideoFromPath(context, outPath);
+                EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
+            }
+
+            EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.RAW));
+            Log.v(TAG, String.format("Removing video segment map for %s", baseVideoName));
+            videoSegments.remove(baseVideoName);
+            return true;
+        } else {
+            Log.v(TAG, String.format("Received a segment of %s", baseVideoName));
+            return false;
+        }
+    }
+
+    void summarise(Message message) {
+        Context context = getContext();
+        if (context == null) {
+            Log.e(TAG, "No context");
+            return;
+        }
+
+        File videoFile = new File(message.video.getData());
+        SummariserPrefs prefs = SummariserPrefs.extractPreferences(context);
+        String outPath = message.command.equals(Command.SUMMARISE_SEGMENT) ?
+                String.format("%s/%s", FileManager.getSegmentSumDirPath(), videoFile.getName())
+                : String.format("%s/%s", FileManager.getSummarisedDirPath(), videoFile.getName());
+
+        summarise(context, videoFile, prefs, outPath);
+    }
+
+    void summarise(Context context, File videoFile, SummariserPrefs prefs, String outPath) {
+        Log.d(TAG, String.format("Summarising %s", videoFile.getName()));
+
+        Video video = VideoManager.getVideoFromPath(context, videoFile.getAbsolutePath());
+        EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+        EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+
+        Intent intent = new Intent(context, SummariserIntentService.class);
+        intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+        intent.putExtra(SummariserIntentService.OUTPUT_KEY, outPath);
+        intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
+        intent.putExtra(SummariserPrefs.NOISE_KEY, prefs.noise);
+        intent.putExtra(SummariserPrefs.DURATION_KEY, prefs.duration);
+        intent.putExtra(SummariserPrefs.QUALITY_KEY, prefs.quality);
+        intent.putExtra(SummariserPrefs.ENCODING_SPEED_KEY, prefs.speed.name());
+        context.startService(intent);
+    }
+
     class ReceiveFilePayloadCallback extends PayloadCallback {
         private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
         private final SimpleArrayMap<Long, Payload> completedFilePayloads = new SimpleArrayMap<>();
@@ -869,57 +992,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             return videoSegments.containsKey(baseVideoName);
         }
 
-        private boolean handleSegment(String videoName) {
-            if (videoSegments.size() == 0) { // Not master device
-                return false;
-            }
-
-            String baseVideoName = FfmpegTools.getBaseName(videoName);
-            LinkedHashMap<String, Video> vidMap = videoSegments.get(baseVideoName);
-            if (vidMap == null) {
-                Log.e(TAG, "Couldn't retrieve video map");
-                return false;
-            }
-            if (vidMap.size() == 0) { // Video segment map is already empty,
-                return true;
-            }
-
-            Video video = vidMap.remove(videoName);
-            if (video == null) {
-                Log.e(TAG, "Couldn't retrieve video");
-                return false;
-            }
-
-            if (vidMap.size() == 0) {
-                Log.d(TAG, String.format("Received all summarised video segments of %s", baseVideoName));
-                String parentName = String.format("%s.%s", baseVideoName, FilenameUtils.getExtension(video.getName()));
-                String outPath = FfmpegTools.mergeVideos(parentName);
-
-                if (outPath == null) {
-                    Log.e(TAG, "Couldn't merge videos");
-                    return false;
-                }
-
-                if (!outPath.equals(FfmpegTools.NO_VIDEO)) {
-                    Context context = getContext();
-                    if (context == null) {
-                        Log.e(TAG, "No context");
-                        return false;
-                    }
-
-                    video.insertMediaValues(context, outPath);
-                    Video mergedVideo = VideoManager.getVideoFromPath(context, outPath);
-                    EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
-                }
-
-                EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.RAW));
-                return true;
-            } else {
-                Log.v(TAG, String.format("Received a segment of %s", baseVideoName));
-                return false;
-            }
-        }
-
         private void processFilePayload(long payloadId, String fromEndpointId) {
             // BYTES and FILE could be received in any order, so we call when either the BYTES or the FILE
             // payload is completely received. The file payload is considered complete only when both have
@@ -966,7 +1038,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     String outPath = (command.equals(Command.SUMMARISE_SEGMENT)) ?
                             String.format("%s/%s", FileManager.getSegmentSumDirPath(), videoFile.getName()) :
                             String.format("%s/%s", FileManager.getSummarisedDirPath(), videoFile.getName());
-                    Log.d(TAG, String.format("Summarising %s", filename));
                     summarise(getContext(), videoFile, prefs, outPath);
 
                 } else if (command.equals(Command.RETURN)) {
@@ -983,11 +1054,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     }
 
                     if (isSeg) {
-                        if (handleSegment(filename)) {
-                            String baseName = FfmpegTools.getBaseName(filename);
-                            Log.v(TAG, String.format("Removing video segment map for %s", baseName));
-                            videoSegments.remove(baseName);
-                        }
+                        handleSegment(filename);
                         return;
                     }
 
@@ -1002,22 +1069,6 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     EventBus.getDefault().post(new RemoveByNameEvent(filename, Type.PROCESSING));
                 }
             }
-        }
-
-        private void summarise(Context context, File videoFile, SummariserPrefs prefs, String outPath) {
-            Video video = VideoManager.getVideoFromPath(context, videoFile.getAbsolutePath());
-            EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
-            EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
-
-            Intent intent = new Intent(context, SummariserIntentService.class);
-            intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-            intent.putExtra(SummariserIntentService.OUTPUT_KEY, outPath);
-            intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
-            intent.putExtra(SummariserPrefs.NOISE_KEY, prefs.noise);
-            intent.putExtra(SummariserPrefs.DURATION_KEY, prefs.duration);
-            intent.putExtra(SummariserPrefs.QUALITY_KEY, prefs.quality);
-            intent.putExtra(SummariserPrefs.ENCODING_SPEED_KEY, prefs.speed.name());
-            context.startService(intent);
         }
 
         @Override

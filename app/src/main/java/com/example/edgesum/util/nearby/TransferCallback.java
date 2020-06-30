@@ -18,4 +18,6 @@ public interface TransferCallback {
     boolean isConnected();
 
     void printPreferences(boolean autoDown);
+
+    boolean handleSegment(String videoName);
 }
