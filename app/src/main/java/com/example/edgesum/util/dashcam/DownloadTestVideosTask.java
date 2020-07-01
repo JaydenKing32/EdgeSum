@@ -57,24 +57,30 @@ public class DownloadTestVideosTask implements Runnable {
         this.transferCallback = new WeakReference<>(transferCallback);
 
         this.downloadCallback = (video) -> {
-            synchronized (this) {
-                completedDownloads.add(video.getName());
+            if (video == null) {
+                Log.e(TAG, "Video is null");
+                return;
+            }
+            if (transferCallback == null) {
+                Log.e(TAG, "transferCallback is null");
+                return;
+            }
+            Log.v(TAG, String.format("Entering callback for download completion of %s", video.getName()));
+            completedDownloads.add(video.getName());
 
-                if (transferCallback.isConnected()) {
-                    EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                    transferCallback.addVideo(video);
-                    transferCallback.nextTransfer();
-                } else {
-                    EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+            if (transferCallback.isConnected()) {
+                EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                transferCallback.addVideo(video);
+                transferCallback.nextTransfer();
+            } else {
+                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
 
-                    final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
-                    Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                    summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                    summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
-                    summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
-                    context.startService(summariseIntent);
-                }
-                this.notify();
+                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
+                Intent summariseIntent = new Intent(context, SummariserIntentService.class);
+                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+                summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
+                context.startService(summariseIntent);
             }
         };
     }
@@ -98,7 +104,7 @@ public class DownloadTestVideosTask implements Runnable {
             String toDownload = newVideos.get(0);
             startedDownloads.add(toDownload);
             Context context = weakReference.get();
-            DashDownloadManager downloadManager = DashDownloadManager.getInstance(context, downloadCallback);
+            DashDownloadManager downloadManager = DashDownloadManager.getInstance(downloadCallback);
 
             dash.downloadVideo(toDownload, downloadManager, context);
         } else {
@@ -106,14 +112,6 @@ public class DownloadTestVideosTask implements Runnable {
 
             if (completedDownloads.size() == testVideos.size()) {
                 transferCallback.get().stopDashDownload();
-            }
-        }
-
-        synchronized (this) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }

@@ -70,7 +70,7 @@ public class DownloadLatestTask implements Runnable {
             String toDownload = newVideos.get(0);
             downloadedVideos.add(toDownload);
             Context context = weakReference.get();
-            DashDownloadManager downloadManager = DashDownloadManager.getInstance(context, downloadCallback);
+            DashDownloadManager downloadManager = DashDownloadManager.getInstance(downloadCallback);
 
             dash.downloadVideo(toDownload, downloadManager, context);
         } else {

@@ -225,21 +225,19 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     protected void startAdvertising() {
         AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(STRATEGY).build();
         connectionsClient.startAdvertising(localName, SERVICE_ID, connectionLifecycleCallback, advertisingOptions)
-                .addOnSuccessListener((Void unused) -> Log.d(TAG, "Started advertising"))
-                .addOnFailureListener((Exception e) -> {
-                    Log.e(TAG, "Advertisement failure");
-                    e.printStackTrace();
-                });
+                .addOnSuccessListener((Void unused) ->
+                        Log.d(TAG, "Started advertising"))
+                .addOnFailureListener((Exception e) ->
+                        Log.e(TAG, String.format("Advertisement failure: \n%s", e.getMessage())));
     }
 
     protected void startDiscovery() {
         DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(STRATEGY).build();
         connectionsClient.startDiscovery(SERVICE_ID, endpointDiscoveryCallback, discoveryOptions)
-                .addOnSuccessListener((Void unused) -> Log.d(TAG, "Started discovering"))
-                .addOnFailureListener((Exception e) -> {
-                    Log.e(TAG, "Discovery failure");
-                    e.printStackTrace();
-                });
+                .addOnSuccessListener((Void unused) ->
+                        Log.d(TAG, "Started discovering"))
+                .addOnFailureListener((Exception e) ->
+                        Log.e(TAG, String.format("Discovery failure: \n%s", e.getMessage())));
     }
 
     protected void stopAdvertising() {
@@ -268,17 +266,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         Log.w(TAG, "Started downloading from dashcam");
 
         downloadTaskExecutor.scheduleWithFixedDelay(new DownloadTestVideosTask(
-                this, getContext()), 0, delay, TimeUnit.SECONDS);
+                this, context), 0, delay, TimeUnit.SECONDS);
     }
 
     public void stopDashDownload() {
         Log.w(TAG, "Stopped downloading from dashcam");
         downloadTaskExecutor.shutdown();
-
-        Context context = getContext();
-        if (context != null) {
-            DashDownloadManager.unregisterReceiver(context);
-        }
     }
 
     private List<Endpoint> getConnectedEndpoints() {
@@ -661,7 +654,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 filePayload = Payload.fromFile(pfd);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TAG, String.format("sendFile ParcelFileDescriptor error: \n%s", e.getMessage()));
         }
 
         if (filePayload == null) {
@@ -724,17 +717,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         if (!endpoint.connected) {
             connectionsClient.requestConnection(localName, endpoint.id, connectionLifecycleCallback)
                     .addOnSuccessListener(
-                            (Void unused) -> {
-                                // We successfully requested a connection. Now both sides
-                                // must accept before the connection is established.
-                                Log.d(TAG, String.format("Requested connection with %s", endpoint));
-                            })
+                            // We successfully requested a connection. Now both sides
+                            // must accept before the connection is established.
+                            (Void unused) -> Log.d(TAG, String.format("Requested connection with %s", endpoint)))
                     .addOnFailureListener(
-                            (Exception e) -> {
-                                // Nearby Connections failed to request the connection.
-                                Log.e(TAG, "Endpoint failure");
-                                e.printStackTrace();
-                            });
+                            // Nearby Connections failed to request the connection.
+                            (Exception e) -> Log.e(TAG, String.format("Endpoint failure: \n%s", e.getMessage())));
         } else {
             Log.d(TAG, String.format("'%s' is already connected", endpoint));
         }
@@ -1051,7 +1039,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     try {
                         FileManager.copy(videoFile, videoDest);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, String.format("processFilePayload copy error: \n%s", e.getMessage()));
                     }
 
                     if (isSeg) {
