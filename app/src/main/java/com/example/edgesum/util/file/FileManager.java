@@ -98,7 +98,7 @@ public class FileManager {
                     return dirPath;
                 }
             } catch (SecurityException e) {
-                e.printStackTrace();
+                Log.e(TAG, "makeDirectory error: \n%s");
             }
         } else {
             Log.e(TAG, "External storage is not readable");
@@ -121,7 +121,7 @@ public class FileManager {
                 FileUtils.deleteDirectory(dir);
             } catch (IOException e) {
                 Log.e(TAG, String.format("Failed to delete %s", dir.getAbsolutePath()));
-                e.printStackTrace();
+                Log.e(TAG, "cleanVideoDirectories error: \n%s");
             }
         }
     }

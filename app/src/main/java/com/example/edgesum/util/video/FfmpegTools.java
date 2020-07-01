@@ -85,6 +85,7 @@ public class FfmpegTools {
         // Round segment time up to ensure that the number of split videos doesn't exceed segNum
         int segTime = (int) Math.ceil(FfmpegTools.getDuration(filePath) / segNum);
         String outDir = FileManager.getSegmentDirPath(FilenameUtils.getBaseName(filePath));
+        Log.v(TAG, String.format("Splitting %s with %ds long segments", filePath, segTime));
 
         ArrayList<String> ffmpegArgs = new ArrayList<>(Arrays.asList(
                 "-y",
@@ -112,7 +113,7 @@ public class FfmpegTools {
             }
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "makePathsFile error: \n%s");
         }
     }
 
@@ -132,7 +133,7 @@ public class FfmpegTools {
                 FileManager.copy(new File(vidPath), new File(outPath));
                 return true;
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, "mergeVideos error: \n%s");
             }
         }
         String pathFilename = String.format("%s/paths.txt",

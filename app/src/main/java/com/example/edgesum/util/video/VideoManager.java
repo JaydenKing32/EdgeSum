@@ -54,6 +54,7 @@ public class VideoManager {
             Log.e(TAG, String.format("%s is not a directory", dir.getAbsolutePath()));
             return null;
         }
+        Log.v(TAG, String.format("Retrieving videos from %s", dir.getAbsolutePath()));
 
         File[] videoFiles = dir.listFiles();
         if (videoFiles == null) {
@@ -71,6 +72,10 @@ public class VideoManager {
     }
 
     private static Video getVideoFromFile(Context context, File file) {
+        if (file == null) {
+            Log.e(TAG, "Null file");
+            return null;
+        }
         String[] projection = {
                 Media._ID,
                 Media.DATA,
@@ -84,28 +89,40 @@ public class VideoManager {
                 projection, selection, selectionArgs, null);
 
         if (videoCursor == null || !videoCursor.moveToFirst()) {
-            Log.e(TAG, "videoCursor is null");
+            Log.d(TAG, "videoCursor is null");
             return null;
         }
         Video video = videoFromCursor(videoCursor);
         videoCursor.close();
+
+        if (video == null) {
+            Log.v(TAG, String.format("Video (%s) is null", file.getAbsolutePath()));
+        }
+
         return video;
     }
 
     public static Video getVideoFromPath(Context context, String path) {
-        ContentValues values = new ContentValues();
-        values.put(Media.TITLE, FilenameUtils.getBaseName(path));
-        values.put(Media.MIME_TYPE, String.format("video/%s", FilenameUtils.getExtension(path).toLowerCase()));
-        values.put(Media.DISPLAY_NAME, "player");
-        values.put(Media.DESCRIPTION, "");
-        values.put(Media.DATE_ADDED, System.currentTimeMillis());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            values.put(Media.DATE_TAKEN, System.currentTimeMillis());
-        }
-        values.put(Media.DATA, path);
-        context.getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, values);
+        Log.v(TAG, String.format("Retrieving video from %s", path));
+        Video video = getVideoFromFile(context, new File(path));
 
-        return getVideoFromFile(context, new File(path));
+        if (video != null) {
+            return video;
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(Media.TITLE, FilenameUtils.getBaseName(path));
+            values.put(Media.MIME_TYPE, String.format("video/%s", FilenameUtils.getExtension(path).toLowerCase()));
+            values.put(Media.DISPLAY_NAME, "player");
+            values.put(Media.DESCRIPTION, "");
+            values.put(Media.DATE_ADDED, System.currentTimeMillis());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                values.put(Media.DATE_TAKEN, System.currentTimeMillis());
+            }
+            values.put(Media.DATA, path);
+            context.getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, values);
+
+            return getVideoFromFile(context, new File(path));
+        }
     }
 
     public static List<Video> getAllVideosFromExternalStorage(Context context, String[] projection) {
@@ -158,7 +175,7 @@ public class VideoManager {
             String mimeType = cursor.getString(cursor.getColumnIndex(Media.MIME_TYPE));
             video = new Video(id, name, data, mimeType, size);
         } catch (Exception e) {
-            e.printStackTrace();
+           Log.e(TAG, "videoFromCursor error: \n%s");
         }
         return video;
     }
