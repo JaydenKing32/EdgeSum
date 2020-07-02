@@ -35,8 +35,6 @@
     <string name="duration_key">duration</string>
     <string name="quality_key">quality</string>
     <string name="encoding_speed_key">speed</string>
-    <string name="group_owner_ip_key">group_owner_ip</string>
-    <string name="last_connected_ip_key">last_connected_ip</string>
 
     <string name="discover_switch_label">Discover nearby devices</string>
     <string name="advertise_switch_label">Share device information</string>

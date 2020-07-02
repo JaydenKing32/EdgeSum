@@ -1,13 +1,11 @@
 package com.example.edgesum.util.nearby;
 
-import com.example.edgesum.model.Video;
-
 public class Message {
-    final Video video;
+    final String videoPath;
     final Command command;
 
-    Message(Video video, Command command) {
-        this.video = video;
+    Message(String videoPath, Command command) {
+        this.videoPath = videoPath;
         this.command = command;
     }
 

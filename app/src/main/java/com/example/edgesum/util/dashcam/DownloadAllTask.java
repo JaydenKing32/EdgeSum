@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.Type;
-import com.example.edgesum.model.Video;
+import com.example.edgesum.util.video.VideoManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,12 +17,12 @@ import java.util.function.Consumer;
 public class DownloadAllTask extends AsyncTask<DashName, Void, List<String>> {
     private static final String TAG = DownloadAllTask.class.getSimpleName();
     private final WeakReference<Context> weakReference;
-    private final Consumer<Video> downloadCallback;
+    private final Consumer<String> downloadCallback;
 
     public DownloadAllTask(Context context) {
         this.weakReference = new WeakReference<>(context);
 
-        this.downloadCallback = (video) -> EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+        this.downloadCallback = (videoPath) -> EventBus.getDefault().post(new AddEvent(VideoManager.getVideoFromPath(context, videoPath), Type.RAW));
     }
 
     @Override

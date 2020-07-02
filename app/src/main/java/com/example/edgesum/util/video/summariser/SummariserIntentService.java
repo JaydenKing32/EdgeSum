@@ -7,16 +7,9 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.edgesum.event.AddEvent;
-import com.example.edgesum.event.RemoveEvent;
-import com.example.edgesum.event.Type;
-import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.Message;
 import com.example.edgesum.util.nearby.TransferCallback;
-import com.example.edgesum.util.video.VideoManager;
-
-import org.greenrobot.eventbus.EventBus;
 
 public class SummariserIntentService extends IntentService {
     private static final String TAG = SummariserIntentService.class.getSimpleName();
@@ -46,12 +39,12 @@ public class SummariserIntentService extends IntentService {
             Log.e(TAG, "Null intent");
             return;
         }
-        Video video = intent.getParcelableExtra(VIDEO_KEY);
+        String videoPath = intent.getStringExtra(VIDEO_KEY);
         String output = intent.getStringExtra(OUTPUT_KEY);
         String type = intent.getStringExtra(TYPE_KEY);
         boolean sendVideo = intent.getBooleanExtra(SEND_VIDEO_KEY, true);
 
-        if (video == null) {
+        if (videoPath == null) {
             Log.e(TAG, "Video not specified");
             return;
         }
@@ -62,30 +55,28 @@ public class SummariserIntentService extends IntentService {
         if (type == null) {
             type = LOCAL_TYPE;
         }
-        Log.d(TAG, video.toString());
+        Log.d(TAG, videoPath);
         Log.d(TAG, output);
 
         SummariserPrefs prefs = SummariserPrefs.extractExtras(this, intent);
-        Summariser summariser = Summariser.createSummariser(video.getData(),
+        Summariser summariser = Summariser.createSummariser(videoPath,
                 prefs.noise, prefs.duration, prefs.quality, prefs.speed, output);
         boolean isVideo = summariser.summarise();
 
         if (isVideo) {
-            Video sumVid = VideoManager.getVideoFromPath(getApplicationContext(), output);
-
-            if (sumVid.getData().contains(FileManager.getSummarisedDirPath())) {
-                EventBus.getDefault().post(new AddEvent(sumVid, Type.SUMMARISED));
+            if (output.contains(FileManager.getSummarisedDirPath())) {
+//                EventBus.getDefault().post(new AddEvent(sumVid, Type.SUMMARISED));
             }
             if (sendVideo && type.equals(NETWORK_TYPE)) {
-                transferCallback.returnVideo(sumVid);
+                transferCallback.returnVideo(output);
             }
         } else if (sendVideo && type.equals(NETWORK_TYPE)) {
-            transferCallback.sendCommandMessageToAll(Message.Command.NO_ACTIVITY, video.getName());
+            transferCallback.sendCommandMessageToAll(Message.Command.NO_ACTIVITY, FileManager.getFilenameFromPath(videoPath));
         }
         if (!sendVideo && type.equals(NETWORK_TYPE)) {
-            transferCallback.handleSegment(video.getName());
+            transferCallback.handleSegment(FileManager.getFilenameFromPath(videoPath));
         }
-        EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
+//        EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
 
         MediaScannerConnection.scanFile(getApplicationContext(),
                 new String[]{FileManager.getSummarisedDirPath()}, null, (path, uri) -> {

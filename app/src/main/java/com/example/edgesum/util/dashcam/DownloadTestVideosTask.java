@@ -4,15 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.edgesum.event.AddEvent;
-import com.example.edgesum.event.Type;
-import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -28,7 +24,7 @@ public class DownloadTestVideosTask implements Runnable {
     private static final Set<String> startedDownloads = new HashSet<>();
     private static final ArrayList<String> completedDownloads = new ArrayList<>();
     private final WeakReference<Context> weakReference;
-    private final Consumer<Video> downloadCallback;
+    private final Consumer<String> downloadCallback;
     private final WeakReference<TransferCallback> transferCallback;
     private static final ArrayList<String> testVideos = new ArrayList<>(Arrays.asList(
             "20200312_150643.mp4",
@@ -56,8 +52,8 @@ public class DownloadTestVideosTask implements Runnable {
         this.weakReference = new WeakReference<>(context);
         this.transferCallback = new WeakReference<>(transferCallback);
 
-        this.downloadCallback = (video) -> {
-            if (video == null) {
+        this.downloadCallback = (videoPath) -> {
+            if (videoPath == null) {
                 Log.e(TAG, "Video is null");
                 return;
             }
@@ -65,19 +61,20 @@ public class DownloadTestVideosTask implements Runnable {
                 Log.e(TAG, "transferCallback is null");
                 return;
             }
-            Log.v(TAG, String.format("Entering callback for download completion of %s", video.getName()));
-            completedDownloads.add(video.getName());
+            String videoName = FileManager.getFilenameFromPath(videoPath);
+            Log.v(TAG, String.format("Entering callback for download completion of %s", videoName));
+            completedDownloads.add(videoName);
 
             if (transferCallback.isConnected()) {
-                EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                transferCallback.addVideo(video);
+//                EventBus.getDefault().post(new AddEvent(video, Type.RAW));
+                transferCallback.addVideo(videoPath);
                 transferCallback.nextTransfer();
             } else {
-                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+//                EventBus.getDefault().post(new AddEvent(videoPath, Type.PROCESSING));
 
-                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
+                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(),videoName);
                 Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, videoPath);
                 summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
                 summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
                 context.startService(summariseIntent);

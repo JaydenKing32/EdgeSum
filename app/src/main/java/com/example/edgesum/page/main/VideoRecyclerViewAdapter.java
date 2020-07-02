@@ -28,17 +28,12 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.edgesum.R;
 import com.example.edgesum.data.VideoViewModel;
-import com.example.edgesum.event.AddEvent;
-import com.example.edgesum.event.RemoveEvent;
-import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.page.main.VideoFragment.OnListFragmentInteractionListener;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.viewholderprocessor.VideoViewHolderProcessor;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.List;
@@ -83,18 +78,19 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         transferCallback.printPreferences(false);
         if (transferCallback.isConnected()) {
             for (Long pos : positions) {
-                transferCallback.addVideo(videos.get(pos.intValue()));
+                transferCallback.addVideo(videos.get(pos.intValue()).getData());
             }
             transferCallback.nextTransfer();
         } else {
             for (Long pos : positions) {
-                Video video = videos.get(pos.intValue());
-                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
-                EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+                String videoPath = videos.get(pos.intValue()).getData();
+//                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+//                EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 
-                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
+                final String output = String.format("%s/%s",
+                        FileManager.getSummarisedDirPath(), FileManager.getFilenameFromPath(videoPath));
                 Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, videoPath);
                 summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
                 summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
                 context.startService(summariseIntent);

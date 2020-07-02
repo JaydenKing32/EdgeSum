@@ -3,9 +3,7 @@ package com.example.edgesum.util.dashcam;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.video.VideoManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -20,13 +18,13 @@ import java.util.function.Consumer;
 public class DashDownloadManager {
     private static final String TAG = DashDownloadManager.class.getSimpleName();
     private static DashDownloadManager manager = null;
-    private static Consumer<Video> downloadCallback;
+    private static Consumer<String> downloadCallback;
 
-    private DashDownloadManager(Consumer<Video> callback) {
+    private DashDownloadManager(Consumer<String> callback) {
         downloadCallback = callback;
     }
 
-    static DashDownloadManager getInstance(Consumer<Video> callback) {
+    static DashDownloadManager getInstance(Consumer<String> callback) {
         if (manager == null) {
             manager = new DashDownloadManager(callback);
         }
@@ -48,8 +46,7 @@ public class DashDownloadManager {
         long duration = Duration.between(start, Instant.now()).toMillis();
         String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
 
-        Video video = VideoManager.getVideoFromPath(context, filePath);
         Log.w(TAG, String.format("Successfully downloaded %s in %ss", filename, time));
-        downloadCallback.accept(video);
+        downloadCallback.accept(filePath);
     }
 }

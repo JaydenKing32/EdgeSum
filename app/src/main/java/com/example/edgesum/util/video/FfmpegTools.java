@@ -1,12 +1,11 @@
 package com.example.edgesum.util.video;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
+import com.arthenica.mobileffmpeg.FFprobe;
 import com.arthenica.mobileffmpeg.MediaInformation;
-import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 
 import org.apache.commons.io.FilenameUtils;
@@ -29,18 +28,27 @@ public class FfmpegTools {
 
     public static void executeFfmpeg(ArrayList<String> ffmpegArgs) {
         Log.i(TAG, String.format("Running ffmpeg with:\n  %s", TextUtils.join(" ", ffmpegArgs)));
-        FFmpeg.execute(ffmpegArgs.toArray(new String[0]));
+        try {
+            FFmpeg.execute(ffmpegArgs.toArray(new String[0]));
+        } catch (Exception e) {
+            Log.e(TAG, String.format("ffmpeg-mobile error: \n%s", e.getMessage()));
+        }
     }
 
     public static Double getDuration(String filePath) {
-        MediaInformation info = FFmpeg.getMediaInformation(filePath);
+        double duration = 0.0;
 
-        if (info != null && info.getDuration() != null) {
-            return info.getDuration() / 1000.0;
-        } else {
-            Log.e(TAG, String.format("ffmpeg-mobile error, could not retrieve duration of %s", filePath));
-            return 0.0;
+        try {
+            MediaInformation info = FFprobe.getMediaInformation(filePath);
+            if (info != null && info.getDuration() != null) {
+                duration = info.getDuration() / 1000.0;
+            } else {
+                Log.e(TAG, String.format("ffmpeg-mobile error, could not retrieve duration of %s", filePath));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, String.format("ffmpeg-mobile error: \n%s", e.getMessage()));
         }
+        return duration;
     }
 
     private static List<String> getChildPaths(File dir) {
@@ -64,17 +72,14 @@ public class FfmpegTools {
         }
     }
 
-    public static List<Video> splitAndReturn(Context context, String filePath, int segNum) {
+    public static List<String> splitAndReturn(String filePath, int segNum) {
         if (segNum < 2) {
-            return new ArrayList<>(Collections.singletonList(
-                    VideoManager.getVideoFromPath(context, filePath)
-            ));
+            return new ArrayList<>(Collections.singletonList(filePath));
         }
         splitVideo(filePath, segNum);
         String baseVideoName = FilenameUtils.getBaseName(filePath);
-        String segmentDirPath = FileManager.getSegmentDirPath(baseVideoName);
-
-        return VideoManager.getVideosFromDir(context, segmentDirPath);
+        File dir = new File(FileManager.getSegmentDirPath(baseVideoName));
+        return getChildPaths(dir);
     }
 
     private static void splitVideo(String filePath, int segNum) {

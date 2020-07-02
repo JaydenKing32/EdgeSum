@@ -4,15 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.edgesum.event.AddEvent;
-import com.example.edgesum.event.Type;
-import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.TransferCallback;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -25,24 +21,24 @@ import java.util.function.Consumer;
 public class DownloadLatestTask implements Runnable {
     private static final String TAG = DownloadLatestTask.class.getSimpleName();
     private final WeakReference<Context> weakReference;
-    private final Consumer<Video> downloadCallback;
+    private final Consumer<String> downloadCallback;
     private static final Set<String> downloadedVideos = new HashSet<>();
 
     public DownloadLatestTask(TransferCallback transferCallback, Context context) {
         this.weakReference = new WeakReference<>(context);
 
-        this.downloadCallback = (video) -> {
+        this.downloadCallback = (videoPath) -> {
             synchronized (this) {
                 if (transferCallback.isConnected()) {
-                    EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                    transferCallback.addVideo(video);
+//                    EventBus.getDefault().post(new AddEvent(videoPath, Type.RAW));
+                    transferCallback.addVideo(videoPath);
                     transferCallback.nextTransfer();
                 } else {
-                    EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+//                    EventBus.getDefault().post(new AddEvent(videoPath, Type.PROCESSING));
 
-                    final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
+                    final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), FileManager.getFilenameFromPath(videoPath));
                     Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                    summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+                    summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, videoPath);
                     summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
                     summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
                     context.startService(summariseIntent);

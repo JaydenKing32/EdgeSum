@@ -18,17 +18,11 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
 import com.example.edgesum.R;
-import com.example.edgesum.event.AddEvent;
-import com.example.edgesum.event.RemoveByNameEvent;
-import com.example.edgesum.event.RemoveEvent;
-import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
-import com.example.edgesum.util.dashcam.DashDownloadManager;
 import com.example.edgesum.util.dashcam.DownloadTestVideosTask;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.Message.Command;
 import com.example.edgesum.util.video.FfmpegTools;
-import com.example.edgesum.util.video.VideoManager;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.summariser.SummariserPrefs;
 import com.google.android.gms.nearby.Nearby;
@@ -50,7 +44,6 @@ import com.jaredrummler.android.device.DeviceName;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -81,7 +74,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
     private final Queue<Message> transferQueue = new LinkedList<>();
     private final Queue<Endpoint> endpointQueue = new LinkedList<>();
-    private final LinkedHashMap<String, LinkedHashMap<String, Video>> videoSegments = new LinkedHashMap<>();
+    private final LinkedHashMap<String, LinkedHashMap<String, String>> videoSegments = new LinkedHashMap<>();
     // Dashcam isn't able to handle concurrent downloads, leads to a very high rate of download errors.
     // Just use a single thread for downloading
     private final ScheduledExecutorService downloadTaskExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -283,12 +276,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         return (int) discoveredEndpoints.values().stream().filter(e -> e.connected).count();
     }
 
-    private void queueVideo(Video video, Command command) {
-        transferQueue.add(new Message(video, command));
+    private void queueVideo(String videoPath, Command command) {
+        transferQueue.add(new Message(videoPath, command));
     }
 
     @Override
-    public void addVideo(Video video) {
+    public void addVideo(String videoPath) {
         Context context = getContext();
         if (context == null) {
             Log.e(TAG, "No context");
@@ -304,7 +297,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         if (segmentationEnabled) {
             if (segNum > 2) {
-                int segCount = splitAndQueue(video.getData(), segNum);
+                int segCount = splitAndQueue(videoPath, segNum);
                 if (segCount != segNum) {
                     Log.w(TAG, String.format("Number of segmented videos (%d) does not match intended value (%d)",
                             segCount, segNum));
@@ -315,13 +308,13 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         segNum));
             }
         }
-        queueVideo(video, Command.SUMMARISE);
+        queueVideo(videoPath, Command.SUMMARISE);
     }
 
     @Override
-    public void returnVideo(Video video) {
+    public void returnVideo(String videoPath) {
         List<Endpoint> endpoints = getConnectedEndpoints();
-        Message message = new Message(video, Command.RETURN);
+        Message message = new Message(videoPath, Command.RETURN);
 
         // Workers should only have a single connection to the master endpoint
         if (endpoints.size() == 1) {
@@ -375,29 +368,29 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
 
         String baseVideoName = FilenameUtils.getBaseName(videoPath);
-        List<Video> videos = FfmpegTools.splitAndReturn(context, videoPath, segNum);
+        List<String> videoPaths = FfmpegTools.splitAndReturn(videoPath, segNum);
 
-        if (videos == null || videos.size() == 0) {
+        if (videoPaths == null || videoPaths.size() == 0) {
             Log.e(TAG, String.format("Could not split %s", baseVideoName));
             return -1;
         }
-        for (Video segment : videos) {
-            queueVideo(segment, Command.SUMMARISE_SEGMENT);
-            queueVideoSegment(baseVideoName, segment);
+        for (String segmentPath : videoPaths) {
+            queueVideo(segmentPath, Command.SUMMARISE_SEGMENT);
+            queueVideoSegment(baseVideoName, segmentPath);
         }
-        return videos.size();
+        return videoPaths.size();
     }
 
     // Add segments when sending, remove segments when receiving. Empty list means all segments received.
-    private void queueVideoSegment(String baseName, Video segment) {
-        LinkedHashMap<String, Video> segmentMap = videoSegments.get(baseName);
+    private void queueVideoSegment(String baseName, String segmentPath) {
+        LinkedHashMap<String, String> segmentMap = videoSegments.get(baseName);
 
         if (segmentMap == null) {
             segmentMap = new LinkedHashMap<>();
             videoSegments.put(baseName, segmentMap);
         }
 
-        segmentMap.put(segment.getName(), segment);
+        segmentMap.put(FileManager.getFilenameFromPath(segmentPath), segmentPath);
     }
 
     private void transferToAllEndpoints() {
@@ -638,7 +631,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
 
         transferCount++;
-        File fileToSend = new File(message.video.getData());
+        File fileToSend = new File(message.videoPath);
         Uri uri = Uri.fromFile(fileToSend);
         Payload filePayload = null;
         Context context = getContext();
@@ -658,10 +651,11 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
 
         if (filePayload == null) {
-            Log.e(TAG, String.format("Could not create file payload for %s", message.video));
+            Log.e(TAG, String.format("Could not create file payload for %s", message.videoPath));
             return;
         }
-        Log.w(TAG, String.format("Sending %s to %s", message.video.getName(), toEndpoint.name));
+        Log.w(TAG, String.format("Sending %s to %s",
+                FileManager.getFilenameFromPath(message.videoPath), toEndpoint.name));
 
         // Construct a message mapping the ID of the file payload to the desired filename and command.
         // Also include summarisation preferences for summarisation commands
@@ -773,7 +767,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         }
 
         String baseVideoName = FfmpegTools.getBaseName(videoName);
-        LinkedHashMap<String, Video> vidMap = videoSegments.get(baseVideoName);
+        LinkedHashMap<String, String> vidMap = videoSegments.get(baseVideoName);
         if (vidMap == null) {
             Log.d(TAG, "Couldn't retrieve video map");
             return;
@@ -784,15 +778,15 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             return;
         }
 
-        Video video = vidMap.remove(videoName);
-        if (video == null) {
+        String videoPath = vidMap.remove(videoName);
+        if (videoPath == null) {
             Log.d(TAG, "Couldn't retrieve video");
             return;
         }
 
         if (vidMap.size() == 0) {
             Log.d(TAG, String.format("Received all summarised video segments of %s", baseVideoName));
-            String parentName = String.format("%s.%s", baseVideoName, FilenameUtils.getExtension(video.getName()));
+            String parentName = String.format("%s.%s", baseVideoName, FilenameUtils.getExtension(videoPath));
             String outPath = FfmpegTools.mergeVideos(parentName);
 
             if (outPath == null) {
@@ -807,13 +801,13 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     return;
                 }
 
-                video.insertMediaValues(context, outPath);
-                Video mergedVideo = VideoManager.getVideoFromPath(context, outPath);
-                EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
+//                video.insertMediaValues(context, outPath);
+//                Video mergedVideo = VideoManager.getVideoFromPath(context, outPath);
+//                EventBus.getDefault().post(new AddEvent(mergedVideo, Type.SUMMARISED));
             }
 
-            EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.RAW));
-            EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.PROCESSING));
+//            EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.RAW));
+//            EventBus.getDefault().post(new RemoveByNameEvent(parentName, Type.PROCESSING));
             Log.v(TAG, String.format("Removing video segment map for %s", baseVideoName));
             videoSegments.remove(baseVideoName);
         } else {
@@ -828,25 +822,24 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             return;
         }
 
-        File videoFile = new File(message.video.getData());
-        String filename = videoFile.getName();
+        String filename = FileManager.getFilenameFromPath(message.videoPath);
         String outPath = message.command.equals(Command.SUMMARISE_SEGMENT) ?
                 String.format("%s/%s", FileManager.getSegmentSumSubDirPath(filename), filename)
                 : String.format("%s/%s", FileManager.getSummarisedDirPath(), filename);
         SummariserPrefs prefs = SummariserPrefs.extractPreferences(context);
 
-        summarise(context, videoFile, prefs, outPath, false);
+        summarise(context, message.videoPath, prefs, outPath, false);
     }
 
-    void summarise(Context context, File videoFile, SummariserPrefs prefs, String outPath, boolean sendVideo) {
-        Log.d(TAG, String.format("Summarising %s", videoFile.getName()));
+    void summarise(Context context, String videoPath, SummariserPrefs prefs, String outPath, boolean sendVideo) {
+        Log.d(TAG, String.format("Summarising %s", FileManager.getFilenameFromPath(videoPath)));
 
-        Video video = VideoManager.getVideoFromPath(context, videoFile.getAbsolutePath());
-        EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
-        EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+//        Video video = VideoManager.getVideoFromPath(context, videoFile.getAbsolutePath());
+//        EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+//        EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 
         Intent intent = new Intent(context, SummariserIntentService.class);
-        intent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+        intent.putExtra(SummariserIntentService.VIDEO_KEY, videoPath);
         intent.putExtra(SummariserIntentService.OUTPUT_KEY, outPath);
         intent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.NETWORK_TYPE);
         intent.putExtra(SummariserIntentService.SEND_VIDEO_KEY, sendVideo);
@@ -918,13 +911,13 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         videoName = parts[1];
                         Log.d(TAG, String.format("%s has finished downloading %s", fromEndpoint, videoName));
 
-                        if (!isSegmentedVideo(videoName)) {
-                            videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
-                            video = VideoManager.getVideoFromPath(context, videoPath);
-
-                            EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
-                            EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
-                        }
+//                        if (!isSegmentedVideo(videoName)) {
+//                            videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
+//                            video = VideoManager.getVideoFromPath(context, videoPath);
+//
+//                            EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+//                            EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+//                        }
 
                         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
                         boolean fastScheduling = pref.getBoolean(getString(R.string.fast_scheduling_key), false);
@@ -942,9 +935,9 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         endpointQueue.add(fromEndpoint);
 
                         if (!isSegmentedVideo(videoName)) {
-                            videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
-                            video = VideoManager.getVideoFromPath(context, videoPath);
-                            EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
+//                            videoPath = String.format("%s/%s", FileManager.getRawFootageDirPath(), videoName);
+//                            video = VideoManager.getVideoFromPath(context, videoPath);
+//                            EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
                         } else {
                             handleSegment(videoName);
                         }
@@ -1027,7 +1020,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     String outPath = (command.equals(Command.SUMMARISE_SEGMENT)) ?
                             String.format("%s/%s", FileManager.getSegmentSumSubDirPath(filename), videoFile.getName()) :
                             String.format("%s/%s", FileManager.getSummarisedDirPath(), videoFile.getName());
-                    summarise(getContext(), videoFile, prefs, outPath, true);
+                    summarise(getContext(), videoFile.getAbsolutePath(), prefs, outPath, true);
 
                 } else if (command.equals(Command.RETURN)) {
                     boolean isSeg = isSegmentedVideo(filename);
@@ -1047,15 +1040,15 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         return;
                     }
 
-                    Context context = getContext();
-                    if (context == null) {
-                        Log.e(TAG, "No context");
-                        return;
-                    }
-
-                    Video video = VideoManager.getVideoFromPath(context, videoDestPath);
-                    EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
-                    EventBus.getDefault().post(new RemoveByNameEvent(filename, Type.PROCESSING));
+//                    Context context = getContext();
+//                    if (context == null) {
+//                        Log.e(TAG, "No context");
+//                        return;
+//                    }
+//
+//                    Video video = VideoManager.getVideoFromPath(context, videoDestPath);
+//                    EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
+//                    EventBus.getDefault().post(new RemoveByNameEvent(filename, Type.PROCESSING));
                 }
             }
         }

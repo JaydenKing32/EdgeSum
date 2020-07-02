@@ -1,0 +1,1865 @@
+07-02 21:49:02.036 26638 26638 D NearbyFragment: onPayloadReceived(endpointId=HC0V, payload=com.google.android.gms.nearby.connection.Payload@b1c7787)
+07-02 21:49:02.037 26638 26638 D NearbyFragment: Endpoint{id=HC0V, name=Nexus 5X [34d8]} has finished downloading 20200312_193628!002.mp4
+07-02 21:49:02.037 26638 26638 V NearbyFragment: nextTransfer with selected algorithm: best_or_local
+07-02 21:49:02.045 26638 26638 V FileManager: External storage is readable
+07-02 21:49:02.045 26638 26638 V FileManager: Directory already exists: /storage/emulated/0/Movies/segment-sum/20200312_193628
+07-02 21:49:02.046 26638 26638 D NearbyFragment: Summarising 20200312_193628!003.mp4
+07-02 21:49:02.047 26638 26638 V VideoManager: Retrieving video from /storage/emulated/0/Movies/segment/20200312_193628/20200312_193628!003.mp4
+07-02 21:49:02.060 26638 26638 V VideoManager: videoFromCursor
+07-02 21:49:02.068 26638 26638 V NearbyFragment: Transfer to HC0V: 100%
+07-02 21:49:02.070 26638 28403 V SummariserIntentService: onHandleIntent
+07-02 21:49:02.071 26638 28403 D SummariserIntentService: Video{id='137570', data='/storage/emulated/0/Movies/segment/20200312_193628/20200312_193628!003.mp4', name='20200312_193628!003.mp4', size=12749496, visible=true, mimeType='video/mp4'}
+07-02 21:49:02.071 26638 28403 D SummariserIntentService: /storage/emulated/0/Movies/segment-sum/20200312_193628/20200312_193628!003.mp4
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/storage/emulated/0/Movies/segment/20200312_193628/20200312_193628!003.mp4':
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg:   Metadata:
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg:     major_brand     : 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: isom
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg:     minor_version   : 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.117 26638 27663 I mobile-ffmpeg: 512
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg:     compatible_brands: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: isomiso2avc1mp41
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg:     encoder         : 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: Lavf58.28.101
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg:   Duration: 
+07-02 21:49:02.118 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.119 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 00:00:12.03
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.119 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: , start: 
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.119 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 0.000000
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.119 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: , bitrate: 
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.119 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.119 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 8477 kb/s
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg:     Stream #0:0
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: : Video: h264 (avc1 / 0x31637661), yuvj420p(pc, bt709), 1280x720, 8440 kb/s
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: , 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 29.98 fps, 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 29.97 tbr, 
+07-02 21:49:02.120 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.120 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 16k tbn, 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 32k tbc
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: PittaSoft Video Media Handler
+07-02 21:49:02.121 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg:     Stream #0:1
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: : Audio: aac (mp4a / 0x6134706D), 16000 Hz, stereo, fltp, 47 kb/s
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.122 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.122 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.123 26638 27663 I mobile-ffmpeg: PittaSoft Sound Media Handler
+07-02 21:49:02.123 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.123 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.123 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.123 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.123 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.123 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.123 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.123 26638 27663 I mobile-ffmpeg: Stream mapping:
+07-02 21:49:02.123 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg:   Stream #0:0 -> #0:0
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg:  (h264 (native) -> wrapped_avframe (native))
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg:   Stream #0:1 -> #0:1
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg:  (aac (native) -> pcm_s16le (native))
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.124 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.125 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.125 26638 27663 I mobile-ffmpeg: Press [q] to stop, [?] for help
+07-02 21:49:02.125 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.125 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.125 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.125 26638 27663 I mobile-ffmpeg: frame=    0 fps=0.0 q=0.0 size=N/A time=-577014:32:22.77 bitrate=N/A speed=N/A    
+07-02 21:49:02.138  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:02.139  9122  9187 I chatty  : uid=1002(bluetooth) BT Service Call identical 10 lines
+07-02 21:49:02.139  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:02.139  9122  9187 D BtGatt.GattService: onScanResult to scannerId: 5- eventType=0x10, addressType=0, address=A6:5, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-86, periodicAdvInt=0x0
+07-02 21:49:02.140  8780  9113 D ScanRecord: Not a Multi Manu data
+07-02 21:49:02.146  8780  9113 I [+10]oneconnect[1.7.50-21_01][CORE]: BleParserForVD.parseTvPacket - [Name][TV] Samsung 8 Series (55)[DeviceType]TV[Discover]_BLE[Services]None[Connected]false[TvStatus]-128[TvService]96[TvMirrorChannel]1[TvRegisteredDB][83, 91, 0, 0, 0, 0][TvYear]2016[TvOcfInfo]0[TvAcmStatus]0[ExTvStatus]0
+07-02 21:49:02.173 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.173 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.173 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.173 26638 27663 I mobile-ffmpeg: Output #0, null, to 'pipe:':
+07-02 21:49:02.173 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.173 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.173 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.173 26638 27663 I mobile-ffmpeg:   Metadata:
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg:     major_brand     : 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: isom
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg:     minor_version   : 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 512
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg:     compatible_brands: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.174 26638 27663 I mobile-ffmpeg: isomiso2avc1mp41
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg:     encoder         : 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: Lavf58.28.101
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg:     Stream #0:0
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: : Video: wrapped_avframe, yuvj420p, 1280x720, q=2-31, 200 kb/s
+07-02 21:49:02.175 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: , 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 29.97 fps, 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 29.97 tbn, 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 29.97 tbc
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:02.176 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: PittaSoft Video Media Handler
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg:       encoder         : 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: Lavc58.53.101 wrapped_avframe
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg:     Stream #0:1
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:02.177 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.177 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: : Audio: pcm_s16le, 16000 Hz, stereo, s16, 512 kb/s
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: PittaSoft Sound Media Handler
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg:       encoder         : 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.178 26638 27663 I mobile-ffmpeg: Lavc58.53.101 pcm_s16le
+07-02 21:49:02.179 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.179 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.179 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.179 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.238  5034 28368 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -6264730938422420981, SUCCESS) [CONTEXT service_id=54 ]
+07-02 21:49:02.238 26638 26638 V NearbyFragment: Transfer to HC0V: 100%
+07-02 21:49:02.244  4625 10897 D BluetoothAdapter: STATE_ON
+07-02 21:49:02.247  4625 10897 I NearbyDiscovery: FastPairScanner2: isAlive? bleEnabled:true, btEnabled:true, bleScanAvailable:true [CONTEXT service_id=49 ]
+07-02 21:49:02.249  4625 10897 I NearbyDiscovery: FastPair: isDestroyable: Scanner is alive. [CONTEXT service_id=49 ]
+07-02 21:49:02.254  4625 10897 I NearbyDiscovery: DiscoveryService: Skip stopSelf(), fast pair controller is not destroyable. [CONTEXT service_id=49 ]
+07-02 21:49:02.363 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.364 26638 27663 I mobile-ffmpeg: [freezedetect @ 0x700dc3e080] 
+07-02 21:49:02.364 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.364 26638 27663 I mobile-ffmpeg: lavfi.freezedetect.freeze_start: 0
+07-02 21:49:02.627 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.627 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:02.627 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:02.627 26638 27663 I mobile-ffmpeg: frame=   91 fps=0.0 q=-0.0 size=N/A time=00:00:03.34 bitrate=N/A speed=6.66x    
+07-02 21:49:02.642  3298  5080 V APM_AudioPolicyManager: getAudioPolicyConfig: audioParam;outDevice
+07-02 21:49:02.642  3298  5080 V APM_AudioPolicyManager: getNewOutputDevice() selected device 0
+07-02 21:49:02.642  3298  5080 V APM_AudioPolicyManager: ### curdevice : 2
+07-02 21:49:02.891  3574  4120 D bauth_FPBAuthService: pcf : 0x1012, 0 ,2 ,0 ,0 ,0 ,2, 
+07-02 21:49:02.891  3574  4120 D bauth_FPBAuthService: thread id : 2, preenroll_flag : 0, nd cnt : 1, cso : 0, et : 0
+07-02 21:49:02.891  3574  4120 D bauth_FPBAuthService: FPBAuthService, 9983
+07-02 21:49:02.899  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:02.899  9122  9187 I chatty  : uid=1002(bluetooth) BT Service Call identical 10 lines
+07-02 21:49:02.899  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:02.899  9122  9187 D BtGatt.GattService: onScanResult to scannerId: 5- eventType=0x10, addressType=0, address=A6:5, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-97, periodicAdvInt=0x0
+07-02 21:49:02.900  8780  9113 D ScanRecord: Not a Multi Manu data
+07-02 21:49:02.904  8780  9113 I [+10]oneconnect[1.7.50-21_01][CORE]: BleParserForVD.parseTvPacket - [Name][TV] Samsung 8 Series (55)[DeviceType]TV[Discover]_BLE[Services]None[Connected]false[TvStatus]-128[TvService]96[TvMirrorChannel]1[TvRegisteredDB][83, 91, 0, 0, 0, 0][TvYear]2016[TvOcfInfo]0[TvAcmStatus]0[ExTvStatus]0
+07-02 21:49:03.009 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.009 26638 27663 I mobile-ffmpeg: [freezedetect @ 0x700dc3e080] 
+07-02 21:49:03.009 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.009 26638 27663 I mobile-ffmpeg: lavfi.freezedetect.freeze_duration: 5.938
+07-02 21:49:03.009 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.009 26638 27663 I mobile-ffmpeg: [freezedetect @ 0x700dc3e080] 
+07-02 21:49:03.009 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.009 26638 27663 I mobile-ffmpeg: lavfi.freezedetect.freeze_end: 5.938
+07-02 21:49:03.135 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.136 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.136 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.136 26638 27663 I mobile-ffmpeg: frame=  204 fps=203 q=-0.0 size=N/A time=00:00:07.06 bitrate=N/A speed=7.02x    
+07-02 21:49:03.515  3825  4067 I WifiVendorHal: getWifiLinkLayerStats(l.2973) before calling iface.getLinkLayerStats
+07-02 21:49:03.516  3287  3287 I android.hardware.wifi@1.0-service: enter getLinkLayerStats
+07-02 21:49:03.516  3287  3287 I android.hardware.wifi@1.0-service: enter getLinkLayerStatsInternal
+07-02 21:49:03.524  3287  3287 I android.hardware.wifi@1.0-service: Successfully getLinkLayerStats.
+07-02 21:49:03.524  3825  4067 I WifiVendorHal: getWifiLinkLayerStats(l.2973) after calling iface.getLinkLayerStats
+07-02 21:49:03.632 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.632 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.632 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.632 26638 27663 I mobile-ffmpeg: frame=  310 fps=206 q=-0.0 size=N/A time=00:00:10.64 bitrate=N/A speed=7.06x    
+07-02 21:49:03.693  3825  4133 D WifiConnectivityMonitor: Send parallel check, instead of QC
+07-02 21:49:03.696  3549  3621 D DnsProxyListener: DNSDBG::dns addrinfo af 2
+07-02 21:49:03.811  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:03.812  9122  9187 I chatty  : uid=1002(bluetooth) BT Service Call identical 10 lines
+07-02 21:49:03.812  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:03.812  9122  9187 D BtGatt.GattService: onScanResult to scannerId: 5- eventType=0x10, addressType=0, address=A6:5, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-94, periodicAdvInt=0x0
+07-02 21:49:03.813  8780  9113 D ScanRecord: Not a Multi Manu data
+07-02 21:49:03.818  8780  9113 I [+10]oneconnect[1.7.50-21_01][CORE]: BleParserForVD.parseTvPacket - [Name][TV] Samsung 8 Series (55)[DeviceType]TV[Discover]_BLE[Services]None[Connected]false[TvStatus]-128[TvService]96[TvMirrorChannel]1[TvRegisteredDB][83, 91, 0, 0, 0, 0][TvYear]2016[TvOcfInfo]0[TvAcmStatus]0[ExTvStatus]0
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.859 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: frame=  360 fps=207 q=-0.0 Lsize=N/A time=00:00:12.05 bitrate=N/A speed=6.95x    
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.859 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: video:188kB audio:752kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.859 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: unknown
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.859 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.859 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.891  3574  4120 D bauth_FPBAuthService: pcf : 0x1012, 0 ,2 ,0 ,0 ,0 ,2, 
+07-02 21:49:03.892  3574  4120 D bauth_FPBAuthService: thread id : 2, preenroll_flag : 0, nd cnt : 1, cso : 0, et : 0
+07-02 21:49:03.892  3574  4120 D bauth_FPBAuthService: FPBAuthService, 9983
+07-02 21:49:03.940 26638 28403 W Summariser: 1 active sections found
+07-02 21:49:03.940 26638 28403 I FfmpegTools: Running ffmpeg with:
+07-02 21:49:03.940 26638 28403 I FfmpegTools:   -y -i /storage/emulated/0/Movies/segment/20200312_193628/20200312_193628!003.mp4 -filter_complex [0:v]trim=5.938000:12.030000,setpts=PTS-STARTPTS[v0];[0:a]atrim=5.938000:12.030000,asetpts=PTS-STARTPTS[a0];[v0][a0]concat=n=1:v=1:a=1[outv][outa] -map [outv] -map [outa] -crf 23 -preset medium /storage/emulated/0/Movies/segment-sum/20200312_193628/20200312_193628!003.mp4
+07-02 21:49:03.967 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.967 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.967 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.967 26638 27663 I mobile-ffmpeg: Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/storage/emulated/0/Movies/segment/20200312_193628/20200312_193628!003.mp4':
+07-02 21:49:03.967 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.968 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.968 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.968 26638 27663 I mobile-ffmpeg:   Metadata:
+07-02 21:49:03.968 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.968 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.968 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.968 26638 27663 I mobile-ffmpeg:     major_brand     : 
+07-02 21:49:03.969 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.969 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.969 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.969 26638 27663 I mobile-ffmpeg: isom
+07-02 21:49:03.969 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.969 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.969 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.969 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.970 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.970 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.970 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.970 26638 27663 I mobile-ffmpeg:     minor_version   : 
+07-02 21:49:03.970 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.970 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.970 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.970 26638 27663 I mobile-ffmpeg: 512
+07-02 21:49:03.971 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.971 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.971 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.971 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.971 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.971 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.971 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.971 26638 27663 I mobile-ffmpeg:     compatible_brands: 
+07-02 21:49:03.971 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.971 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.972 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.972 26638 27663 I mobile-ffmpeg: isomiso2avc1mp41
+07-02 21:49:03.972 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.972 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.972 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.972 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.972 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.973 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.973 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.973 26638 27663 I mobile-ffmpeg:     encoder         : 
+07-02 21:49:03.973 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.973 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.974 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.974 26638 27663 I mobile-ffmpeg: Lavf58.28.101
+07-02 21:49:03.974 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.974 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.974 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.974 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.974 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.974 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.974 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.975 26638 27663 I mobile-ffmpeg:   Duration: 
+07-02 21:49:03.975 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.975 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.975 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.975 26638 27663 I mobile-ffmpeg: 00:00:12.03
+07-02 21:49:03.975 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.975 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.976 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.976 26638 27663 I mobile-ffmpeg: , start: 
+07-02 21:49:03.976 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.976 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.976 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.976 26638 27663 I mobile-ffmpeg: 0.000000
+07-02 21:49:03.976 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.976 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.977 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.977 26638 27663 I mobile-ffmpeg: , bitrate: 
+07-02 21:49:03.977 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.977 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.977 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.977 26638 27663 I mobile-ffmpeg: 8477 kb/s
+07-02 21:49:03.977 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.977 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.977 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.977 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.977 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.978 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg:     Stream #0:0
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.978 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.978 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: : Video: h264 (avc1 / 0x31637661), yuvj420p(pc, bt709), 1280x720, 8440 kb/s
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.978 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: , 
+07-02 21:49:03.978 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.978 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 29.98 fps, 
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.979 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 29.97 tbr, 
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.979 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 16k tbn, 
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.979 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 32k tbc
+07-02 21:49:03.979 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.979 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.980 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.980 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.980 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.980 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.981 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg: PittaSoft Video Media Handler
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.981 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.981 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg:     Stream #0:1
+07-02 21:49:03.981 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.981 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.982 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: : Audio: aac (mp4a / 0x6134706D), 16000 Hz, stereo, fltp, 47 kb/s
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.982 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.982 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.982 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: PittaSoft Sound Media Handler
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.983 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: Stream mapping:
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.984 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg:   Stream #0:0 (h264) -> trim
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.984 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.984 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg:   Stream #0:1 (aac) -> atrim
+07-02 21:49:03.984 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.985 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.985 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.985 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.985 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.985 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.985 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.985 26638 27663 I mobile-ffmpeg:   concat:out:v0
+07-02 21:49:03.985 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.985 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.985 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.985 26638 27663 I mobile-ffmpeg:  -> Stream #0:0 (libx264)
+07-02 21:49:03.985 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.986 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.986 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.986 26638 27663 I mobile-ffmpeg:   concat:out:a0
+07-02 21:49:03.986 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.986 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.986 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.986 26638 27663 I mobile-ffmpeg:  -> Stream #0:1 (aac)
+07-02 21:49:03.986 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.986 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:03.986 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:03.986 26638 27663 I mobile-ffmpeg: Press [q] to stop, [?] for help
+07-02 21:49:04.038 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.038 26638 27663 I mobile-ffmpeg: [libx264 @ 0x7024717300] 
+07-02 21:49:04.038 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.038 26638 27663 I mobile-ffmpeg: using cpu capabilities: ARMv8 NEON
+07-02 21:49:04.040 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.041 26638 27663 I mobile-ffmpeg: [libx264 @ 0x7024717300] 
+07-02 21:49:04.041 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.041 26638 27663 I mobile-ffmpeg: profile High, level 3.1, 4:2:0, 8-bit
+07-02 21:49:04.041 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.041 26638 27663 I mobile-ffmpeg: [libx264 @ 0x7024717300] 
+07-02 21:49:04.041 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.041 26638 27663 I mobile-ffmpeg: 264 - core 157 - H.264/MPEG-4 AVC codec - Copyleft 2003-2018 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=12 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+07-02 21:49:04.042 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.042 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.042 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: Output #0, mp4, to '/storage/emulated/0/Movies/segment-sum/20200312_193628/20200312_193628!003.mp4':
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg:   Metadata:
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg:     major_brand     : 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: isom
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg:     minor_version   : 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 512
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg:     compatible_brands: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: isomiso2avc1mp41
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg:     encoder         : 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: Lavf58.28.101
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.043 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.043 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg:     Stream #0:0
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: : Video: h264 (libx264) (avc1 / 0x31637661), yuvj420p(pc), 1280x720, q=-1--1
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: , 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 29.97 fps, 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 30k tbn, 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 29.97 tbc
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg:       encoder         : 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: Lavc58.53.101 libx264
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg:     Side data:
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg:       
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: cpb: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.044 26638 27663 I mobile-ffmpeg: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: -1
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg:     Stream #0:1
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: : Audio: aac (mp4a / 0x6134706D), 16000 Hz, stereo, fltp, 128 kb/s
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg:       encoder         : 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: Lavc58.53.101 aac
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.045 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.135 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.135 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.135 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.135 26638 27663 I mobile-ffmpeg: frame=    0 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    
+07-02 21:49:04.577  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:04.577  9122  9187 I chatty  : uid=1002(bluetooth) BT Service Call identical 10 lines
+07-02 21:49:04.578  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:04.578  9122  9187 D BtGatt.GattService: onScanResult to scannerId: 5- eventType=0x10, addressType=0, address=A6:5, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-86, periodicAdvInt=0x0
+07-02 21:49:04.579  8780  9113 D ScanRecord: Not a Multi Manu data
+07-02 21:49:04.584  8780  9113 I [+10]oneconnect[1.7.50-21_01][CORE]: BleParserForVD.parseTvPacket - [Name][TV] Samsung 8 Series (55)[DeviceType]TV[Discover]_BLE[Services]None[Connected]false[TvStatus]-128[TvService]96[TvMirrorChannel]1[TvRegisteredDB][83, 91, 0, 0, 0, 0][TvYear]2016[TvOcfInfo]0[TvAcmStatus]0[ExTvStatus]0
+07-02 21:49:04.637 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.637 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:04.637 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:04.637 26638 27663 I mobile-ffmpeg: frame=    0 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=   0x    
+07-02 21:49:04.679  3825  4066 D WifiTrafficPoller: TrafficStats TxPkts=340910 RxPkts=761175 TxBytes=17841211 RxBytes=1141407636 , Foreground uid=10568 pkgName=com.example.edgesum TxPackets=338543 RxPackets=760816 TxBytes=17638541 RxBytes=1141043242
+07-02 21:49:04.822  3300  3300 I SurfaceFlinger: SFWD update time=7413853313966
+07-02 21:49:04.892  3574  4120 D bauth_FPBAuthService: pcf : 0x1012, 0 ,2 ,0 ,0 ,0 ,2, 
+07-02 21:49:04.892  3574  4120 D bauth_FPBAuthService: thread id : 2, preenroll_flag : 0, nd cnt : 1, cso : 0, et : 0
+07-02 21:49:04.892  3574  4120 D bauth_FPBAuthService: FPBAuthService, 9983
+07-02 21:49:05.143 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:05.143 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:05.143 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:05.143 26638 27663 I mobile-ffmpeg: frame=   37 fps= 32 q=0.0 size=       0kB time=00:00:01.34 bitrate=   0.3kbits/s speed=1.15x    
+07-02 21:49:05.334  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:05.334  9122  9187 I chatty  : uid=1002(bluetooth) BT Service Call identical 10 lines
+07-02 21:49:05.334  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:05.335  9122  9187 D BtGatt.GattService: onScanResult to scannerId: 5- eventType=0x10, addressType=0, address=A6:5, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-93, periodicAdvInt=0x0
+07-02 21:49:05.335  8780  9113 D ScanRecord: Not a Multi Manu data
+07-02 21:49:05.340  8780  9113 I [+10]oneconnect[1.7.50-21_01][CORE]: BleParserForVD.parseTvPacket - [Name][TV] Samsung 8 Series (55)[DeviceType]TV[Discover]_BLE[Services]None[Connected]false[TvStatus]-128[TvService]96[TvMirrorChannel]1[TvRegisteredDB][83, 91, 0, 0, 0, 0][TvYear]2016[TvOcfInfo]0[TvAcmStatus]0[ExTvStatus]0
+07-02 21:49:05.660 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:05.660 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:05.660 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:05.660 26638 27663 I mobile-ffmpeg: frame=   57 fps= 34 q=29.0 size=       0kB time=00:00:02.04 bitrate=   0.2kbits/s speed=1.22x    
+07-02 21:49:05.892  3574  4120 D bauth_FPBAuthService: pcf : 0x1012, 0 ,2 ,0 ,0 ,0 ,2, 
+07-02 21:49:05.893  3574  4120 D bauth_FPBAuthService: thread id : 2, preenroll_flag : 0, nd cnt : 1, cso : 0, et : 0
+07-02 21:49:05.893  3574  4120 D bauth_FPBAuthService: FPBAuthService, 9983
+07-02 21:49:06.163 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:06.163 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:06.163 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:06.163 26638 27663 I mobile-ffmpeg: frame=   74 fps= 34 q=29.0 size=       0kB time=00:00:02.56 bitrate=   0.1kbits/s speed=1.17x    
+07-02 21:49:06.368  5034 28368 I NearbyConnections: ClientProxy(90613522) reporting onPayloadReceived(HC0V, -8901625441270540666) [CONTEXT service_id=54 ]
+07-02 21:49:06.369 26638 26638 D NearbyFragment: onPayloadReceived(endpointId=HC0V, payload=com.google.android.gms.nearby.connection.Payload@3de52dd)
+07-02 21:49:06.369  5034 28368 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8901625441270540666, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:06.369 26638 26638 D NearbyFragment: 20200312_193628!002.mp4 from Endpoint{id=HC0V, name=Nexus 5X [34d8]} contained no activity
+07-02 21:49:06.369 26638 26638 V NearbyFragment: Received a segment of 20200312_193628
+07-02 21:49:06.370 26638 26638 I NearbyFragment: Transfer queue is empty
+07-02 21:49:06.370 26638 26638 V NearbyFragment: Transfer to HC0V: 100%
+07-02 21:49:06.379  5034 28368 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8901625441270540666, SUCCESS) [CONTEXT service_id=54 ]
+07-02 21:49:06.379 26638 26638 V NearbyFragment: Transfer to HC0V: 100%
+07-02 21:49:06.537  3825  4067 I WifiVendorHal: getWifiLinkLayerStats(l.2973) before calling iface.getLinkLayerStats
+07-02 21:49:06.538  3287  3287 I android.hardware.wifi@1.0-service: enter getLinkLayerStats
+07-02 21:49:06.538  3287  3287 I android.hardware.wifi@1.0-service: enter getLinkLayerStatsInternal
+07-02 21:49:06.546  3287  3287 I android.hardware.wifi@1.0-service: Successfully getLinkLayerStats.
+07-02 21:49:06.547  3825  4067 I WifiVendorHal: getWifiLinkLayerStats(l.2973) after calling iface.getLinkLayerStats
+07-02 21:49:06.584  3825  6594 I ActivityManager: Killing 26356:com.samsung.android.smartmirroring/u0a164 (adj 906): empty #25
+07-02 21:49:06.586  3825  3855 W libprocessgroup: kill(-26356, 9) failed: No such process
+07-02 21:49:06.658  3825  3855 I chatty  : uid=1000(system) ActivityManager identical 9 lines
+07-02 21:49:06.664  3825  3855 W libprocessgroup: kill(-26356, 9) failed: No such process
+07-02 21:49:06.666  3530  3530 I Zygote  : Process 26356 exited due to signal (9)
+07-02 21:49:06.666  4201  4534 D TileLifecycleManager: binderDeath
+07-02 21:49:06.666  3825  4194 D WifiP2pService: binderDied: binder=android.os.BinderProxy@a0a58c5
+07-02 21:49:06.670  3825  3855 W libprocessgroup: kill(-26356, 9) failed: No such process
+07-02 21:49:06.670  3825  3855 I libprocessgroup: Successfully killed process cgroup uid 10164 pid 26356 in 84ms
+07-02 21:49:06.674  4458  4476 D ForegroundUtils: could not check pending caller
+07-02 21:49:06.687  9122  9122 D HidDeviceService: handleMessage(): msg.what=8
+07-02 21:49:06.687  9122  9122 D HidDeviceService: unregisterAppUid(): uid=10164
+07-02 21:49:06.687  9122  9122 D HidDeviceService: unregisterAppUid(): caller UID doesn't match user UID
+07-02 21:49:06.696  3825  4138 D WifiConnectivityMonitor: DNS resultType : 3, responseTime : -1
+07-02 21:49:06.698  3825  4133 I WifiConnectivityMonitor: 07-02 21:49:06.698, InvalidNonSwitchableState, [i]-1, [s]3, [t]11/11, [e]6, [b]-1, [u]-1/1, -63, 58, false(true/false/false/true/true/true/true/true/true/true), false(false/true), true(true/true/true), 31, 22426c61636b767565373530532d46323536304622, 00560f, 4690
+07-02 21:49:06.701  3825  4133 I WifiConnectivityMonitor: 07-02 21:49:06.700, InvalidNonSwitchableState, 192.168.49.233   0x1         0x2         64:bc:0c:4b:12:f7     *        p2p-wlan0-010.99.77.1       0x1         0x2         00:25:42:f2:56:0f     *        wlan0
+07-02 21:49:06.701  3825  4133 D WifiConnectivityMonitor: goodRssi=-58 goodCount=5 lastGood=7415732 lastPoor=7415732 avoidMax=30000
+07-02 21:49:06.715  3825  4133 D WifiConnectivityMonitor: Send parallel check, instead of QC
+07-02 21:49:06.720  3549  3621 D DnsProxyListener: DNSDBG::dns addrinfo af 2
+07-02 21:49:06.765  4898  4898 D io_stats: !@   8,0 r 402418 24565404 w 74288 3665392 d 4813 2074524 f 17602 17905 iot 174132 150220 th 307200 0 0 pt 0 inp 0 0 7415.796
+07-02 21:49:06.834 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:06.834 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:06.834 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:06.834 26638 27663 I mobile-ffmpeg: frame=   88 fps= 33 q=29.0 size=       0kB time=00:00:03.00 bitrate=   0.1kbits/s speed=1.12x    
+07-02 21:49:06.893  3574  4120 D bauth_FPBAuthService: pcf : 0x1012, 0 ,2 ,0 ,0 ,0 ,2, 
+07-02 21:49:06.893  3574  4120 D bauth_FPBAuthService: thread id : 2, preenroll_flag : 0, nd cnt : 1, cso : 0, et : 0
+07-02 21:49:06.893  3574  4120 D bauth_FPBAuthService: FPBAuthService, 9983
+07-02 21:49:06.925  5034 27454 I NearbyConnections: EndpointManager discarded incoming OfflineFrame of type KEEP_ALIVE because it doesn't have a processor registered. [CONTEXT service_id=54 ]
+07-02 21:49:07.166 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:07.166 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:07.166 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:07.166 26638 27663 I mobile-ffmpeg: frame=  100 fps= 31 q=29.0 size=       0kB time=00:00:03.45 bitrate=   0.1kbits/s speed=1.08x    
+07-02 21:49:07.446  3825  8259 D GameManagerService: identifyGamePackage. com.example.edgesum
+07-02 21:49:07.446  3825  8259 D GamePkgDataHelper: getGamePkgData(). com.example.edgesum
+07-02 21:49:07.677  3825  3863 D ConnectivityService: filterNetworkStateForUid() uid: 1000, pid: 3825
+07-02 21:49:07.678  3825  3863 D ConnectivityService: filterNetworkStateForUid() uid: 1000, pid: 3825, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:07.693  3825  3863 D NetworkManagement: ReportBigdata failReason = 255 failServer = 0
+07-02 21:49:07.694  3825  3863 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:1067 com.android.server.NetworkManagementService$NetdCallbackReceiver.onEvent:1268 com.android.server.NativeDaemonConnector.handleMessage:160 android.os.Handler.dispatchMessage:102 android.os.Looper.loop:214 
+07-02 21:49:07.693  3825  3863 D NetworkManagement: ReportBigdata failReason = 255 failServer = 0
+07-02 21:49:07.697  3825  3863 D NetworkManagement: ReportBigdata totalSuccess = 2
+07-02 21:49:07.697  3825  3825 D MDC     : onReceive com.samsung.intent.action.BIG_DATA_MOBILE_DATA
+07-02 21:49:07.698  3825  3825 D MDC     : category = DNSE
+07-02 21:49:07.698  3825  3851 I MDC     : addDnsData
+07-02 21:49:07.698  3825  3851 I MDC     : mDnsList.size: 12
+07-02 21:49:07.698  3825  3851 I MDC     : Dns is full. just return
+07-02 21:49:07.748 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:07.748 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:07.748 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:07.748 26638 27663 I mobile-ffmpeg: frame=  114 fps= 31 q=29.0 size=     256kB time=00:00:03.90 bitrate= 537.3kbits/s speed=1.05x    
+07-02 21:49:07.754  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:07.754  9122  9187 I chatty  : uid=1002(bluetooth) BT Service Call identical 10 lines
+07-02 21:49:07.754  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:07.754  9122  9187 D BtGatt.GattService: onScanResult to scannerId: 5- eventType=0x10, addressType=0, address=A6:5, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-93, periodicAdvInt=0x0
+07-02 21:49:07.755  8780  9113 D ScanRecord: Not a Multi Manu data
+07-02 21:49:07.763  8780  9113 I [+10]oneconnect[1.7.50-21_01][CORE]: BleParserForVD.parseTvPacket - [Name][TV] Samsung 8 Series (55)[DeviceType]TV[Discover]_BLE[Services]None[Connected]false[TvStatus]-128[TvService]96[TvMirrorChannel]1[TvRegisteredDB][83, 91, 0, 0, 0, 0][TvYear]2016[TvOcfInfo]0[TvAcmStatus]0[ExTvStatus]0
+07-02 21:49:07.893  3574  4120 D bauth_FPBAuthService: pcf : 0x1012, 0 ,2 ,0 ,0 ,0 ,2, 
+07-02 21:49:07.893  3574  4120 D bauth_FPBAuthService: thread id : 2, preenroll_flag : 0, nd cnt : 1, cso : 0, et : 0
+07-02 21:49:07.893  3574  4120 D bauth_FPBAuthService: FPBAuthService, 9983
+07-02 21:49:08.221 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:08.221 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:08.221 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:08.221 26638 27663 I mobile-ffmpeg: frame=  128 fps= 30 q=29.0 size=     256kB time=00:00:04.41 bitrate= 474.9kbits/s speed=1.04x    
+07-02 21:49:08.237  3549  3618 D Netd    : notify() code: 601, msg: limit alert globalAlert wlan0
+07-02 21:49:08.241  3825  4062 W BestClock: java.time.DateTimeException: Missing NTP fix
+07-02 21:49:08.243  3549  3628 E IptablesRestoreController: [iptables debug]iptables-restore execute *filter
+07-02 21:49:08.243  3549  3628 E IptablesRestoreController: -nvx -L tetherctrl_counters
+07-02 21:49:08.243  3549  3628 E IptablesRestoreController: COMMIT
+07-02 21:49:08.245  3549  3628 E IptablesRestoreController: [iptables debug]iptables-restore execute done *filter
+07-02 21:49:08.245  3549  3628 E IptablesRestoreController: -nvx -L tetherctrl_counters
+07-02 21:49:08.245  3549  3628 E IptablesRestoreController: COMMIT
+07-02 21:49:08.245  3549  3628 E IptablesRestoreController: , res : 0
+07-02 21:49:08.245  3549  3628 E IptablesRestoreController: [iptables debug]iptables-restore execute *filter
+07-02 21:49:08.245  3549  3628 E IptablesRestoreController: -nvx -L tetherctrl_counters
+07-02 21:49:08.245  3549  3628 E IptablesRestoreController: COMMIT
+07-02 21:49:08.249  3549  3628 E IptablesRestoreController: [iptables debug]iptables-restore execute done *filter
+07-02 21:49:08.249  3549  3628 E IptablesRestoreController: -nvx -L tetherctrl_counters
+07-02 21:49:08.249  3549  3628 E IptablesRestoreController: COMMIT
+07-02 21:49:08.249  3549  3628 E IptablesRestoreController: , res : 0
+07-02 21:49:08.307  3825  4062 W BestClock: java.time.DateTimeException: Missing NTP fix
+07-02 21:49:08.310  3825  4063 W BestClock: java.time.DateTimeException: Missing NTP fix
+07-02 21:49:08.311  3549  3629 D CommandListener: bwctrlcmd: argc=3 bandwidth setglobalalert ...
+07-02 21:49:08.537  5226  5706 D SDHMS:s : SIOP:: AP:272(438,110) BAT:285(285,0) CHG:379(379,0) USB:282(282,0) PA:280(334,50) LRP:0(0,-999) ATC:0(0,-999) 
+07-02 21:49:08.645  3825  6594 D WifiPermissionsUtil: canAccessScanResults: pkgName = com.sec.android.sdhms, uid = 1000
+07-02 21:49:08.702  3825  4066 D WifiTrafficPoller: TrafficStats TxPkts=346130 RxPkts=773059 TxBytes=18112697 RxBytes=1159226136 , Foreground uid=10568 pkgName=com.example.edgesum TxPackets=343759 RxPackets=772700 TxBytes=17910137 RxBytes=1158888742
+07-02 21:49:08.764 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:08.764 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:08.764 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:08.764 26638 27663 I mobile-ffmpeg: frame=  141 fps= 30 q=29.0 size=     256kB time=00:00:04.80 bitrate= 436.9kbits/s speed=1.01x    
+07-02 21:49:08.893  3574  4120 D bauth_FPBAuthService: pcf : 0x1012, 0 ,2 ,0 ,0 ,0 ,2, 
+07-02 21:49:08.893  3574  4120 D bauth_FPBAuthService: thread id : 2, preenroll_flag : 0, nd cnt : 1, cso : 0, et : 0
+07-02 21:49:08.893  3574  4120 D bauth_FPBAuthService: FPBAuthService, 9983
+07-02 21:49:09.151 26638 27636 V VideoManager: Retrieving video from /storage/emulated/0/Movies/raw/20200312_193728.mp4
+07-02 21:49:09.164 26638 27636 D VideoManager: videoCursor is null
+07-02 21:49:09.194  5429  9299 I CMHServiceInterface: binding to CMH
+07-02 21:49:09.212  9122  9122 D HidDeviceService: handleMessage(): msg.what=8
+07-02 21:49:09.214  5429  9299 D CMHServiceInterface: Sending intent to CMH to insert: 1
+07-02 21:49:09.217  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:09.217  3825  6594 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:09.218  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:09.218  5429  9299 D SingleLocationTask: SEC_FLOATING_FEATURE_GALLERY_CONFIG_IMAGE_TAGGER_VERSION: false
+07-02 21:49:09.219  5429 22872 D SingleLocationTask: run starting 
+07-02 21:49:09.220  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:09.220  3825  6594 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:09.221  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:09.221  5429  5429 D SingleLocationTask: mIsConnected: true
+07-02 21:49:09.222  5429 22872 D SingleLocationTask: it took 4ms
+07-02 21:49:09.223  7263  7263 I CMHService: [#CMH#] onCreate() 
+07-02 21:49:09.225  5429  5429 I CMHServiceInterface: CMHService connected
+07-02 21:49:09.226  7263 28467 I Controller: [#CMH#] com.android.providers.media Insert
+07-02 21:49:09.228  7263 28467 I Controller: [#CMH#] processInsertAction,No of files to insert: 1,Origin:com.android.providers.media
+07-02 21:49:09.228  7263 28467 I ImageFeatures: [#CMH#] Not support file type 
+07-02 21:49:09.236 26638 27636 V VideoManager: videoFromCursor
+07-02 21:49:09.240 26638 27636 W DashDownloadManager: Successfully downloaded 20200312_193728.mp4 in 19.832s
+07-02 21:49:09.240 26638 27636 V DownloadTestVideosTask: Entering callback for download completion of 20200312_193728.mp4
+07-02 21:49:09.276 26638 28403 W example.edgesu: 0xebadde09 skipped times: 0
+07-02 21:49:09.276 26638 28403 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0 in tid 28403 (IntentService[S), pid 26638 (example.edgesum)
+07-02 21:49:09.278  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:09.279  9122  9187 I chatty  : uid=1002(bluetooth) BT Service Call identical 10 lines
+07-02 21:49:09.279  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:09.279  9122  9187 D BtGatt.GattService: onScanResult to scannerId: 5- eventType=0x10, addressType=0, address=A6:5, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-85, periodicAdvInt=0x0
+07-02 21:49:09.280  8780  9113 D ScanRecord: Not a Multi Manu data
+07-02 21:49:09.286  8780  9113 I [+10]oneconnect[1.7.50-21_01][CORE]: BleParserForVD.parseTvPacket - [Name][TV] Samsung 8 Series (55)[DeviceType]TV[Discover]_BLE[Services]None[Connected]false[TvStatus]-128[TvService]96[TvMirrorChannel]1[TvRegisteredDB][83, 91, 0, 0, 0, 0][TvYear]2016[TvOcfInfo]0[TvAcmStatus]0[ExTvStatus]0
+07-02 21:49:09.347 26638 27636 V FileManager: External storage is readable
+07-02 21:49:09.348 26638 27636 V FileManager: Created new directory: /storage/emulated/0/Movies/segment/20200312_193728
+07-02 21:49:09.348 26638 27636 V FfmpegTools: Splitting /storage/emulated/0/Movies/raw/20200312_193728.mp4 with 16s long segments
+07-02 21:49:09.349 26638 27636 I FfmpegTools: Running ffmpeg with:
+07-02 21:49:09.349 26638 27636 I FfmpegTools:   -y -i /storage/emulated/0/Movies/raw/20200312_193728.mp4 -map 0 -c copy -f segment -reset_timestamps 1 -segment_time 16 /storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!%03d.mp4
+07-02 21:49:09.354 26638 27663 W mobile-ffmpeg: 
+07-02 21:49:09.354 26638 27663 W mobile-ffmpeg: [mov,mp4,m4a,3gp,3g2,mj2 @ 0x7034dfea00] 
+07-02 21:49:09.354 26638 27663 W mobile-ffmpeg: 
+07-02 21:49:09.354 26638 27663 W mobile-ffmpeg: Found duplicated MOOV Atom. Skipped it
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.389 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg: Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/storage/emulated/0/Movies/raw/20200312_193728.mp4':
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.389 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg:   Metadata:
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.389 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg:     creation_time   : 
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.389 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.389 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 2020-03-12T08:38:28.000000Z
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg:     major_brand     : 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: mp42
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg:     minor_version   : 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 1
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg:     compatible_brands: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: mp42mp42
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg:   Duration: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 00:01:00.02
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: , start: 
+07-02 21:49:09.390 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 0.000000
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: , bitrate: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 9328 kb/s
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg:     Stream #0:0
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: : Video: h264 (avc1 / 0x31637661), yuvj420p(pc, bt709), 1280x720, 8379 kb/s
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: , 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 29.97 fps, 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 29.97 tbr, 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 1k tbn, 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 2k tbc
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.391 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.391 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg:       creation_time   : 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 2020-03-12T08:38:28.000000Z
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: PittaSoft Video Media Handler
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg:     Stream #0:1
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: : Audio: aac (mp4a / 0x6134706D), 16000 Hz, stereo, fltp, 47 kb/s
+07-02 21:49:09.392 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.392 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg:       creation_time   : 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 2020-03-12T08:38:28.000000Z
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: PittaSoft Sound Media Handler
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: [segment @ 0x701d6c0c00] 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: Opening '/storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!000.mp4' for writing
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: Output #0, segment, to '/storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!%03d.mp4':
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg:   Metadata:
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg:     compatible_brands: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: mp42mp42
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.393 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.393 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg:     major_brand     : 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: mp42
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg:     minor_version   : 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 1
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg:     encoder         : 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: Lavf58.28.101
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg:     Stream #0:0
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: : Video: h264 (avc1 / 0x31637661), yuvj420p(pc, bt709), 1280x720, q=2-31, 8379 kb/s
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.394 26638 27663 I mobile-ffmpeg: , 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 29.97 fps, 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 29.97 tbr, 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 16k tbn, 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 1k tbc
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg:       creation_time   : 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 2020-03-12T08:38:28.000000Z
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: PittaSoft Video Media Handler
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.395 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg:     Stream #0:1
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: (eng)
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: : Audio: aac (mp4a / 0x6134706D), 16000 Hz, stereo, fltp, 47 kb/s
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg:  (default)
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg:     Metadata:
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg:       creation_time   : 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 2020-03-12T08:38:28.000000Z
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg:       handler_name    : 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: PittaSoft Sound Media Handler
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.396 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.396 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: Stream mapping:
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg:   Stream #0:0 -> #0:0
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg:  (copy)
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg:   Stream #0:1 -> #0:1
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg:  (copy)
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: Press [q] to stop, [?] for help
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.397 26638 27663 I mobile-ffmpeg: frame=    1 fps=0.0 q=-1.0 size=N/A time=00:00:00.00 bitrate=N/A speed=  63x    
+07-02 21:49:09.500 28470 28470 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstone
+07-02 21:49:09.507  3572  3572 I /system/bin/tombstoned: received crash request for pid 28403
+07-02 21:49:09.515 28470 28470 I crash_dump64: performing dump of process 26638 (target tid = 28403)
+07-02 21:49:09.546 28470 28470 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+07-02 21:49:09.547 28470 28470 F DEBUG   : Build fingerprint: 'samsung/dreamltexx/dreamlte:9/PPR1.180610.011/G950FXXS8DTC7:user/release-keys'
+07-02 21:49:09.547 28470 28470 F DEBUG   : Revision: '10'
+07-02 21:49:09.547 28470 28470 F DEBUG   : ABI: 'arm64'
+07-02 21:49:09.547 28470 28470 F DEBUG   : pid: 26638, tid: 28403, name: IntentService[S  >>> com.example.edgesum <<<
+07-02 21:49:09.547 28470 28470 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0
+07-02 21:49:09.547 28470 28470 F DEBUG   : Cause: null pointer dereference
+07-02 21:49:09.547 28470 28470 F DEBUG   :     x0  0000000000000001  x1  00000001b9d9753f  x2  00000001ba2a6286  x3  ffffffffa1025345
+07-02 21:49:09.547 28470 28470 F DEBUG   :     x4  0001dbcf8a000000  x5  0000000000000000  x6  00000070c3f0f000  x7  0000000000204bf0
+07-02 21:49:09.547 28470 28470 F DEBUG   :     x8  0000000000000000  x9  0000000000001cfa  x10 00000000000f4240  x11 00000000000003e8
+07-02 21:49:09.547 28470 28470 F DEBUG   :     x12 0000000000000018  x13 000000005efdc9b5  x14 0010364f471c7c80  x15 00003d78c761b950
+07-02 21:49:09.547 28470 28470 F DEBUG   :     x16 000000701e15ffd8  x17 00000070c34a05a0  x18 00000070101f9eda  x19 0000000000000001
+07-02 21:49:09.547 28470 28470 F DEBUG   :     x20 00000001ba2a6286  x21 0000000000000002  x22 000000701f0b21b0  x23 00000070101ff588
+07-02 21:49:09.547 28470 28470 F DEBUG   :     x24 00000001ba2a624b  x25 0000000000000000  x26 000000701f0b21b0  x27 000000701f0b21d0
+07-02 21:49:09.548 28470 28470 F DEBUG   :     x28 00000001b9d9753f  x29 00000070101fbc60
+07-02 21:49:09.548 28470 28470 F DEBUG   :     sp  00000070101fb340  lr  000000701f07d2fc  pc  000000701f07e7ec
+07-02 21:49:09.565  3825  4067 I WifiVendorHal: getWifiLinkLayerStats(l.2973) before calling iface.getLinkLayerStats
+07-02 21:49:09.566  3287  3287 I android.hardware.wifi@1.0-service: enter getLinkLayerStats
+07-02 21:49:09.566  3287  3287 I android.hardware.wifi@1.0-service: enter getLinkLayerStatsInternal
+07-02 21:49:09.575 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.575 26638 27663 I mobile-ffmpeg: [segment @ 0x701d6c0c00] 
+07-02 21:49:09.575 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.575 26638 27663 I mobile-ffmpeg: Opening '/storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!001.mp4' for writing
+07-02 21:49:09.575  3287  3287 I android.hardware.wifi@1.0-service: Successfully getLinkLayerStats.
+07-02 21:49:09.576  3825  4067 I WifiVendorHal: getWifiLinkLayerStats(l.2973) after calling iface.getLinkLayerStats
+07-02 21:49:09.676 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.676 26638 27663 I mobile-ffmpeg: [segment @ 0x701d6c0c00] 
+07-02 21:49:09.676 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.676 26638 27663 I mobile-ffmpeg: Opening '/storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!002.mp4' for writing
+07-02 21:49:09.719  3825  4138 D WifiConnectivityMonitor: DNS resultType : 3, responseTime : -1
+07-02 21:49:09.721  3825  4133 I WifiConnectivityMonitor: 07-02 21:49:09.720, InvalidNonSwitchableState, [i]-1, [s]3, [t]11/11, [e]6, [b]-1, [u]-1/1, -60, 72, false(true/false/false/true/true/true/true/true/true/true), false(false/true), true(true/true/true), 31, 22426c61636b767565373530532d46323536304622, 00560f, 4690
+07-02 21:49:09.723  3825  4133 I WifiConnectivityMonitor: 07-02 21:49:09.722, InvalidNonSwitchableState, 192.168.49.233   0x1         0x2         64:bc:0c:4b:12:f7     *        p2p-wlan0-010.99.77.1       0x1         0x2         00:25:42:f2:56:0f     *        wlan0
+07-02 21:49:09.723  3825  4133 D WifiConnectivityMonitor: goodRssi=-55 goodCount=5 lastGood=7418754 lastPoor=7418754 avoidMax=30000
+07-02 21:49:09.750 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.750 26638 27663 I mobile-ffmpeg: [segment @ 0x701d6c0c00] 
+07-02 21:49:09.750 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.750 26638 27663 I mobile-ffmpeg: Opening '/storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!003.mp4' for writing
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.791 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: frame= 1800 fps=0.0 q=-1.0 Lsize=N/A time=00:01:00.01 bitrate=N/A speed= 150x    
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.791 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: video:61391kB audio:345kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.791 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: unknown
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.791 26638 27663 I chatty  : uid=10568(com.example.edgesum) identical 1 line
+07-02 21:49:09.791 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.792 26638 27663 I mobile-ffmpeg: 
+07-02 21:49:09.795 26638 27636 V FileManager: External storage is readable
+07-02 21:49:09.796 26638 27636 V FileManager: Directory already exists: /storage/emulated/0/Movies/segment/20200312_193728
+07-02 21:49:09.796 26638 27636 V VideoManager: Retrieving videos from /storage/emulated/0/Movies/segment/20200312_193728
+07-02 21:49:09.796 26638 27636 V VideoManager: Retrieving video from /storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!000.mp4
+07-02 21:49:09.804 26638 27636 D VideoManager: videoCursor is null
+07-02 21:49:09.816  5429  9299 D CMHServiceInterface: Sending intent to CMH to insert: 1
+07-02 21:49:09.817  7263 28467 I Controller: [#CMH#] com.android.providers.media Insert
+07-02 21:49:09.818  7263 28467 I Controller: [#CMH#] processInsertAction,No of files to insert: 1,Origin:com.android.providers.media
+07-02 21:49:09.818 28470 28470 F DEBUG   : 
+07-02 21:49:09.818 28470 28470 F DEBUG   : backtrace:
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #00 pc 000000000001c7ec  /data/app/com.example.edgesum-eYSP1YcpBd_l0ClNquRscg==/base.apk (offset 0x780e000)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #01 pc 000000000001b2f8  /data/app/com.example.edgesum-eYSP1YcpBd_l0ClNquRscg==/base.apk (offset 0x780e000)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #02 pc 000000000001751c  /data/app/com.example.edgesum-eYSP1YcpBd_l0ClNquRscg==/base.apk (offset 0x780e000) (execute+644)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #03 pc 000000000000f68c  /data/app/com.example.edgesum-eYSP1YcpBd_l0ClNquRscg==/base.apk (offset 0x780e000) (Java_com_arthenica_mobileffmpeg_Config_nativeExecute+252)
+07-02 21:49:09.818  7263 28467 I ImageFeatures: [#CMH#] Not support file type 
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #04 pc 000000000056afe0  /system/lib64/libart.so (art_quick_generic_jni_trampoline+144)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #05 pc 000000000056224c  /system/lib64/libart.so (art_quick_invoke_static_stub+604)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #06 pc 00000000000d0160  /system/lib64/libart.so (art::ArtMethod::Invoke(art::Thread*, unsigned int*, unsigned int, art::JValue*, char const*)+232)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #07 pc 00000000002865e8  /system/lib64/libart.so (art::interpreter::ArtInterpreterToCompiledCodeBridge(art::Thread*, art::ArtMethod*, art::ShadowFrame*, unsigned short, art::JValue*)+344)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #08 pc 00000000002805a4  /system/lib64/libart.so (bool art::interpreter::DoCall<false, false>(art::ArtMethod*, art::Thread*, art::ShadowFrame&, art::Instruction const*, unsigned short, art::JValue*)+948)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #09 pc 000000000053273c  /system/lib64/libart.so (MterpInvokeStatic+204)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #10 pc 0000000000554794  /system/lib64/libart.so (ExecuteMterpImpl+14612)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #11 pc 00000000003b709e  /dev/ashmem/dalvik-classes.dex extracted in memory from /data/app/com.example.edgesum-eYSP1YcpBd_l0ClNquRscg==/base.apk_26638_26638 (deleted) (com.arthenica.mobileffmpeg.FFmpeg.execute+14)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #12 pc 000000000025a0a0  /system/lib64/libart.so (_ZN3art11interpreterL7ExecuteEPNS_6ThreadERKNS_20CodeItemDataAccessorERNS_11ShadowFrameENS_6JValueEb.llvm.2089273699+496)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #13 pc 000000000025fc20  /system/lib64/libart.so (art::interpreter::ArtInterpreterToInterpreterBridge(art::Thread*, art::CodeItemDataAccessor const&, art::ShadowFrame*, art::JValue*)+216)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #14 pc 0000000000280588  /system/lib64/libart.so (bool art::interpreter::DoCall<false, false>(art::ArtMethod*, art::Thread*, art::ShadowFrame&, art::Instruction const*, unsigned short, art::JValue*)+920)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #15 pc 000000000053273c  /system/lib64/libart.so (MterpInvokeStatic+204)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #16 pc 0000000000554794  /system/lib64/libart.so (ExecuteMterpImpl+14612)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #17 pc 000000000004a5c2  /dev/ashmem/dalvik-classes2.dex extracted in memory from /data/app/com.example.edgesum-eYSP1YcpBd_l0ClNquRscg==/base.apk!classes2.dex_26638_26638 (deleted) (com.example.edgesum.util.video.FfmpegTools.executeFfmpeg+62)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #18 pc 000000000025a0a0  /system/lib64/libart.so (_ZN3art11interpreterL7ExecuteEPNS_6ThreadERKNS_20CodeItemDataAccessorERNS_11ShadowFrameENS_6JValueEb.llvm.2089273699+496)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #19 pc 000000000025fc20  /system/lib64/libart.so (art::interpreter::ArtInterpreterToInterpreterBridge(art::Thread*, art::CodeItemDataAccessor const&, art::ShadowFrame*, art::JValue*)+216)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #20 pc 0000000000280588  /system/lib64/libart.so (bool art::interpreter::DoCall<false, false>(art::ArtMethod*, art::Thread*, art::ShadowFrame&, art::Instruction const*, unsigned short, art::JValue*)+920)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #21 pc 000000000053273c  /system/lib64/libart.so (MterpInvokeStatic+204)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #22 pc 0000000000554794  /system/lib64/libart.so (ExecuteMterpImpl+14612)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #23 pc 000000000004bbc8  /dev/ashmem/dalvik-classes2.dex extracted in memory from /data/app/com.example.edgesum-eYSP1YcpBd_l0ClNquRscg==/base.apk!classes2.dex_26638_26638 (deleted) (com.example.edgesum.util.video.summariser.Summariser.summarise+180)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #24 pc 000000000025a0a0  /system/lib64/libart.so (_ZN3art11interpreterL7ExecuteEPNS_6ThreadERKNS_20CodeItemDataAccessorERNS_11ShadowFrameENS_6JValueEb.llvm.2089273699+496)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #25 pc 000000000025fc20  /system/lib64/libart.so (art::interpreter::ArtInterpreterToInterpreterBridge(art::Thread*, art::CodeItemDataAccessor const&, art::ShadowFrame*, art::JValue*)+216)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #26 pc 0000000000280588  /system/lib64/libart.so (bool art::interpreter::DoCall<false, false>(art::ArtMethod*, art::Thread*, art::ShadowFrame&, art::Instruction const*, unsigned short, art::JValue*)+920)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #27 pc 0000000000531238  /system/lib64/libart.so (MterpInvokeVirtual+584)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #28 pc 0000000000554614  /system/lib64/libart.so (ExecuteMterpImpl+14228)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #29 pc 000000000004b654  /dev/ashmem/dalvik-classes2.dex extracted in memory from /data/app/com.example.edgesum-eYSP1YcpBd_l0ClNquRscg==/base.apk!classes2.dex_26638_26638 (deleted) (com.example.edgesum.util.video.summariser.SummariserIntentService.onHandleIntent+212)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #30 pc 000000000025a0a0  /system/lib64/libart.so (_ZN3art11interpreterL7ExecuteEPNS_6ThreadERKNS_20CodeItemDataAccessorERNS_11ShadowFrameENS_6JValueEb.llvm.2089273699+496)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #31 pc 000000000025fc20  /system/lib64/libart.so (art::interpreter::ArtInterpreterToInterpreterBridge(art::Thread*, art::CodeItemDataAccessor const&, art::ShadowFrame*, art::JValue*)+216)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #32 pc 0000000000280588  /system/lib64/libart.so (bool art::interpreter::DoCall<false, false>(art::ArtMethod*, art::Thread*, art::ShadowFrame&, art::Instruction const*, unsigned short, art::JValue*)+920)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #33 pc 0000000000531238  /system/lib64/libart.so (MterpInvokeVirtual+584)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #34 pc 0000000000554614  /system/lib64/libart.so (ExecuteMterpImpl+14228)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #35 pc 00000000004e6eb8  /system/framework/boot-framework.vdex (android.app.IntentService$ServiceHandler.handleMessage+12)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #36 pc 000000000025a0a0  /system/lib64/libart.so (_ZN3art11interpreterL7ExecuteEPNS_6ThreadERKNS_20CodeItemDataAccessorERNS_11ShadowFrameENS_6JValueEb.llvm.2089273699+496)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #37 pc 0000000000521978  /system/lib64/libart.so (artQuickToInterpreterBridge+1032)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #38 pc 000000000056b0fc  /system/lib64/libart.so (art_quick_to_interpreter_bridge+92)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #39 pc 000000000000f6b0  /dev/ashmem/dalvik-jit-code-cache_26638_26638 (deleted) (android.os.Handler.dispatchMessage+160)
+07-02 21:49:09.818 28470 28470 F DEBUG   :     #40 pc 000000000002c860  /dev/ashmem/dalvik-jit-code-cache_26638_26638 (deleted) (android.os.Looper.loop+1200)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #41 pc 000000000056224c  /system/lib64/libart.so (art_quick_invoke_static_stub+604)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #42 pc 00000000000d0160  /system/lib64/libart.so (art::ArtMethod::Invoke(art::Thread*, unsigned int*, unsigned int, art::JValue*, char const*)+232)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #43 pc 00000000002865e8  /system/lib64/libart.so (art::interpreter::ArtInterpreterToCompiledCodeBridge(art::Thread*, art::ArtMethod*, art::ShadowFrame*, unsigned short, art::JValue*)+344)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #44 pc 00000000002805a4  /system/lib64/libart.so (bool art::interpreter::DoCall<false, false>(art::ArtMethod*, art::Thread*, art::ShadowFrame&, art::Instruction const*, unsigned short, art::JValue*)+948)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #45 pc 000000000053273c  /system/lib64/libart.so (MterpInvokeStatic+204)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #46 pc 0000000000554794  /system/lib64/libart.so (ExecuteMterpImpl+14612)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #47 pc 0000000000c67c60  /system/framework/boot-framework.vdex (android.os.HandlerThread.run+56)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #48 pc 000000000025a0a0  /system/lib64/libart.so (_ZN3art11interpreterL7ExecuteEPNS_6ThreadERKNS_20CodeItemDataAccessorERNS_11ShadowFrameENS_6JValueEb.llvm.2089273699+496)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #49 pc 0000000000521978  /system/lib64/libart.so (artQuickToInterpreterBridge+1032)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #50 pc 000000000056b0fc  /system/lib64/libart.so (art_quick_to_interpreter_bridge+92)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #51 pc 0000000000561f88  /system/lib64/libart.so (art_quick_invoke_stub+584)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #52 pc 00000000000d0140  /system/lib64/libart.so (art::ArtMethod::Invoke(art::Thread*, unsigned int*, unsigned int, art::JValue*, char const*)+200)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #53 pc 00000000004682d8  /system/lib64/libart.so (art::(anonymous namespace)::InvokeWithArgArray(art::ScopedObjectAccessAlreadyRunnable const&, art::ArtMethod*, art::(anonymous namespace)::ArgArray*, art::JValue*, char const*)+104)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #54 pc 00000000004693a0  /system/lib64/libart.so (art::InvokeVirtualOrInterfaceWithJValues(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, jvalue*)+424)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #55 pc 0000000000494c98  /system/lib64/libart.so (art::Thread::CreateCallback(void*)+1120)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #56 pc 0000000000084dc0  /system/lib64/libc.so (__pthread_start(void*)+208)
+07-02 21:49:09.819 28470 28470 F DEBUG   :     #57 pc 0000000000023a4c  /system/lib64/libc.so (__start_thread+68)
+07-02 21:49:09.822  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:09.822  3825  5809 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:09.822  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:09.823  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:09.824  3825  5809 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:09.824  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:09.824  5429  9299 D SingleLocationTask: SEC_FLOATING_FEATURE_GALLERY_CONFIG_IMAGE_TAGGER_VERSION: false
+07-02 21:49:09.825  5429  5429 D SingleLocationTask: mIsConnected: true
+07-02 21:49:09.825  5429 22874 D SingleLocationTask: run starting 
+07-02 21:49:09.826  5429 22874 D SingleLocationTask: it took 1ms
+07-02 21:49:09.838 26638 27636 V VideoManager: videoFromCursor
+07-02 21:49:09.840 26638 27636 V VideoManager: Retrieving video from /storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!001.mp4
+07-02 21:49:09.847 26638 27636 D VideoManager: videoCursor is null
+07-02 21:49:09.894  3574  4120 D bauth_FPBAuthService: pcf : 0x1012, 0 ,2 ,0 ,0 ,0 ,2, 
+07-02 21:49:09.894  3574  4120 D bauth_FPBAuthService: thread id : 2, preenroll_flag : 0, nd cnt : 1, cso : 0, et : 0
+07-02 21:49:09.894  3574  4120 D bauth_FPBAuthService: FPBAuthService, 9983
+07-02 21:49:10.091  5429  9299 D CMHServiceInterface: Sending intent to CMH to insert: 1
+07-02 21:49:10.091  7263 28467 I Controller: [#CMH#] com.android.providers.media Insert
+07-02 21:49:10.096  7263 28467 I Controller: [#CMH#] processInsertAction,No of files to insert: 1,Origin:com.android.providers.media
+07-02 21:49:10.096  7263 28467 I ImageFeatures: [#CMH#] Not support file type 
+07-02 21:49:10.097  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:10.097  3825  6594 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:10.097  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:10.097  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:10.097  3825  5809 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:10.098  5429  5429 D SingleLocationTask: mIsConnected: true
+07-02 21:49:10.098  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:10.098  5429  9299 D SingleLocationTask: SEC_FLOATING_FEATURE_GALLERY_CONFIG_IMAGE_TAGGER_VERSION: false
+07-02 21:49:10.099  5429 22875 D SingleLocationTask: run starting 
+07-02 21:49:10.100  5429 22875 D SingleLocationTask: it took 1ms
+07-02 21:49:10.126 26638 27636 V VideoManager: videoFromCursor
+07-02 21:49:10.134 26638 27636 V VideoManager: Retrieving video from /storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!002.mp4
+07-02 21:49:10.148 26638 27636 D VideoManager: videoCursor is null
+07-02 21:49:10.171  5429  9299 D CMHServiceInterface: Sending intent to CMH to insert: 1
+07-02 21:49:10.173  7263 28467 I Controller: [#CMH#] com.android.providers.media Insert
+07-02 21:49:10.176  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:10.176  3825  6594 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:10.176  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:10.177  5429  9299 D SingleLocationTask: SEC_FLOATING_FEATURE_GALLERY_CONFIG_IMAGE_TAGGER_VERSION: false
+07-02 21:49:10.177  5429 22876 D SingleLocationTask: run starting 
+07-02 21:49:10.177  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:10.178  3825  5809 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:10.178  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:10.178  5429 22876 D SingleLocationTask: it took 1ms
+07-02 21:49:10.179  5429  5429 D SingleLocationTask: mIsConnected: true
+07-02 21:49:10.178  7263 28467 I Controller: [#CMH#] processInsertAction,No of files to insert: 1,Origin:com.android.providers.media
+07-02 21:49:10.179  7263 28467 I ImageFeatures: [#CMH#] Not support file type 
+07-02 21:49:10.190  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:10.191  9122  9187 I chatty  : uid=1002(bluetooth) BT Service Call identical 10 lines
+07-02 21:49:10.191  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:10.191  9122  9187 D BtGatt.GattService: onScanResult to scannerId: 5- eventType=0x10, addressType=0, address=A6:5, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-91, periodicAdvInt=0x0
+07-02 21:49:10.192  8780  9113 D ScanRecord: Not a Multi Manu data
+07-02 21:49:10.199  8780  9113 I [+10]oneconnect[1.7.50-21_01][CORE]: BleParserForVD.parseTvPacket - [Name][TV] Samsung 8 Series (55)[DeviceType]TV[Discover]_BLE[Services]None[Connected]false[TvStatus]-128[TvService]96[TvMirrorChannel]1[TvRegisteredDB][83, 91, 0, 0, 0, 0][TvYear]2016[TvOcfInfo]0[TvAcmStatus]0[ExTvStatus]0
+07-02 21:49:10.201 26638 27636 V VideoManager: videoFromCursor
+07-02 21:49:10.206 26638 27636 V VideoManager: Retrieving video from /storage/emulated/0/Movies/segment/20200312_193728/20200312_193728!003.mp4
+07-02 21:49:10.221 26638 27636 D VideoManager: videoCursor is null
+07-02 21:49:10.235  5429  5447 D CMHServiceInterface: Sending intent to CMH to insert: 1
+07-02 21:49:10.235  7263 28467 I Controller: [#CMH#] com.android.providers.media Insert
+07-02 21:49:10.237  7263 28467 I Controller: [#CMH#] processInsertAction,No of files to insert: 1,Origin:com.android.providers.media
+07-02 21:49:10.237  7263 28467 I ImageFeatures: [#CMH#] Not support file type 
+07-02 21:49:10.238  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:10.239  3825  5809 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:10.239  3825  5809 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:10.240  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429
+07-02 21:49:10.240  3825  6594 D ConnectivityService: isNetworkWithLinkPropertiesBlocked: uid=10045, vpn=DISCONNECTED,false
+07-02 21:49:10.240  3825  6594 D ConnectivityService: filterNetworkStateForUid() uid: 10045, pid: 5429, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:10.241  5429  5429 D SingleLocationTask: mIsConnected: true
+07-02 21:49:10.241  5429  5447 D SingleLocationTask: SEC_FLOATING_FEATURE_GALLERY_CONFIG_IMAGE_TAGGER_VERSION: false
+07-02 21:49:10.241  5429 22872 D SingleLocationTask: run starting 
+07-02 21:49:10.244  5429 22872 D SingleLocationTask: it took 3ms
+07-02 21:49:10.262 26638 27636 V VideoManager: videoFromCursor
+07-02 21:49:10.267 26638 27636 V NearbyFragment: nextTransfer with selected algorithm: best_or_local
+07-02 21:49:10.273 26638 27636 W NearbyFragment: Sending 20200312_193728!000.mp4 to Nexus 5X [34d8]
+07-02 21:49:10.281  5034 28368 I NearbyConnections: Client 90613522 is sending payload -6776935675761021390 to endpoints [HC0V]. [CONTEXT service_id=54 ]
+07-02 21:49:10.285  5034 28368 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -6776935675761021390, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.286 26638 26638 V NearbyFragment: Transfer to HC0V: 100%
+07-02 21:49:10.286  5034 28368 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -6776935675761021390, SUCCESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.287 26638 26638 V NearbyFragment: Transfer to HC0V: 100%
+07-02 21:49:10.287  5034 28401 I NearbyConnections: Client 90613522 is sending payload -8607351786376128569 to endpoints [HC0V]. [CONTEXT service_id=54 ]
+07-02 21:49:10.298  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.298 26638 26638 V NearbyFragment: Transfer to HC0V: 0%
+07-02 21:49:10.310  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.311  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.311 26638 26638 V NearbyFragment: Transfer to HC0V: 0%
+07-02 21:49:10.312 26638 26638 V NearbyFragment: Transfer to HC0V: 1%
+07-02 21:49:10.313  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.313 26638 26638 V NearbyFragment: Transfer to HC0V: 1%
+07-02 21:49:10.315  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.316 26638 26638 V NearbyFragment: Transfer to HC0V: 1%
+07-02 21:49:10.318  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.319 26638 26638 V NearbyFragment: Transfer to HC0V: 2%
+07-02 21:49:10.322  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.322 26638 26638 V NearbyFragment: Transfer to HC0V: 2%
+07-02 21:49:10.324  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.324 26638 26638 V NearbyFragment: Transfer to HC0V: 3%
+07-02 21:49:10.327  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.327 26638 26638 V NearbyFragment: Transfer to HC0V: 3%
+07-02 21:49:10.330  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.330 26638 26638 V NearbyFragment: Transfer to HC0V: 3%
+07-02 21:49:10.332  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.333 26638 26638 V NearbyFragment: Transfer to HC0V: 4%
+07-02 21:49:10.334  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.335 26638 26638 V NearbyFragment: Transfer to HC0V: 4%
+07-02 21:49:10.337  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.337 26638 26638 V NearbyFragment: Transfer to HC0V: 5%
+07-02 21:49:10.339  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.340 26638 26638 V NearbyFragment: Transfer to HC0V: 5%
+07-02 21:49:10.342  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.343 26638 26638 V NearbyFragment: Transfer to HC0V: 5%
+07-02 21:49:10.345  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.345 26638 26638 V NearbyFragment: Transfer to HC0V: 6%
+07-02 21:49:10.347  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.347 26638 26638 V NearbyFragment: Transfer to HC0V: 6%
+07-02 21:49:10.350  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.350 26638 26638 V NearbyFragment: Transfer to HC0V: 6%
+07-02 21:49:10.351  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.352 26638 26638 V NearbyFragment: Transfer to HC0V: 7%
+07-02 21:49:10.354  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.354 26638 26638 V NearbyFragment: Transfer to HC0V: 7%
+07-02 21:49:10.356  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.357 26638 26638 V NearbyFragment: Transfer to HC0V: 8%
+07-02 21:49:10.436  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.437 26638 26638 V NearbyFragment: Transfer to HC0V: 8%
+07-02 21:49:10.438  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.439 26638 26638 V NearbyFragment: Transfer to HC0V: 8%
+07-02 21:49:10.440  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.441 26638 26638 V NearbyFragment: Transfer to HC0V: 9%
+07-02 21:49:10.443  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.444 26638 26638 V NearbyFragment: Transfer to HC0V: 9%
+07-02 21:49:10.448  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.448 26638 26638 V NearbyFragment: Transfer to HC0V: 10%
+07-02 21:49:10.452  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.453 26638 26638 V NearbyFragment: Transfer to HC0V: 10%
+07-02 21:49:10.456  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.456 26638 26638 V NearbyFragment: Transfer to HC0V: 10%
+07-02 21:49:10.461  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.461 26638 26638 V NearbyFragment: Transfer to HC0V: 11%
+07-02 21:49:10.462  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.462 26638 26638 V NearbyFragment: Transfer to HC0V: 11%
+07-02 21:49:10.466  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.466 26638 26638 V NearbyFragment: Transfer to HC0V: 12%
+07-02 21:49:10.469  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.469 26638 26638 V NearbyFragment: Transfer to HC0V: 12%
+07-02 21:49:10.476  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.476 26638 26638 V NearbyFragment: Transfer to HC0V: 12%
+07-02 21:49:10.480 26638 26638 V NearbyFragment: Transfer to HC0V: 13%
+07-02 21:49:10.479  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.484  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.484 26638 26638 V NearbyFragment: Transfer to HC0V: 13%
+07-02 21:49:10.487  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.487 26638 26638 V NearbyFragment: Transfer to HC0V: 13%
+07-02 21:49:10.533  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.533 26638 26638 V NearbyFragment: Transfer to HC0V: 14%
+07-02 21:49:10.536  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.537 26638 26638 V NearbyFragment: Transfer to HC0V: 14%
+07-02 21:49:10.540  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.541 26638 26638 V NearbyFragment: Transfer to HC0V: 15%
+07-02 21:49:10.545  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.547 26638 26638 V NearbyFragment: Transfer to HC0V: 15%
+07-02 21:49:10.548  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.549 26638 26638 V NearbyFragment: Transfer to HC0V: 15%
+07-02 21:49:10.551  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.552 26638 26638 V NearbyFragment: Transfer to HC0V: 16%
+07-02 21:49:10.554  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.555 26638 26638 V NearbyFragment: Transfer to HC0V: 16%
+07-02 21:49:10.556  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.556 26638 26638 V NearbyFragment: Transfer to HC0V: 17%
+07-02 21:49:10.562  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.563 26638 26638 V NearbyFragment: Transfer to HC0V: 17%
+07-02 21:49:10.565  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.566 26638 26638 V NearbyFragment: Transfer to HC0V: 17%
+07-02 21:49:10.567  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.568 26638 26638 V NearbyFragment: Transfer to HC0V: 18%
+07-02 21:49:10.569  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.569 26638 26638 V NearbyFragment: Transfer to HC0V: 18%
+07-02 21:49:10.572 26638 26638 V NearbyFragment: Transfer to HC0V: 19%
+07-02 21:49:10.572  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.610  5034  5047 I gle.android.gm: Background concurrent copying GC freed 21807(815KB) AllocSpace objects, 389(25MB) LOS objects, 49% free, 24MB/48MB, paused 232us total 142.777ms
+07-02 21:49:10.623  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.623 26638 26638 V NearbyFragment: Transfer to HC0V: 19%
+07-02 21:49:10.626  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.627 26638 26638 V NearbyFragment: Transfer to HC0V: 19%
+07-02 21:49:10.629  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.630 26638 26638 V NearbyFragment: Transfer to HC0V: 20%
+07-02 21:49:10.632  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.633 26638 26638 V NearbyFragment: Transfer to HC0V: 20%
+07-02 21:49:10.635  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.635 26638 26638 V NearbyFragment: Transfer to HC0V: 20%
+07-02 21:49:10.636 26638 26638 V NearbyFragment: Transfer to HC0V: 21%
+07-02 21:49:10.636  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.638  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.639 26638 26638 V NearbyFragment: Transfer to HC0V: 21%
+07-02 21:49:10.639  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.639 26638 26638 V NearbyFragment: Transfer to HC0V: 22%
+07-02 21:49:10.641  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.641 26638 26638 V NearbyFragment: Transfer to HC0V: 22%
+07-02 21:49:10.643  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.643 26638 26638 V NearbyFragment: Transfer to HC0V: 22%
+07-02 21:49:10.644  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.644 26638 26638 V NearbyFragment: Transfer to HC0V: 23%
+07-02 21:49:10.722  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.722 26638 26638 V NearbyFragment: Transfer to HC0V: 23%
+07-02 21:49:10.728  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.728 26638 26638 V NearbyFragment: Transfer to HC0V: 24%
+07-02 21:49:10.734  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.735 26638 26638 V NearbyFragment: Transfer to HC0V: 24%
+07-02 21:49:10.739  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.739 26638 26638 V NearbyFragment: Transfer to HC0V: 24%
+07-02 21:49:10.746  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.746 26638 26638 V NearbyFragment: Transfer to HC0V: 25%
+07-02 21:49:10.749  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.750 26638 26638 V NearbyFragment: Transfer to HC0V: 25%
+07-02 21:49:10.752  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.753 26638 26638 V NearbyFragment: Transfer to HC0V: 26%
+07-02 21:49:10.755  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.755 26638 26638 V NearbyFragment: Transfer to HC0V: 26%
+07-02 21:49:10.757  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.757 26638 26638 V NearbyFragment: Transfer to HC0V: 26%
+07-02 21:49:10.759  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.759 26638 26638 V NearbyFragment: Transfer to HC0V: 27%
+07-02 21:49:10.814  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.814 26638 26638 V NearbyFragment: Transfer to HC0V: 27%
+07-02 21:49:10.821  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.822 26638 26638 V NearbyFragment: Transfer to HC0V: 27%
+07-02 21:49:10.826  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.827 26638 26638 V NearbyFragment: Transfer to HC0V: 28%
+07-02 21:49:10.834  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.835 26638 26638 V NearbyFragment: Transfer to HC0V: 28%
+07-02 21:49:10.838  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.838 26638 26638 V NearbyFragment: Transfer to HC0V: 29%
+07-02 21:49:10.840  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.841 26638 26638 V NearbyFragment: Transfer to HC0V: 29%
+07-02 21:49:10.842  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.843 26638 26638 V NearbyFragment: Transfer to HC0V: 29%
+07-02 21:49:10.845  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.845 26638 26638 V NearbyFragment: Transfer to HC0V: 30%
+07-02 21:49:10.848  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.848 26638 26638 V NearbyFragment: Transfer to HC0V: 30%
+07-02 21:49:10.850  5034 28401 I NearbyConnections: ClientProxy(90613522) reporting onPayloadTransferUpdate(HC0V, -8607351786376128569, IN_PROGRESS) [CONTEXT service_id=54 ]
+07-02 21:49:10.851 26638 26638 V NearbyFragment: Transfer to HC0V: 31%
+07-02 21:49:10.894  3574  4120 D bauth_FPBAuthService: pcf : 0x1012, 0 ,2 ,0 ,0 ,0 ,2, 
+07-02 21:49:10.894  3574  4120 D bauth_FPBAuthService: thread id : 2, preenroll_flag : 0, nd cnt : 1, cso : 0, et : 0
+07-02 21:49:10.894  3574  4120 D bauth_FPBAuthService: FPBAuthService, 9983
+07-02 21:49:10.910  3825  3976 D SensorHubManager: onGetSensorHubDataLocked: library(22) = 1, 1, 44, 1, 1, 1, 2, -120, -10, -3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 39, 48
+07-02 21:49:10.910  3825  3977 D CAE     : onGetSensorHubData(SensorHubParserProvider.java:91) - onGetSensorHubData Event [event buffer len :22], AP_WAKEUP
+07-02 21:49:10.910  3825  3977 I CAE     : parse(SensorHubParserProvider.java:192) - buffer size = 22
+07-02 21:49:10.911  3825  3977 I CAE     : parse(SensorHubParserProvider.java:203) - 1, 1, 44, 1, 1, 1, 2, -120, -10, -3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 39, 48,
+07-02 21:49:10.911  3825  3977 I CAE     : parse(SLMonitorRunner.java:301) - parse:4
+07-02 21:49:10.911  3825  3977 D CAE     : parse(SLMonitorRunner.java:323) - dataSize:1
+07-02 21:49:10.912  3825  3977 D CAE     : display(SLMonitorRunner.java:604) - ================= STEP_LEVEL_MONITOR =================
+07-02 21:49:10.912  3825  3977 I CAE     : display(SLMonitorRunner.java:721) - DT=[1], DC=[1], TS=[1593690530557], ST=[SE], SC=[0], DI=[0.0], CA=[0.0], DU=[10032]
+07-02 21:49:10.913  3825  3982 D SemContextService: Service.updateContext() : service = Step Level Monitor
+07-02 21:49:10.915 15541 15541 D SemContextManager: onSemContextChanged() : event = Step Level Monitor
+07-02 21:49:10.915 15541 18450 I Sensor[0x06]: [0x01] 33
+07-02 21:49:10.915 15541 18450 I Sensor[0x04]: [0x01] 1593690530557[0x02] 0[0x03] 2[0x04] 10032
+07-02 21:49:10.944  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:10.945  9122  9187 I chatty  : uid=1002(bluetooth) BT Service Call identical 10 lines
+07-02 21:49:10.945  9122  9187 D ScanRecord: Not a Multi Manu data
+07-02 21:49:10.945  9122  9187 D BtGatt.GattService: onScanResult to scannerId: 5- eventType=0x10, addressType=0, address=A6:5, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-91, periodicAdvInt=0x0
+07-02 21:49:10.946  8780  9113 D ScanRecord: Not a Multi Manu data
+07-02 21:49:10.949  8780  9113 I [+10]oneconnect[1.7.50-21_01][CORE]: BleParserForVD.parseTvPacket - [Name][TV] Samsung 8 Series (55)[DeviceType]TV[Discover]_BLE[Services]None[Connected]false[TvStatus]-128[TvService]96[TvMirrorChannel]1[TvRegisteredDB][83, 91, 0, 0, 0, 0][TvYear]2016[TvOcfInfo]0[TvAcmStatus]0[ExTvStatus]0
+07-02 21:49:11.279 26638 27636 V DownloadTestVideosTask: Starting DownloadTestVideosTask
+07-02 21:49:11.280 26638 27636 V DashDownloadManager: Started downloading: 20200312_193828.mp4
+07-02 21:49:11.282 26638 27636 I System.out: (HTTPLog)-Static: isSBSettingEnabled false
+07-02 21:49:11.283 26638 27636 I System.out: (HTTPLog)-Static: isSBSettingEnabled false
+07-02 21:49:11.288 26638 27636 I System.out: (HTTPLog)-Thread-2234-234359328: getTransferStream : ContentLength=69990400, method=GET, HTTPVersion=http/1.1
+07-02 21:49:11.289  3825  4152 D ConnectivityService: filterNetworkStateForUid() uid: 1000, pid: 3825
+07-02 21:49:11.289  3825  4152 D ConnectivityService: filterNetworkStateForUid() uid: 1000, pid: 3825, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:11.289  3825  4152 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:1067 android.content.ContextWrapper.sendBroadcast:449 com.samsung.android.smartbonding.SmartBondingService.sendBigDataInfo:3419 com.samsung.android.smartbonding.SmartBondingService$SmartBondingHandler.handleMessage:643 android.os.Handler.dispatchMessage:106 
+07-02 21:49:11.290  3825  3825 D MDC     : onReceive com.samsung.intent.action.BIG_DATA_MOBILE_DATA
+07-02 21:49:11.290  3825  3825 D MDC     : onReceive com.samsung.intent.action.BIG_DATA_MOBILE_DATA category = DOWN
+07-02 21:49:11.290  3825  3851 I MDC     : handleMessage DownloadInfo isdb = 0, netw = 1, size = 4
+07-02 21:49:11.290  3825  3851 D MDC     : [DSTA] mDownloadList.size() : 17
+07-02 21:49:11.293  3825  3851 D MDC     : operator = [000000]
+07-02 21:49:11.293  3825  3851 D ConnectivityService: filterNetworkStateForUid() uid: 1000, pid: 3825
+07-02 21:49:11.293  3825  3851 D ConnectivityService: filterNetworkStateForUid() uid: 1000, pid: 3825, networkInfo: [type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]
+07-02 21:49:11.293  3825  3851 I MDC     : (000000,80,0,1,4)
+07-02 21:49:11.608  3572  3572 E /system/bin/tombstoned: Tombstone written to: /data/tombstones/tombstone_04
+07-02 21:49:11.624  3518  3518 E audit   : type=1701 audit(1593690551.619:271): auid=4294967295 uid=10568 gid=10568 ses=4294967295 subj=u:r:untrusted_app:s0:c56,c258,c512,c768 pid=26638 comm="IntentService[S" exe="/system/bin/app_process64" sig=11
+07-02 21:49:11.294  3825  3851 I chatty  : uid=1000(system) android.bg identical 16 lines
+07-02 21:49:11.294  3825  3851 I MDC     : (000000,80,0,1,4)
+07-02 21:49:11.627  3825 28474 W ActivityManager: crash : com.example.edgesum,0
+07-02 21:49:11.629  3825  3857 I BootReceiver: Copying /data/tombstones/tombstone_04 to DropBox (SYSTEM_TOMBSTONE)
+07-02 21:49:11.633  3825 28474 W ActivityManager:   Force finishing activity com.example.edgesum/.page.main.MainActivity

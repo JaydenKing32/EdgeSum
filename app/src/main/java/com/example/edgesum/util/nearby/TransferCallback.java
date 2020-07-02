@@ -1,11 +1,9 @@
 package com.example.edgesum.util.nearby;
 
-import com.example.edgesum.model.Video;
-
 public interface TransferCallback {
-    void addVideo(Video video);
+    void addVideo(String videoPath);
 
-    void returnVideo(Video video);
+    void returnVideo(String videoPath);
 
     void nextTransfer();
 
