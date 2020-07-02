@@ -12,7 +12,6 @@ public class DownloadActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("testing");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
         getLastVideos();

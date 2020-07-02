@@ -1,18 +1,16 @@
 package com.example.edgesum.data;
 
 import android.content.Context;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.edgesum.model.Video;
-import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.video.VideoManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,27 +31,25 @@ public class ExternalStorageVideosRepository implements VideosRepository {
         this.TAG = tag;
         this.PATH = path;
         if (PATH == null) {
-            Log.i("ExternalStorageVideosRepository", "null");
+            Log.v("ExternalStorageVideosRepository", "null");
         }
 
         videoDirectory = new File(PATH);
-        Log.i("Repo", videoDirectory.getAbsolutePath());
+        Log.v("Repo", videoDirectory.getAbsolutePath());
 //        FileManager.makeDirectory(context, externalStoragePublicMovieDirectory, PATH);
     }
 
     @Override
     public MutableLiveData<List<Video>> getVideos() {
-
         videos = VideoManager.getAllVideoFromExternalStorageFolder(context.getApplicationContext(), videoDirectory);
+        Collections.sort(videos, (v1, v2) -> v1.getName().compareTo(v2.getName()));
         result.setValue(videos);
         return result;
     }
 
     @Override
     public void insert(Video video) {
-//        videos.add(video);
-
-        videos = VideoManager.getAllVideoFromExternalStorageFolder(context.getApplicationContext(), videoDirectory);
+        videos.add(video);
         result.postValue(videos);
     }
 

@@ -1,32 +1,34 @@
 package com.example.edgesum.util.video.summariser;
 
 import android.app.IntentService;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.preference.PreferenceManager;
 
-import com.example.edgesum.R;
 import com.example.edgesum.event.AddEvent;
 import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.video.clouduploader.S3Uploader;
+import com.example.edgesum.util.nearby.Message;
+import com.example.edgesum.util.nearby.TransferCallback;
+import com.example.edgesum.util.video.VideoManager;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
-
 public class SummariserIntentService extends IntentService {
+    private static final String TAG = SummariserIntentService.class.getSimpleName();
 
-    private String TAG = SummariserIntentService.class.getSimpleName();
+    public static final String VIDEO_KEY = "video";
+    public static final String OUTPUT_KEY = "outputPath";
+    public static final String TYPE_KEY = "type";
+    public static final String LOCAL_TYPE = "local";
+    public static final String NETWORK_TYPE = "network";
+    public static final String SEND_VIDEO_KEY = "sendVideo";
+
+    public static TransferCallback transferCallback;
 
     public SummariserIntentService() {
         super("SummariserIntentService");
@@ -38,52 +40,59 @@ public class SummariserIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.i(TAG, "onHandleIntent");
-        final Video video = intent.getParcelableExtra("video");
-        final String output = intent.getStringExtra("outputPath");
+        Log.v(TAG, "onHandleIntent");
 
-        Log.i(TAG, video.toString());
-        Log.i(TAG, output);
+        if (intent == null) {
+            Log.e(TAG, "Null intent");
+            return;
+        }
+        Video video = intent.getParcelableExtra(VIDEO_KEY);
+        String output = intent.getStringExtra(OUTPUT_KEY);
+        String type = intent.getStringExtra(TYPE_KEY);
+        boolean sendVideo = intent.getBooleanExtra(SEND_VIDEO_KEY, true);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        double noise = pref.getInt(getString(R.string.noise_key), (int) Summariser.DEFAULT_NOISE);
-        double duration = pref.getInt(getString(R.string.duration_key), (int) Summariser.DEFAULT_DURATION * 10) / 10.0;
-        int quality = pref.getInt(getString(R.string.quality_key), Summariser.DEFAULT_QUALITY);
-        Speed speed = Speed.valueOf(pref.getString(getString(R.string.encoding_speed_key), Summariser.DEFAULT_SPEED.name()));
+        if (video == null) {
+            Log.e(TAG, "Video not specified");
+            return;
+        }
+        if (output == null) {
+            Log.e(TAG, "Output not specified");
+            return;
+        }
+        if (type == null) {
+            type = LOCAL_TYPE;
+        }
+        Log.d(TAG, video.toString());
+        Log.d(TAG, output);
 
-        Summariser summariser = Summariser.createSummariser(video.getData(), noise, duration, quality, speed, output);
+        SummariserPrefs prefs = SummariserPrefs.extractExtras(this, intent);
+        Summariser summariser = Summariser.createSummariser(video.getData(),
+                prefs.noise, prefs.duration, prefs.quality, prefs.speed, output);
         boolean isVideo = summariser.summarise();
 
         if (isVideo) {
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Video.Media.TITLE, video.getName());
-            values.put(MediaStore.Video.Media.MIME_TYPE, video.getMimeType());
-            values.put(MediaStore.Images.Media.DISPLAY_NAME, "player");
-            values.put(MediaStore.Images.Media.DESCRIPTION, "");
-            values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
-            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
-            values.put(MediaStore.Video.Media.DATA, new File(output).getAbsolutePath());
-            getApplicationContext().getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+            Video sumVid = VideoManager.getVideoFromPath(getApplicationContext(), output);
 
-            EventBus.getDefault().post(new AddEvent(video, Type.SUMMARISED));
+            if (sumVid.getData().contains(FileManager.getSummarisedDirPath())) {
+                EventBus.getDefault().post(new AddEvent(sumVid, Type.SUMMARISED));
+            }
+            if (sendVideo && type.equals(NETWORK_TYPE)) {
+                transferCallback.returnVideo(sumVid);
+            }
+        } else if (sendVideo && type.equals(NETWORK_TYPE)) {
+            transferCallback.sendCommandMessageToAll(Message.Command.NO_ACTIVITY, video.getName());
+        }
+        if (!sendVideo && type.equals(NETWORK_TYPE)) {
+            transferCallback.handleSegment(video.getName());
         }
         EventBus.getDefault().post(new RemoveEvent(video, Type.PROCESSING));
 
-        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{FileManager.summarisedVideosFolderPath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
-            public void onScanCompleted(String path, Uri uri) {
-                Log.i(TAG, "Scanned " + path + ":");
-                Log.i(TAG, "-> uri=" + uri);
-                File rawFootageVideoPath = new File(video.getData());
-//                rawFootageVideoPath.delete();
-//                MediaScannerConnection.scanFile(getApplicationContext(), new String[]{rawFootageVideoPath.getAbsolutePath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
-//                    public void onScanCompleted(String path, Uri uri) {
-//                        Log.i(TAG, "Scanned " + path + ":");
-//                        Log.i(TAG, "-> uri=" + uri);
-//                    }
-//                });
-            }
-        });
-
-
+        MediaScannerConnection.scanFile(getApplicationContext(),
+                new String[]{FileManager.getSummarisedDirPath()}, null, (path, uri) -> {
+                    Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
+                    // Delete raw video
+//                    File rawFootageVideoPath = new File(video.getData());
+//                    rawFootageVideoPath.delete();
+                });
     }
 }

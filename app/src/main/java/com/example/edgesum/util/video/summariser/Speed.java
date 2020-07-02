@@ -1,6 +1,6 @@
 package com.example.edgesum.util.video.summariser;
 
-enum Speed {
+public enum Speed {
     ultrafast,
     superfast,
     veryfast,

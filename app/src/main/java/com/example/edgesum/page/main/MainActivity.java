@@ -1,39 +1,37 @@
 package com.example.edgesum.page.main;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.media.MediaScannerConnection;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService;
 import com.example.edgesum.R;
 import com.example.edgesum.data.VideosRepository;
-import com.example.edgesum.event.AddEvent;
-import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.page.authentication.AuthenticationActivity;
-import com.example.edgesum.page.network.WiFiDirectActivity;
 import com.example.edgesum.page.setting.SettingsActivity;
 import com.example.edgesum.util.Injection;
+import com.example.edgesum.util.dashcam.DashName;
 import com.example.edgesum.util.file.FileManager;
-import com.example.edgesum.util.video.VideoManager;
+import com.example.edgesum.util.nearby.NearbyFragment;
+import com.example.edgesum.util.dashcam.DownloadAllTask;
+import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.videoeventhandler.ProcessingVideosEventHandler;
 import com.example.edgesum.util.video.videoeventhandler.RawFootageEventHandler;
 import com.example.edgesum.util.video.videoeventhandler.SummarisedVideosEventHandler;
@@ -42,51 +40,33 @@ import com.example.edgesum.util.video.viewholderprocessor.RawFootageViewHolderPr
 import com.example.edgesum.util.video.viewholderprocessor.SummarisedVideosViewHolderProcessor;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.apache.commons.io.FileUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+public class MainActivity extends AppCompatActivity implements VideoFragment.OnListFragmentInteractionListener,
+        NearbyFragment.OnFragmentInteractionListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
-import java.io.File;
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+    private VideoFragment rawFootageFragment;
+    private VideoFragment processingFragment;
+    private VideoFragment summarisedVideoFragment;
+    private ConnectionFragment connectionFragment;
 
-public class MainActivity
-        extends AppCompatActivity
-        implements
-        VideoFragment.OnListFragmentInteractionListener {
+    private final FragmentManager supportFragmentManager = getSupportFragmentManager();
+    private Fragment activeFragment;
 
-    private final String TAG = MainActivity.class.getSimpleName();
-
-    VideoFragment rawFootageFragment;
-    VideoFragment processingFragment;
-    VideoFragment summarisedVideoFragment;
-
-    final FragmentManager supportFragmentManager = getSupportFragmentManager();
-    Fragment activeFragment;
-
-
-    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_raw_footage:
+                    Log.v(TAG, "Navigation raw button clicked");
                     showNewFragmentAndHideOldFragment(rawFootageFragment);
                     return true;
                 case R.id.navigation_processing:
+                    Log.v(TAG, "Navigation processing button clicked");
                     showNewFragmentAndHideOldFragment(processingFragment);
                     return true;
                 case R.id.navigation_summarised_videos:
+                    Log.v(TAG, "Navigation summarised button clicked");
                     showNewFragmentAndHideOldFragment(summarisedVideoFragment);
                     return true;
             }
@@ -104,40 +84,38 @@ public class MainActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        checkPermissions();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        scanVideoDirectories();
         startAwsS3TransferService();
 
         // Set the toolbar as the app bar for this Activity.
         setToolBarAsTheAppBar();
-
         setUpBottomNavigation();
-
         setUpFragments();
+        FileManager.initialiseDirectories();
+    }
 
-        File externalStoragePublicMovieDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        makeRawFootageDirectory(externalStoragePublicMovieDirectory);
-        makeSummarisedVideosDirectory(externalStoragePublicMovieDirectory);
-        verifyStoragePermissions();
+    private void scanVideoDirectories() {
+        MediaScannerConnection.OnScanCompletedListener scanCompletedListener = (path, uri) ->
+                Log.d(TAG, String.format("Scanned %s\n  -> uri=%s", path, uri));
+
+        MediaScannerConnection.scanFile(this, new String[]{FileManager.getRawFootageDirPath()},
+                null, scanCompletedListener);
+        MediaScannerConnection.scanFile(this, new String[]{FileManager.getSummarisedDirPath()},
+                null, scanCompletedListener);
     }
 
     private void startAwsS3TransferService() {
         getApplicationContext().startService(new Intent(getApplicationContext(), TransferService.class));
     }
-
-    private void makeRawFootageDirectory(File path) {
-        final String rawFootageDirectoryName = "rawFootage/";
-        FileManager.makeDirectory(this.getApplicationContext(), path, rawFootageDirectoryName);
-    }
-
-    private void makeSummarisedVideosDirectory(File path) {
-        final String rawFootageDirectoryName = "summarised/";
-        FileManager.makeDirectory(this.getApplicationContext(), path, rawFootageDirectoryName);
-    }
-
 
     private void setToolBarAsTheAppBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -146,14 +124,22 @@ public class MainActivity
 
 
     private void setUpFragments() {
-        VideosRepository rawFootageRepository = Injection.getExternalVideoRepository(this, "", FileManager.RAW_FOOTAGE_VIDEOS_PATH.getAbsolutePath());
+        VideosRepository rawFootageRepository = Injection.getExternalVideoRepository(this, "",
+                FileManager.getRawFootageDirPath());
         VideosRepository processingVideosRepository = Injection.getProcessingVideosRespository(this);
-        VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "", FileManager.SUMMARISED_VIDEOS_PATH.getAbsolutePath());
+        VideosRepository summarisedVideosRepository = Injection.getExternalVideoRepository(this, "",
+                FileManager.getSummarisedDirPath());
 
-        rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(), ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository));
-        processingFragment = VideoFragment.newInstance(1, new ProcessingVideosViewHolderProcessor(), ActionButton.REMOVE, new ProcessingVideosEventHandler(processingVideosRepository));
-        summarisedVideoFragment = VideoFragment.newInstance(1, new SummarisedVideosViewHolderProcessor(), ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository));
+        connectionFragment = ConnectionFragment.newInstance();
+        SummariserIntentService.transferCallback = connectionFragment;
+        rawFootageFragment = VideoFragment.newInstance(1, new RawFootageViewHolderProcessor(connectionFragment),
+                ActionButton.ADD, new RawFootageEventHandler(rawFootageRepository), connectionFragment);
+        processingFragment = VideoFragment.newInstance(1, new ProcessingVideosViewHolderProcessor(),
+                ActionButton.REMOVE, new ProcessingVideosEventHandler(processingVideosRepository), connectionFragment);
+        summarisedVideoFragment = VideoFragment.newInstance(1, new SummarisedVideosViewHolderProcessor(),
+                ActionButton.UPLOAD, new SummarisedVideosEventHandler(summarisedVideosRepository), connectionFragment);
 
+        supportFragmentManager.beginTransaction().add(R.id.main_container, connectionFragment, "4").hide(connectionFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, summarisedVideoFragment, "3").hide(summarisedVideoFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, processingFragment, "2").hide(processingFragment).commit();
         supportFragmentManager.beginTransaction().add(R.id.main_container, rawFootageFragment, "1").commit();
@@ -170,6 +156,18 @@ public class MainActivity
         bottomNavigation.setOnNavigationItemSelectedListener(bottomNavigationOnNavigationItemSelectedListener);
     }
 
+    private void cleanVideoDirectories() {
+        Context context = getApplicationContext();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if (pref.getBoolean(getString(R.string.remove_raw_key), false)) {
+            rawFootageFragment.cleanRepository(this);
+        }
+        processingFragment.cleanRepository(this);
+        summarisedVideoFragment.cleanRepository(this);
+        FileManager.cleanVideoDirectories(context);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // This method gets called when a option in the App bar gets selected.
@@ -177,20 +175,26 @@ public class MainActivity
         // Define logic on how to handle each option item selected.
         switch (item.getItemId()) {
             case R.id.action_connect:
-                Log.i(TAG, "Connect button clicked");
-                goToWifiDirectActivity();
+                Log.v(TAG, "Connect button clicked");
+                showNewFragmentAndHideOldFragment(connectionFragment);
                 return true;
             case R.id.action_download:
-                Log.i(TAG, "Download button clicked");
-                DownloadTask mDownloadTask = new DownloadTask();
-                mDownloadTask.execute("http://192.168.1.254/DCIM/MOVIE/");
+                Log.v(TAG, "Download button clicked");
+                Toast.makeText(this, "Starting download", Toast.LENGTH_SHORT).show();
+                DownloadAllTask downloadAllTask = new DownloadAllTask(this);
+                downloadAllTask.execute(DashName.BLACKVUE);
+                return true;
+            case R.id.action_clean:
+                Log.v(TAG, "Clean button clicked");
+                Toast.makeText(this, "Cleaning video directories", Toast.LENGTH_SHORT).show();
+                cleanVideoDirectories();
                 return true;
             case R.id.action_settings:
-                Log.i(TAG, "Setting button clicked");
+                Log.v(TAG, "Setting button clicked");
                 goToSettingsActivity();
                 return true;
             case R.id.action_logout:
-                Log.i(TAG, "Logout button clicked");
+                Log.v(TAG, "Logout button clicked");
                 signOut();
                 Intent i = new Intent(MainActivity.this, AuthenticationActivity.class);
                 startActivity(i);
@@ -209,11 +213,6 @@ public class MainActivity
         startActivity(settingsIntent);
     }
 
-    private void goToWifiDirectActivity() {
-        Intent connectIntent = new Intent(getApplicationContext(), WiFiDirectActivity.class);
-        startActivity(connectIntent);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -226,143 +225,38 @@ public class MainActivity
 
     }
 
-    // https://stackoverflow.com/a/33292700/8031185
-    public void verifyStoragePermissions() {
-        final int REQUEST_EXTERNAL_STORAGE = 1;
-        String[] PERMISSIONS_STORAGE = {
+    private void checkPermissions() {
+        final int REQUEST_PERMISSIONS = 1;
+        String[] PERMISSIONS = {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_PHONE_STATE
         };
 
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    this,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
+        if (hasPermissions()) {
+            requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS);
         }
     }
 
-    // Need AsyncTask to perform network operations as they are not permitted in the main thread
-    @SuppressLint("StaticFieldLeak")
-    public class DownloadTask extends AsyncTask<String, Void, List<String>> {
-        @Override
-        protected List<String> doInBackground(String... strings) {
-            // Dride
-            return downloadAll("http://192.168.1.254/DCIM/MOVIE/", "", this::getDrideFilenames);
-
-            // BlackVue
-//            return downloadAll("http://10.99.77.1/", "Record/", this::getBlackvueFilenames);
-        }
-
-        private List<String> downloadAll(String baseUrl, String upFolder, Function<String, List<String>> getFilenameFunc) {
-            List<String> allFiles = getFilenameFunc.apply(baseUrl);
-
-            if (allFiles == null) {
-                return null;
-            }
-            int last_n = 2;
-            List<String> lastFiles = allFiles.subList(Math.max(allFiles.size(), 0) - last_n, allFiles.size());
-            String rawFootagePath = Environment.getExternalStorageDirectory().getPath() + "/Movies/rawFootage/";
-
-            for (String filename : lastFiles) {
-                downloadVideo(baseUrl, upFolder, rawFootagePath, filename);
-            }
-            Log.i(TAG, "All downloads complete");
-            return lastFiles;
-        }
-
-        private void downloadVideo(String baseUrl, String upFolder, String downFolder, String filename) {
-            try {
-                File videoFile = new File(downFolder + filename);
-                Log.d(TAG, "Started downloading: " + filename);
-                FileUtils.copyURLToFile(
-                        new URL(baseUrl + upFolder + filename),
-                        videoFile
-                );
-                /*
-                New files aren't immediately added to the MediaStore database, so it's necessary manually trigger it
-                Tried using sendBroadcast, but that doesn't guarantee that it will be immediately added.
-                Using MediaScannerConnection does ensure that the new file is added to the database before it is queried
-                 */
-                // https://stackoverflow.com/a/5814533/8031185
-                MediaScannerConnection.scanFile(MainActivity.this,
-                        new String[]{videoFile.getAbsolutePath()}, null,
-                        (path, uri) -> {
-                            String[] projection = {MediaStore.Video.Media._ID,
-                                    MediaStore.Video.Media.DATA,
-                                    MediaStore.Video.Media.DISPLAY_NAME,
-                                    MediaStore.Video.Media.SIZE,
-                                    MediaStore.Video.Media.MIME_TYPE
-                            };
-                            String selection = MediaStore.Video.Media.DATA + "=?";
-                            String[] selectionArgs = new String[]{videoFile.getAbsolutePath()};
-                            Cursor videoCursor = getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                                    projection, selection, selectionArgs, null);
-
-                            assert videoCursor != null;
-                            videoCursor.moveToFirst();
-                            Video video = VideoManager.videoFromCursor(videoCursor);
-                            EventBus.getDefault().post(new AddEvent(video, Type.RAW));
-                            videoCursor.close();
-                            Log.d(TAG, "Finished downloading: " + filename);
-                        });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private List<String> getDrideFilenames(String url) {
-            Document doc = null;
-
-            try {
-                doc = Jsoup.connect(url).get();
-            } catch (SocketTimeoutException | ConnectException e) {
-                Log.e(TAG, "Could not connect to dashcam");
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            List<String> allFiles = new ArrayList<>();
-            assert doc != null;
-
-            for (Element file : doc.select("td:eq(0) > a")) {
-                if (file.text().endsWith("MP4")) {
-                    allFiles.add(file.text());
+    private boolean hasPermissions(String... permissions) {
+        if (permissions != null) {
+            for (String permission : permissions) {
+                if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
                 }
             }
-            allFiles.sort(Comparator.comparing(String::toString));
-            return allFiles;
         }
+        return true;
+    }
 
-        private List<String> getBlackvueFilenames(String url) {
-            Document doc = null;
+    @Override
+    public void onFragmentInteraction(String name) {
 
-            try {
-                doc = Jsoup.connect(url + "blackvue_vod.cgi").get();
-            } catch (SocketTimeoutException | ConnectException e) {
-                Log.e(TAG, "Could not connect to dashcam");
-                return null;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            List<String> allFiles = new ArrayList<>();
-            assert doc != null;
-
-            String raw = doc.select("body").text();
-            Pattern pat = Pattern.compile(Pattern.quote("Record/") + "(.*?)" + Pattern.quote(",s:"));
-            Matcher match = pat.matcher(raw);
-
-            while (match.find()) {
-                allFiles.add(match.group(1));
-            }
-
-            allFiles.sort(Comparator.comparing(String::toString));
-            return allFiles;
-        }
     }
 }

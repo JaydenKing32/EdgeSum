@@ -7,19 +7,21 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- Necessary to save files in external memory -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- Necessary to save files in external memory -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- WiFiDirect permissions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Required for Nearby Connections -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Google Play filtering -->
-    <uses-feature
-        android:name="android.hardware.wifi.direct"
-        android:required="true" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- usesCleartextTraffic is necessary if the dashcam doesn't support HTTPS -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,65 +31,46 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <service
-            android:name=".util.network.WifiDirectIntentService"
-            android:exported="false"></service>
-
-        <activity android:name=".page.network.DeviceListFragment" />
-        <activity android:name=".page.network.DeviceDetailFragment" />
-        <activity
-            android:name=".page.network.WiFiDirectActivity"
-            android:parentActivityName=".page.main.MainActivity" />
         <activity android:name=".page.main.DownloadActivity" />
-        <activity android:name=".page.main.LoadingActivity" />
         <activity
             android:name=".page.viewuploadedvideos.ViewUploadedVideosActivity"
-            android:parentActivityName=".page.main.MainActivity">
+            android:configChanges="orientation"
+            android:parentActivityName=".page.main.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.edgesum.page.main.MainActivity" />
         </activity>
         <activity
             android:name=".page.setting.SettingsActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".page.main.MainActivity">
+            android:parentActivityName=".page.main.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.edgesum.page.main.MainActivity" />
         </activity>
         <activity
             android:name=".page.authentication.AuthenticationActivity"
-            android:noHistory="true">
+            android:configChanges="orientation"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".page.main.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".page.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
         <service android:name=".util.video.summariser.SummariserIntentService" />
-
-        <!-- Used for transferring files  after a successful connection -->
-        <service
-            android:name=".util.network.FileTransferService"
-            android:enabled="true" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.edgesum.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
-        </provider>
     </application>
-
 </manifest>

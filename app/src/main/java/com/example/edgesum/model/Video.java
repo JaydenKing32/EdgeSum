@@ -1,10 +1,15 @@
 package com.example.edgesum.model;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.MediaStore;
+
+import androidx.annotation.NonNull;
 
 import java.math.BigInteger;
-import java.util.List;
 
 public class Video implements Parcelable {
     private final String id;
@@ -26,7 +31,6 @@ public class Video implements Parcelable {
         }
 
     };
-
 
     public Video(String id, String name, String data, String mimeType, BigInteger size) {
         this.id = id;
@@ -64,11 +68,16 @@ public class Video implements Parcelable {
         this.visible = visible;
     }
 
-    public Video(Parcel in) {
+    private Video(Parcel in) {
         this.id = in.readString();
         this.data = in.readString();
         this.name = in.readString();
-        this.size = new BigInteger(in.readString());
+        String size = in.readString();
+        if (size != null) {
+            this.size = new BigInteger(size);
+        } else {
+            this.size = new BigInteger("-1");
+        }
         this.mimeType = in.readString();
         this.visible = in.readByte() != 0;
     }
@@ -97,6 +106,7 @@ public class Video implements Parcelable {
         return mimeType;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Video{" +
@@ -121,8 +131,21 @@ public class Video implements Parcelable {
         parcel.writeString(name);
         parcel.writeString(size.toString());
         parcel.writeString(mimeType);
-        parcel.writeByte((visible == true) ? (byte) 1 : 0);
+        parcel.writeByte(visible ? (byte) 1 : 0);
     }
 
-
+    // Insert a new video's values into the MediaStore using an existing video as a basis
+    public void insertMediaValues(Context context, String path) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Video.Media.TITLE, name);
+        values.put(MediaStore.Video.Media.MIME_TYPE, mimeType);
+        values.put(MediaStore.Video.Media.DISPLAY_NAME, "player");
+        values.put(MediaStore.Video.Media.DESCRIPTION, "");
+        values.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis());
+        }
+        values.put(MediaStore.Video.Media.DATA, path);
+        context.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+    }
 }

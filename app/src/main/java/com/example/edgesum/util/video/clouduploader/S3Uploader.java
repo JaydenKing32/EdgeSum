@@ -11,13 +11,12 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.edgesum.event.RemoveByPathEvent;
-import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
-import com.example.edgesum.model.Video;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.time.Duration;
 import java.time.Instant;
 
 public class S3Uploader implements CloudUploader {
@@ -59,7 +58,7 @@ public class S3Uploader implements CloudUploader {
                         Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post(new RemoveByPathEvent(path, Type.SUMMARISED));
                         Log.i("UploadToS3", String.format("Uploaded %s in %ds", name,
-                                java.time.Duration.between(start, java.time.Instant.now()).getSeconds()));
+                                Duration.between(start, Instant.now()).getSeconds()));
                     }
                 }
 

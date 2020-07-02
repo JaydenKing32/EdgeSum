@@ -11,8 +11,7 @@ import com.amazonaws.mobile.client.Callback;
 import com.amazonaws.mobile.client.SignInUIOptions;
 import com.amazonaws.mobile.client.UserStateDetails;
 import com.example.edgesum.R;
-import com.example.edgesum.page.main.LoadingActivity;
-import com.example.edgesum.util.permissions.PermissionsManager;
+import com.example.edgesum.page.main.MainActivity;
 
 public class AuthenticationActivity extends AppCompatActivity {
     // Based off https://aws.amazon.com/blogs/mobile/building-an-android-app-with-aws-amplify-part-1/.
@@ -35,7 +34,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                 switch (userStateDetails.getUserState()) {
                     case SIGNED_IN:
                         // If user have successfully sign in, direct user to the MainActivity.
-                        Intent i = new Intent(AuthenticationActivity.this, LoadingActivity.class);
+                        Intent i = new Intent(AuthenticationActivity.this, MainActivity.class);
                         startActivity(i);
                         break;
                     case SIGNED_OUT:
@@ -63,7 +62,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         try {
             AWSMobileClient.getInstance().showSignIn(this,
                     SignInUIOptions.builder()
-                            .nextActivity(LoadingActivity.class)
+                            .nextActivity(MainActivity.class)
                             .canCancel(true)
                             .build());
         } catch (Exception e) {

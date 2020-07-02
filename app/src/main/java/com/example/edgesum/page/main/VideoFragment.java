@@ -2,14 +2,22 @@ package com.example.edgesum.page.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.MediaStore;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.selection.ItemKeyProvider;
+import androidx.recyclerview.selection.SelectionPredicates;
+import androidx.recyclerview.selection.SelectionTracker;
+import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,11 +27,14 @@ import com.example.edgesum.data.VideoViewModel;
 import com.example.edgesum.data.VideoViewModelFactory;
 import com.example.edgesum.data.VideosRepository;
 import com.example.edgesum.model.Video;
+import com.example.edgesum.util.nearby.TransferCallback;
+import com.example.edgesum.util.video.VideoDetailsLookup;
 import com.example.edgesum.util.video.videoeventhandler.VideoEventHandler;
 import com.example.edgesum.util.video.viewholderprocessor.VideoViewHolderProcessor;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,27 +44,60 @@ import java.util.List;
  * interface.
  */
 public class VideoFragment extends Fragment {
-
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+    private static final String TAG = VideoFragment.class.getSimpleName();
+
     private int mColumnCount = 1;
-
     private OnListFragmentInteractionListener mListener;
-
     private VideoViewHolderProcessor videoViewHolderProcessor;
-
     private ActionButton actionButton;
-
     private VideosRepository repository;
-
-
     private VideoViewModel videoViewModel;
-
-    private String TAG = VideoFragment.class.getSimpleName();
-
-
     private VideoEventHandler videoEventHandler;
+    private VideoRecyclerViewAdapter adapter;
+
+    private ActionMode actionMode;
+    private SelectionTracker<Long> tracker;
+    private TransferCallback transferCallback;
+
+    private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.video_selection_menu, menu);
+
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.send:
+                    adapter.sendVideos(tracker.getSelection());
+
+                    mode.finish();
+                    return true;
+                case R.id.select_all:
+                    for (Long i = 0L; i < adapter.getItemCount(); i++) {
+                        tracker.select(i);
+                    }
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            tracker.clearSelection();
+            actionMode = null;
+        }
+    };
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,7 +109,8 @@ public class VideoFragment extends Fragment {
     public static VideoFragment newInstance(int columnCount,
                                             VideoViewHolderProcessor videoViewHolderProcessor,
                                             ActionButton actionButton,
-                                            VideoEventHandler handler) {
+                                            VideoEventHandler handler,
+                                            TransferCallback transferCallback) {
         VideoFragment fragment = new VideoFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
@@ -73,9 +118,9 @@ public class VideoFragment extends Fragment {
         fragment.videoViewHolderProcessor = videoViewHolderProcessor;
         fragment.actionButton = actionButton;
         fragment.videoEventHandler = handler;
+        fragment.transferCallback = transferCallback;
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,11 +141,10 @@ public class VideoFragment extends Fragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_videos_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_video_list, container, false);
 
         EventBus.getDefault().register(videoEventHandler);
 
@@ -114,20 +158,50 @@ public class VideoFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            final VideoRecyclerViewAdapter adapter = new VideoRecyclerViewAdapter(
+            adapter = new VideoRecyclerViewAdapter(
                     mListener,
                     this.getContext(),
                     this.actionButton.getText(),
                     videoViewHolderProcessor,
-                    videoViewModel);
+                    videoViewModel,
+                    transferCallback);
             recyclerView.setAdapter(adapter);
-            videoViewModel.getVideos().observe(getActivity(), new Observer<List<Video>>() {
+            videoViewModel.getVideos().observe(getActivity(), videos -> adapter.setVideos(videos));
+
+            ItemKeyProvider<Long> videoKeyProvider = new ItemKeyProvider<Long>(ItemKeyProvider.SCOPE_MAPPED) {
                 @Override
-                public void onChanged(List<Video> videos) {
-                    Log.i(TAG, "onChanged for Videos");
-                    adapter.setVideos(videos);
+                public Long getKey(int position) {
+                    return adapter.getItemId(position);
+                }
+
+                @Override
+                public int getPosition(@NonNull Long key) {
+                    RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForItemId(key);
+                    return viewHolder == null ? RecyclerView.NO_POSITION : viewHolder.getLayoutPosition();
+                }
+            };
+
+            tracker = new SelectionTracker.Builder<>(
+                    "video_selection",
+                    recyclerView,
+                    videoKeyProvider,
+                    new VideoDetailsLookup(recyclerView),
+                    StorageStrategy.createLongStorage())
+                    .withSelectionPredicate(SelectionPredicates.createSelectAnything())
+                    .build();
+            tracker.addObserver(new SelectionTracker.SelectionObserver() {
+                @Override
+                public void onSelectionChanged() {
+                    super.onSelectionChanged();
+
+                    // Check that CAB isn't already active and that an item has been selected, prevents activation
+                    // from calls to notifyDataSetChanged()
+                    if (actionMode == null && tracker.hasSelection()) {
+                        actionMode = view.startActionMode(actionModeCallback);
+                    }
                 }
             });
+            adapter.setTracker(tracker);
         }
         return view;
     }
@@ -137,15 +211,12 @@ public class VideoFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
-
-
     }
 
     @Override
@@ -164,9 +235,24 @@ public class VideoFragment extends Fragment {
 
     }
 
-
     public void setVideoEventHandler(VideoEventHandler handler) {
         this.videoEventHandler = handler;
+    }
+
+    void cleanRepository(Context context) {
+        List<Video> videos = repository.getVideos().getValue();
+
+        if (videos != null) {
+            int videoCount = videos.size();
+
+            for (int i = 0; i < videoCount; i++) {
+                Video video = videos.get(0);
+                context.getContentResolver().delete(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                        MediaStore.MediaColumns.DATA + "=?", new String[]{video.getData()});
+                repository.delete(0);
+            }
+        }
+        adapter.setVideos(new ArrayList<>());
     }
 
     /**
