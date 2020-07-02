@@ -34,7 +34,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
 
     // Mobile Ffmpeg wrapper library
-    implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.2.2'
+    implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.3.2'
 
     // Android support libraries
     implementation 'androidx.appcompat:appcompat:1.1.0'

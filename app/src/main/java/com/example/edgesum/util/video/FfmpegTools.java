@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.arthenica.mobileffmpeg.FFmpeg;
+import com.arthenica.mobileffmpeg.FFprobe;
 import com.arthenica.mobileffmpeg.MediaInformation;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.file.FileManager;
@@ -33,7 +34,7 @@ public class FfmpegTools {
     }
 
     public static Double getDuration(String filePath) {
-        MediaInformation info = FFmpeg.getMediaInformation(filePath);
+        MediaInformation info = FFprobe.getMediaInformation(filePath);
 
         if (info != null && info.getDuration() != null) {
             return info.getDuration() / 1000.0;
