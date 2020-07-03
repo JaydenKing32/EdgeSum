@@ -2,7 +2,9 @@ package com.example.edgesum.util.video.summariser;
 
 import android.util.Log;
 
+import com.arthenica.mobileffmpeg.Config;
 import com.arthenica.mobileffmpeg.FFmpeg;
+import com.arthenica.mobileffmpeg.Level;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.video.FfmpegTools;
 
@@ -57,10 +59,7 @@ class Summariser {
      */
     boolean summarise() {
         Instant start = Instant.now();
-
-        // Don't suppress ffmpeg-mobile logs, seems to interfere with FFmpeg.getMediaInformation
-        // Config.setLogLevel(Level.AV_LOG_WARNING);
-
+        Config.setLogLevel(Level.AV_LOG_WARNING);
         ArrayList<Double[]> activeTimes = getActiveTimes();
 
         if (activeTimes == null) {

@@ -1062,10 +1062,12 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         @Override
         public void onPayloadTransferUpdate(@NonNull String endpointId, @NonNull PayloadTransferUpdate update) {
-            int progress = (int) (100.0 * (update.getBytesTransferred() / (double) update.getTotalBytes()));
-            Log.v(TAG, String.format("Transfer to %s: %d%%", endpointId, progress));
+            // int progress = (int) (100.0 * (update.getBytesTransferred() / (double) update.getTotalBytes()));
+            // Log.v(TAG, String.format("Transfer to %s: %d%%", endpointId, progress));
 
             if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                Log.v(TAG, String.format("Transfer to %s complete", discoveredEndpoints.get(endpointId)));
+
                 long payloadId = update.getPayloadId();
                 Payload payload = incomingFilePayloads.remove(payloadId);
                 completedFilePayloads.put(payloadId, payload);

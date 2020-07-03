@@ -34,6 +34,7 @@ public class FfmpegTools {
     }
 
     public static Double getDuration(String filePath) {
+        Log.v(TAG, String.format("Retrieving duration of %s", filePath));
         MediaInformation info = FFprobe.getMediaInformation(filePath);
 
         if (info != null && info.getDuration() != null) {

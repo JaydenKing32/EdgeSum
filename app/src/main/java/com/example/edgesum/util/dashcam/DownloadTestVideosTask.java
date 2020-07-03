@@ -52,6 +52,22 @@ public class DownloadTestVideosTask implements Runnable {
             "20200312_195430.mp4"
     ));
 
+    /* Active videos
+      20200312_150744.mp4
+      20200312_150844.mp4
+      20200312_150944.mp4
+      20200312_193628.mp4
+      20200312_193728.mp4
+      20200312_193828.mp4
+      20200312_194129.mp4
+      20200312_194229.mp4
+      20200312_194830.mp4
+      20200312_194930.mp4
+      20200312_195230.mp4
+      20200312_195330.mp4
+      20200312_195430.mp4
+    */
+
     public DownloadTestVideosTask(TransferCallback transferCallback, Context context) {
         this.weakReference = new WeakReference<>(context);
         this.transferCallback = new WeakReference<>(transferCallback);
@@ -92,6 +108,7 @@ public class DownloadTestVideosTask implements Runnable {
         //List<String> allVideos = dash.getFilenames();
         List<String> allVideos = testVideos;
 
+        //noinspection ConstantConditions
         if (allVideos == null || allVideos.size() == 0) {
             Log.e(TAG, "Couldn't download videos");
             return;
