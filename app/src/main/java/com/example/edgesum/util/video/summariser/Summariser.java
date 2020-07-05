@@ -204,10 +204,13 @@ class Summariser {
     }
 
     private void detectFreeze() {
-        FFmpeg.execute(String.format(Locale.ENGLISH,
-                "-i %s -vf freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=%s -f null -",
-                inPath, noise, duration, freezeFilePath)
-        );
+        FfmpegTools.executeFfmpeg(new ArrayList<>(Arrays.asList(
+                "-y", // Skip prompts
+                "-i", inPath,
+                "-vf", String.format(Locale.ENGLISH,
+                        "freezedetect=n=-%fdB:d=%f,metadata=mode=print:file=%s", noise, duration, freezeFilePath),
+                "-f", "null", "-"
+        )));
     }
 
     private String getOutPath() {
