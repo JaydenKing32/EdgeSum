@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-
+import copy
 import csv
 import os
 import re
 from argparse import ArgumentParser
 from datetime import datetime
-from typing import Dict
+from typing import Dict, List
 
 
 class Video:
@@ -18,14 +18,44 @@ class Video:
         self.return_time = return_time
 
 
+class Summarisation:
+    def __init__(self, log_dir: str, master: str, devices: Dict[str, Dict[str, Video]], videos: Dict[str, Video],
+                 schedule: str = None, seg_num: int = None, algorithm: str = None):
+        self.log_dir = log_dir
+        self.master = master
+        self.master_path = "{}.log".format(os.path.join(self.log_dir, self.master))
+        self.devices = devices
+        self.videos = videos
+        self.schedule = schedule
+        self.seg_num = seg_num
+        self.nodes = len([log for log in os.listdir(self.log_dir) if log.endswith(".log")])
+        self.algorithm = algorithm
+        self.time = get_total_time(self.master_path)
+
+    def get_master_short_name(self) -> str:
+        return self.master[-4:]
+
+    def get_time_string(self) -> str:
+        return "{} ({:.11})".format(
+            self.time.total_seconds(), str(self.time))
+
+    def get_sub_log_dir(self) -> str:
+        i = self.log_dir.index(os.path.sep) + 1
+        return self.log_dir[i:]
+
+
 parser = ArgumentParser(description="Generates spreadsheets from logs")
 parser.add_argument("dir", help="directory of logs")
 parser.add_argument("-o", "--output", default="results.csv", help="name of output file")
-parser.add_argument("-m", "--master", default="00a6a4630f4e34d8", help="serial number of master device")
-parser.add_argument("-f", "--offline", action="store_true", help="specify offline logs")
 args = parser.parse_args()
 
-master = args.master
+serial_numbers = {
+    "34d8": "00a6a4630f4e34d8",  # Nexus 5X
+    "2802": "ce12171c8a14c72802",  # Samsung Galaxy S8
+    "1825": "0b3b6fd50c371825",  # Nexus 5
+    "9c8f": "00b7a59265959c8f"  # Nexus 5X
+}
+
 timestamp = r"^(\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\s+\d+\s+\d+ "
 re_timestamp = re.compile(r"^(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})\.(\d{3})(?=\s+\d+\s+\d+).*(?:\s+)?$")
 re_dash_down = re.compile(
@@ -87,7 +117,7 @@ def get_total_time(master_log_file: str):
 def parse_master_log(devices: Dict[str, Dict[str, Video]], master_filename: str, log_dir: str) -> Dict[str, Video]:
     videos = {}  # type: Dict[str, Video]
 
-    with open("{}/{}".format(log_dir, master_filename), 'r') as master_log:
+    with open(os.path.join(log_dir, master_filename), 'r') as master_log:
         for line in master_log:
             dash_down = re_dash_down.match(line)
             down = re_down.match(line)
@@ -116,11 +146,12 @@ def parse_master_log(devices: Dict[str, Dict[str, Video]], master_filename: str,
 
 
 def parse_worker_logs(devices: Dict[str, Dict[str, Video]], videos: Dict[str, Video], log_dir: str):
-    worker_logs = [log for log in os.listdir(log_dir) if log.endswith(".log") and master not in log]
+    master_sn = serial_numbers[log_dir.split('master-')[1].split(os.sep)[0]]
+    worker_logs = [log for log in os.listdir(log_dir) if log.endswith(".log") and master_sn not in log]
 
-    for filename in worker_logs:
-        with open("{}/{}".format(log_dir, filename), 'r') as work_log:
-            device_name = filename[-8:-4]
+    for log in worker_logs:
+        with open(os.path.join(log_dir, log), 'r') as work_log:
+            device_name = log[-8:-4]
 
             for line in work_log:
                 down = re_down.match(line)
@@ -142,58 +173,60 @@ def parse_worker_logs(devices: Dict[str, Dict[str, Video]], videos: Dict[str, Vi
                     videos[video_name].sum_time += sum_time
 
 
-def make_offline_spreadsheet(log_dir: str, out_name: str):
-    offline_logs = [log for log in os.listdir(log_dir) if log.endswith(".log")]
-
+def make_offline_spreadsheet(log_dir: str, runs: List[Summarisation], out_name: str):
     with open(out_name, 'a', newline='') as csv_f:
         writer = csv.writer(csv_f)
         writer.writerow(["Offline"])
 
-        for filename in offline_logs:
-            log_path = "{}/{}".format(log_dir, filename)
+        for (path, dirs, files) in sorted([(path, dirs, files) for (path, dirs, files) in os.walk(log_dir)
+                                           if "offline" in path and "verbose" in dirs]):
+            for log in files:
+                log_path = os.path.join(path, log)
 
-            with open(log_path, 'r') as offline_log:
-                writer.writerow(["Device: {}".format(filename[-8:-4])])
-                writer.writerow(["Filename", "Download time (s)", "Summarisation time (s)"])
-                videos = {}  # type: Dict[str, Video]
+                with open(log_path, 'r') as offline_log:
+                    device_sn = log[:-4]
+                    videos = {}  # type: Dict[str, Video]
+                    device = {device_sn[-4:]: videos}
 
-                for line in offline_log:
-                    dash_down = re_dash_down.match(line)
-                    comp = re_comp.match(line)
+                    run = Summarisation(path, device_sn, device, videos)
+                    runs.append(run)
 
-                    if dash_down is not None:
-                        video_name = get_video_name(dash_down.group(2))
-                        dash_down_time = float(dash_down.group(3))
+                    writer.writerow(["Device: {}".format(run.get_master_short_name())])
+                    writer.writerow(["Filename", "Download time (s)", "Summarisation time (s)"])
 
-                        videos[video_name] = Video(name=video_name, dash_down_time=dash_down_time)
+                    for line in offline_log:
+                        dash_down = re_dash_down.match(line)
+                        comp = re_comp.match(line)
 
-                    if comp is not None:
-                        video_name = get_video_name(comp.group(2))
-                        offline_log.readline()  # skip active sections line
-                        time_line = offline_log.readline()
-                        sum_time = float(re_sum.match(time_line).group(2))
+                        if dash_down is not None:
+                            video_name = get_video_name(dash_down.group(2))
+                            dash_down_time = float(dash_down.group(3))
 
-                        videos[video_name].sum_time = sum_time
+                            videos[video_name] = Video(name=video_name, dash_down_time=dash_down_time)
 
-                for video in videos.values():
-                    writer.writerow([video.name, video.dash_down_time, video.sum_time])
+                        if comp is not None:
+                            video_name = get_video_name(comp.group(2))
+                            offline_log.readline()  # skip active sections line
+                            time_line = offline_log.readline()
+                            sum_time = float(re_sum.match(time_line).group(2))
 
-            writer.writerow([
-                "Total",
-                "{:.3f}".format(sum(v.dash_down_time for v in videos.values())),
-                "{:.3f}".format(sum(v.sum_time for v in videos.values()))
-            ])
-            time = get_total_time(log_path)
-            writer.writerow(["Actual total time", "{}.{:.3} ({:.11})".format(
-                time.seconds, str(time.microseconds), str(time))])
+                            videos[video_name].sum_time = sum_time
+
+                    for video in videos.values():
+                        writer.writerow([video.name, video.dash_down_time, video.sum_time])
+
+                writer.writerow([
+                    "Total",
+                    "{:.3f}".format(sum(v.dash_down_time for v in videos.values())),
+                    "{:.3f}".format(sum(v.sum_time for v in videos.values()))
+                ])
+                writer.writerow(["Actual total time", run.get_time_string()])
 
         writer.writerow('')
 
 
-def make_spreadsheet(devices: Dict[str, Dict[str, Video]], master_filename: str, log_dir: str, out: str):
-    master_path = "{}/{}".format(log_dir, master_filename)
-
-    with open(master_path, 'r') as master_log:
+def make_spreadsheet(run: Summarisation, out: str):
+    with open(run.master_path, 'r') as master_log:
         for line in master_log:
             pref = re_pref.match(line)
 
@@ -205,19 +238,25 @@ def make_spreadsheet(devices: Dict[str, Dict[str, Video]], master_filename: str,
                 master_log.readline()  # skip auto segmentation line
                 seg_num = int(master_log.readline().split()[-1]) if seg else 1
 
+                run.algorithm = algo
+                run.schedule = "fast" if fast else "non-fast"
+                run.seg_num = seg_num
+
+    devices = copy.deepcopy(run.devices)
     if algo != "best_or_local":
         # Remove master device unless best or local is used
-        devices.pop(master_filename[-8:-4])
+        devices.pop(run.get_master_short_name())
 
     with open(out, 'a', newline='') as csv_f:
         writer = csv.writer(csv_f)
+
         writer.writerow([
-            "Master: {}".format(master_filename[-8:-4]),
+            "Master: {}".format(run.get_master_short_name()),
             "Scheduling mode: {}".format("fast" if fast else "non-fast"),
             "Segments: {}".format(seg_num),
-            "Nodes: {}".format(len([log for log in os.listdir(log_dir) if log.endswith(".log")])),
+            "Nodes: {}".format(run.nodes),
             "Algorithm: {}".format(algo),
-            "Dir: {}".format(log_dir)
+            "Dir: {}".format(run.get_sub_log_dir())
         ])
 
         for device_name, video_dict in devices.items():
@@ -269,23 +308,37 @@ def make_spreadsheet(devices: Dict[str, Dict[str, Video]], master_filename: str,
                 "{:.3f}".format(total_return_time),
                 "{:.3f}".format(total_sum_time)
             ])
-        time = get_total_time(master_path)
-        writer.writerow(["Actual total time", "{}.{:.3} ({:.11})".format(
-            time.seconds, str(time.microseconds), str(time))])
+        writer.writerow(["Actual total time", run.get_time_string()])
         writer.writerow('')
 
 
-def edge_spread(log_dir: str, out: str):
-    master_filename = "{}.log".format(master)
-    logs = [log for log in os.listdir(log_dir) if log.endswith(".log")]
-    devices = {device[-8:-4]: {} for device in logs}  # Initialise device dictionary with empty dictionaries
+def edge_spread(root: str, out: str):
+    root = os.path.normpath(root)
+    runs = []  # type: List[Summarisation]
 
-    videos = parse_master_log(devices, master_filename, log_dir)
-    parse_worker_logs(devices, videos, log_dir)
-    make_spreadsheet(devices, master_filename, log_dir, out)
+    make_offline_spreadsheet(root, runs, out)
+
+    for (path, dirs, files) in sorted([(path, dirs, files) for (path, dirs, files) in os.walk(root)
+                                       if "master" in path and "verbose" in dirs]):
+        master_sn = serial_numbers[path.split('master-')[1].split(os.sep)[0]]
+        logs = [log for log in os.listdir(path) if log.endswith(".log")]
+        devices = {device[-8:-4]: {} for device in logs}  # Initialise device dictionary with empty dictionaries
+
+        videos = parse_master_log(devices, "{}.log".format(master_sn), path)
+        parse_worker_logs(devices, videos, path)
+
+        run = Summarisation(path, master_sn, devices, videos)
+        make_spreadsheet(run, out)
+        runs.append(run)
+
+    with open(out, 'a', newline='') as csv_f:
+        writer = csv.writer(csv_f)
+
+        writer.writerow(["Summary"])
+        writer.writerow(["Dir", "Total time (s)", "Human-readable time"])
+
+        for run in runs:
+            writer.writerow([run.get_sub_log_dir(), run.time.total_seconds(), "{:.11}\t".format(str(run.time))])
 
 
-if args.offline:
-    make_offline_spreadsheet(args.dir, args.output)
-else:
-    edge_spread(args.dir, args.output)
+edge_spread(args.dir, args.output)
