@@ -3,7 +3,6 @@ package com.example.edgesum.util.video.summariser;
 import android.util.Log;
 
 import com.arthenica.mobileffmpeg.Config;
-import com.arthenica.mobileffmpeg.FFmpeg;
 import com.arthenica.mobileffmpeg.Level;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.video.FfmpegTools;

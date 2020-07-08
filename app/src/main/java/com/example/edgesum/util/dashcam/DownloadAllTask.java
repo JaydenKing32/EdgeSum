@@ -21,7 +21,6 @@ public class DownloadAllTask extends AsyncTask<DashName, Void, List<String>> {
 
     public DownloadAllTask(Context context) {
         this.weakReference = new WeakReference<>(context);
-
         this.downloadCallback = (video) -> EventBus.getDefault().post(new AddEvent(video, Type.RAW));
     }
 
