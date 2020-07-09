@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.collection.SimpleArrayMap;
-
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
@@ -14,30 +12,47 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.edgesum.event.RemoveByPathEvent;
 import com.example.edgesum.event.Type;
-import com.example.edgesum.util.file.FileManager;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class S3Uploader implements CloudUploader {
     private static final String TAG = S3Uploader.class.getSimpleName();
-    private final SimpleArrayMap<String, Instant> startTimes = new SimpleArrayMap<>();
+    private final List<String> videoPaths;
+    private final List<String> downloadedVideoPaths = new ArrayList<>();
+    private final Instant start;
+
+    public S3Uploader(List<String> videoPaths) {
+        this.videoPaths = videoPaths;
+        this.start = Instant.now();
+    }
+
+    public S3Uploader() {
+        this.videoPaths = null;
+        this.start = null;
+    }
 
     @Override
     public void upload(Context context, String videoPath) {
         uploadWithTransferUtility(context, videoPath);
     }
 
-    private void uploadWithTransferUtility(final Context context, final String path) {
-        String name = FileManager.getFilenameFromPath(path);
-        Instant start = Instant.now();
-        Log.w(TAG, String.format("Start of %s is %s", name, start));
-        startTimes.put(name, start);
+    @Override
+    public void uploadVideos(Context context) {
+        // Should replace with https://github.com/aws-amplify/aws-sdk-android/issues/505#issuecomment-612187402
+        for (String videoPath : videoPaths) {
+            uploadWithTransferUtility(context, videoPath);
+        }
+    }
 
+    private void uploadWithTransferUtility(final Context context, final String path) {
         TransferUtility transferUtility =
                 TransferUtility.builder()
                         .context(context)
@@ -47,6 +62,7 @@ public class S3Uploader implements CloudUploader {
         File file = new File(path);
 
         if (file.exists()) {
+            String name = file.getName();
             final String userPrivatePath = String.format("private/%s", AWSMobileClient.getInstance().getIdentityId());
             final String S3Key = String.format("%s/%s", userPrivatePath, name);
             TransferObserver uploadObserver = transferUtility.upload(S3Key, file);
@@ -58,14 +74,21 @@ public class S3Uploader implements CloudUploader {
                     if (state == TransferState.COMPLETED) {
                         // Handle a completed upload.
                         Toast.makeText(context, String.format("Upload of %s complete", name), Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, String.format("Uploaded %s", name));
                         EventBus.getDefault().post(new RemoveByPathEvent(path, Type.SUMMARISED));
 
-                        Instant retStart = startTimes.get(name);
-                        Log.w(TAG, String.format("Retrieved of %s is %s", name, retStart));
-                        Instant now = Instant.now();
-                        String time = DurationFormatUtils.formatDuration(
-                                Duration.between(retStart, now).toMillis(), "ss.SSS");
-                        Log.w(TAG, String.format("Uploaded %s in %ss", name, time));
+                        if (videoPaths == null || start == null) {
+                            return;
+                        }
+                        downloadedVideoPaths.add(path);
+                        List<String> toDownload = new ArrayList<>(
+                                CollectionUtils.disjunction(videoPaths, downloadedVideoPaths));
+
+                        if (toDownload.size() == 0) {
+                            String time = DurationFormatUtils.formatDuration(
+                                    Duration.between(start, Instant.now()).toMillis(), "ss.SSS");
+                            Log.w(TAG, String.format("All uploads completed in %ss", time));
+                        }
                     }
                 }
 

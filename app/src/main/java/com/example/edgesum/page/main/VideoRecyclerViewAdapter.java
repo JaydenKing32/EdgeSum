@@ -35,6 +35,8 @@ import com.example.edgesum.util.video.viewholderprocessor.VideoViewHolderProcess
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Video} and makes a call to the
@@ -96,13 +98,11 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     }
 
     void uploadVideos(Selection<Long> positions) {
-        S3Uploader s3 = new S3Uploader();
         Log.v(TAG, String.format("List size: %d", positions.size()));
-
-        for (Long pos : positions) {
-            Video video = videos.get(pos.intValue());
-            s3.upload(context, video.getData());
-        }
+        List<String> selectedVideos = StreamSupport.stream(positions.spliterator(), false)
+                .map(i -> videos.get(i.intValue()).getData()).collect(Collectors.toList());
+        S3Uploader s3 = new S3Uploader(selectedVideos);
+        s3.uploadVideos(context);
     }
 
     @NonNull
