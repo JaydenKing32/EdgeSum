@@ -36,7 +36,7 @@ public class S3Uploader implements CloudUploader {
 
     public S3Uploader() {
         this.videoPaths = null;
-        this.start = null;
+        this.start = Instant.now();
     }
 
     @Override
@@ -77,17 +77,20 @@ public class S3Uploader implements CloudUploader {
                         Log.i(TAG, String.format("Uploaded %s", name));
                         EventBus.getDefault().post(new RemoveByPathEvent(path, Type.SUMMARISED));
 
-                        if (videoPaths == null || start == null) {
-                            return;
-                        }
-                        downloadedVideoPaths.add(path);
-                        List<String> toDownload = new ArrayList<>(
-                                CollectionUtils.disjunction(videoPaths, downloadedVideoPaths));
-
-                        if (toDownload.size() == 0) {
+                        if (videoPaths == null) {
                             String time = DurationFormatUtils.formatDuration(
                                     Duration.between(start, Instant.now()).toMillis(), "ss.SSS");
-                            Log.w(TAG, String.format("All uploads completed in %ss", time));
+                            Log.w(TAG, String.format("Uploaded %s in %ss", name, time));
+                        } else {
+                            downloadedVideoPaths.add(path);
+                            List<String> toDownload = new ArrayList<>(
+                                    CollectionUtils.disjunction(videoPaths, downloadedVideoPaths));
+
+                            if (toDownload.size() == 0) {
+                                String time = DurationFormatUtils.formatDuration(
+                                        Duration.between(start, Instant.now()).toMillis(), "ss.SSS");
+                                Log.w(TAG, String.format("All uploads completed in %ss", time));
+                            }
                         }
                     }
                 }
