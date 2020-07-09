@@ -78,12 +78,16 @@ public class VideoFragment extends Fragment {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.send:
-                    adapter.sendVideos(tracker.getSelection());
+                    if (actionButton.equals(ActionButton.ADD)) {
+                        adapter.sendVideos(tracker.getSelection());
+                    } else {
+                        adapter.uploadVideos(tracker.getSelection());
+                    }
 
                     mode.finish();
                     return true;
                 case R.id.select_all:
-                    for (Long i = 0L; i < adapter.getItemCount(); i++) {
+                    for (long i = 0L; i < adapter.getItemCount(); i++) {
                         tracker.select(i);
                     }
                     return true;
@@ -232,7 +236,6 @@ public class VideoFragment extends Fragment {
 
     private void setVideoViewModel(VideoViewModel videoViewModel) {
         this.videoViewModel = videoViewModel;
-
     }
 
     public void setVideoEventHandler(VideoEventHandler handler) {
