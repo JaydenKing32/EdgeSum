@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.collection.SimpleArrayMap;
+
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
@@ -12,6 +14,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.edgesum.event.RemoveByPathEvent;
 import com.example.edgesum.event.Type;
+import com.example.edgesum.util.file.FileManager;
 
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -22,15 +25,19 @@ import java.time.Instant;
 
 public class S3Uploader implements CloudUploader {
     private static final String TAG = S3Uploader.class.getSimpleName();
-    private static Instant start;
+    private final SimpleArrayMap<String, Instant> startTimes = new SimpleArrayMap<>();
 
     @Override
     public void upload(Context context, String videoPath) {
-        start = Instant.now();
         uploadWithTransferUtility(context, videoPath);
     }
 
     private void uploadWithTransferUtility(final Context context, final String path) {
+        String name = FileManager.getFilenameFromPath(path);
+        Instant start = Instant.now();
+        Log.w(TAG, String.format("Start of %s is %s", name, start));
+        startTimes.put(name, start);
+
         TransferUtility transferUtility =
                 TransferUtility.builder()
                         .context(context)
@@ -40,25 +47,24 @@ public class S3Uploader implements CloudUploader {
         File file = new File(path);
 
         if (file.exists()) {
-            String name = file.getName();
             final String userPrivatePath = String.format("private/%s", AWSMobileClient.getInstance().getIdentityId());
             final String S3Key = String.format("%s/%s", userPrivatePath, name);
-            TransferObserver uploadObserver =
-                    transferUtility.upload(
-                            S3Key,
-                            file);
+            TransferObserver uploadObserver = transferUtility.upload(S3Key, file);
 
             // Attach a listener to the observer to get state update and progress notifications
             uploadObserver.setTransferListener(new TransferListener() {
                 @Override
                 public void onStateChanged(int id, TransferState state) {
-                    if (TransferState.COMPLETED == state) {
+                    if (state == TransferState.COMPLETED) {
                         // Handle a completed upload.
                         Toast.makeText(context, String.format("Upload of %s complete", name), Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post(new RemoveByPathEvent(path, Type.SUMMARISED));
 
+                        Instant retStart = startTimes.get(name);
+                        Log.w(TAG, String.format("Retrieved of %s is %s", name, retStart));
+                        Instant now = Instant.now();
                         String time = DurationFormatUtils.formatDuration(
-                                Duration.between(start, Instant.now()).toMillis(), "ss.SSS");
+                                Duration.between(retStart, now).toMillis(), "ss.SSS");
                         Log.w(TAG, String.format("Uploaded %s in %ss", name, time));
                     }
                 }

@@ -34,7 +34,7 @@ public class DashDownloadManager {
     }
 
     void startDownload(String url, Context context) {
-        String filename = url.substring(url.lastIndexOf('/') + 1);
+        String filename = FileManager.getFilenameFromPath(url);
         String filePath = String.format("%s/%s", FileManager.getRawFootageDirPath(), filename);
         Log.v(TAG, String.format("Started downloading: %s", filename));
         Instant start = Instant.now();

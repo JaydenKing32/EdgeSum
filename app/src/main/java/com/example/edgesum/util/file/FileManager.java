@@ -144,4 +144,8 @@ public class FileManager {
         int extensionStartIndex = filename.lastIndexOf('.') + 1;
         return filename.regionMatches(true, extensionStartIndex, VIDEO_EXTENSION, 0, VIDEO_EXTENSION.length());
     }
+
+    public static String getFilenameFromPath(String filePath) {
+        return filePath.substring(filePath.lastIndexOf('/') + 1);
+    }
 }
