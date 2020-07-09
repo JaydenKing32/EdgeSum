@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.selection.ItemKeyProvider;
 import androidx.recyclerview.selection.SelectionPredicates;
@@ -45,7 +46,6 @@ import java.util.List;
  */
 public class VideoFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final String TAG = VideoFragment.class.getSimpleName();
 
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
@@ -90,6 +90,8 @@ public class VideoFragment extends Fragment {
                     for (long i = 0L; i < adapter.getItemCount(); i++) {
                         tracker.select(i);
                     }
+
+                    adapter.notifyDataSetChanged();
                     return true;
                 default:
                     return false;
@@ -134,15 +136,15 @@ public class VideoFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        setVideoViewModel(
-                ViewModelProviders.of(
-                        this,
-                        new VideoViewModelFactory(
-                                this.getActivity().getApplication(),
-                                repository))
-                        .get(VideoViewModel.class)
-        );
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
 
+        // TODO replace with non-deprecated version
+        //noinspection deprecation
+        setVideoViewModel(ViewModelProviders.of(
+                this, new VideoViewModelFactory(activity.getApplication(), repository)).get(VideoViewModel.class));
     }
 
     @Override
@@ -170,7 +172,12 @@ public class VideoFragment extends Fragment {
                     videoViewModel,
                     transferCallback);
             recyclerView.setAdapter(adapter);
-            videoViewModel.getVideos().observe(getActivity(), videos -> adapter.setVideos(videos));
+
+            FragmentActivity activity = getActivity();
+            if (activity == null) {
+                return null;
+            }
+            videoViewModel.getVideos().observe(activity, videos -> adapter.setVideos(videos));
 
             ItemKeyProvider<Long> videoKeyProvider = new ItemKeyProvider<Long>(ItemKeyProvider.SCOPE_MAPPED) {
                 @Override
@@ -193,7 +200,7 @@ public class VideoFragment extends Fragment {
                     StorageStrategy.createLongStorage())
                     .withSelectionPredicate(SelectionPredicates.createSelectAnything())
                     .build();
-            tracker.addObserver(new SelectionTracker.SelectionObserver() {
+            tracker.addObserver(new SelectionTracker.SelectionObserver<Long>() {
                 @Override
                 public void onSelectionChanged() {
                     super.onSelectionChanged();
@@ -212,7 +219,7 @@ public class VideoFragment extends Fragment {
 
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         if (context instanceof OnListFragmentInteractionListener) {

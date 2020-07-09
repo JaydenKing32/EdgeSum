@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +97,7 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
 
     void uploadVideos(Selection<Long> positions) {
         S3Uploader s3 = new S3Uploader();
+        Log.v(TAG, String.format("List size: %d", positions.size()));
 
         for (Long pos : positions) {
             Video video = videos.get(pos.intValue());
