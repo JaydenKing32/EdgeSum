@@ -19,25 +19,28 @@ class Video:
 
 
 class Summarisation:
-    def __init__(self, log_dir: str, master: str, devices: Dict[str, Dict[str, Video]], videos: Dict[str, Video],
-                 schedule: str = None, seg_num: int = None, algorithm: str = None):
+    def __init__(self, log_dir: str, master: str, devices: Dict[str, Dict[str, Video]], videos: Dict[str, Video]):
         self.log_dir = log_dir
         self.master = master
         self.master_path = "{}.log".format(os.path.join(self.log_dir, self.master))
         self.devices = devices
         self.videos = videos
-        self.schedule = schedule
-        self.seg_num = seg_num
+        self.schedule = None
+        self.seg_num = None
         self.nodes = len([log for log in os.listdir(self.log_dir) if log.endswith(".log")])
-        self.algorithm = algorithm
-        self.time = get_total_time(self.master_path)
+        self.algorithm = None
+        self.dash_down_time = None
+        self.down_time = None
+        self.sum_time = None
+        self.return_time = None
+        self.total_time = get_total_time(self.master_path)
 
     def get_master_short_name(self) -> str:
         return self.master[-4:]
 
     def get_time_string(self) -> str:
         return "{} ({:.11})".format(
-            self.time.total_seconds(), str(self.time))
+            self.total_time.total_seconds(), str(self.total_time))
 
     def get_sub_log_dir(self) -> str:
         i = self.log_dir.index(os.path.sep) + 1
@@ -215,10 +218,16 @@ def make_offline_spreadsheet(log_dir: str, runs: List[Summarisation], out_name: 
                     for video in videos.values():
                         writer.writerow([video.name, video.dash_down_time, video.sum_time])
 
+                total_dash_down_time = sum(v.dash_down_time for v in videos.values())
+                total_sum_time = sum(v.sum_time for v in videos.values())
+
+                run.dash_down_time = total_dash_down_time
+                run.sum_time = total_sum_time
+
                 writer.writerow([
                     "Total",
-                    "{:.3f}".format(sum(v.dash_down_time for v in videos.values())),
-                    "{:.3f}".format(sum(v.sum_time for v in videos.values()))
+                    "{:.3f}".format(run.dash_down_time),
+                    "{:.3f}".format(run.sum_time)
                 ])
                 writer.writerow(["Actual total time", run.get_time_string()])
 
@@ -259,22 +268,23 @@ def make_spreadsheet(run: Summarisation, out: str):
             "Dir: {}".format(run.get_sub_log_dir())
         ])
 
-        for device_name, video_dict in devices.items():
-            writer.writerow(["Device: {}".format(device_name)])
-
-            if not video_dict:
-                writer.writerow(["Did not summarise any videos"])
-                continue
-
+        # Cannot cleanly separate videos between devices when segmentation is used
+        if run.seg_num > 1:
             writer.writerow([
                 "Filename",
-                "Download Time (s)",
+                "Download time (s)",
                 "Transfer time (s)",
                 "Return time (s)",
                 "Summarisation time (s)"
             ])
 
-            for video in video_dict.values():
+            seen_videos = []
+
+            for video in run.videos.values():
+                if video in seen_videos:
+                    continue
+                seen_videos.append(video)
+
                 writer.writerow([
                     video.name,
                     "{:.3f}".format(video.dash_down_time),
@@ -282,32 +292,79 @@ def make_spreadsheet(run: Summarisation, out: str):
                     "{:.3f}".format(video.return_time) if video.return_time != 0 else "n/a",
                     "{:.3f}".format(video.sum_time)
                 ])
-            total_dash_down_time = sum(v.dash_down_time for v in video_dict.values())
-            total_down_time = sum(v.down_time for v in video_dict.values())
-            total_return_time = sum(v.return_time for v in video_dict.values())
-            total_sum_time = sum(v.sum_time for v in video_dict.values())
 
-            if len(video_dict) > 1:
-                writer.writerow([
-                    "Total",
-                    "{:.3f}".format(total_dash_down_time),
-                    "{:.3f}".format(total_down_time) if total_down_time != 0 else "n/a",
-                    "{:.3f}".format(total_return_time),
-                    "{:.3f}".format(total_sum_time)
-                ])
-        total_dash_down_time = sum(v.dash_down_time for videos in devices.values() for v in videos.values())
-        total_down_time = sum(v.down_time for videos in devices.values() for v in videos.values())
-        total_return_time = sum(v.return_time for videos in devices.values() for v in videos.values())
-        total_sum_time = sum(v.sum_time for videos in devices.values() for v in videos.values())
+            total_dash_down_time = sum(v.dash_down_time for v in seen_videos)
+            total_down_time = sum(v.down_time for v in seen_videos)
+            total_return_time = sum(v.return_time for v in seen_videos)
+            total_sum_time = sum(v.sum_time for v in seen_videos)
 
-        if sum(1 for device in devices.values() if device) > 1:
+            run.dash_down_time = total_dash_down_time
+            run.down_time = total_down_time
+            run.return_time = total_return_time
+            run.sum_time = total_sum_time
+
             writer.writerow([
-                "Combined total",
+                "Total",
                 "{:.3f}".format(total_dash_down_time),
                 "{:.3f}".format(total_down_time) if total_down_time != 0 else "n/a",
-                "{:.3f}".format(total_return_time),
+                "{:.3f}".format(total_return_time) if total_down_time != 0 else "n/a",
                 "{:.3f}".format(total_sum_time)
             ])
+        else:
+            for device_name, video_dict in devices.items():
+                writer.writerow(["Device: {}".format(device_name)])
+
+                if not video_dict:
+                    writer.writerow(["Did not summarise any videos"])
+                    continue
+
+                writer.writerow([
+                    "Filename",
+                    "Download time (s)",
+                    "Transfer time (s)",
+                    "Return time (s)",
+                    "Summarisation time (s)"
+                ])
+
+                for video in video_dict.values():
+                    writer.writerow([
+                        video.name,
+                        "{:.3f}".format(video.dash_down_time),
+                        "{:.3f}".format(video.down_time) if video.down_time != 0 else "n/a",
+                        "{:.3f}".format(video.return_time) if video.return_time != 0 else "n/a",
+                        "{:.3f}".format(video.sum_time)
+                    ])
+                total_dash_down_time = sum(v.dash_down_time for v in video_dict.values())
+                total_down_time = sum(v.down_time for v in video_dict.values())
+                total_return_time = sum(v.return_time for v in video_dict.values())
+                total_sum_time = sum(v.sum_time for v in video_dict.values())
+
+                if len(video_dict) > 1:
+                    writer.writerow([
+                        "Total",
+                        "{:.3f}".format(total_dash_down_time),
+                        "{:.3f}".format(total_down_time) if total_down_time != 0 else "n/a",
+                        "{:.3f}".format(total_return_time),
+                        "{:.3f}".format(total_sum_time)
+                    ])
+            grand_total_dash_down_time = sum(v.dash_down_time for videos in devices.values() for v in videos.values())
+            grand_total_down_time = sum(v.down_time for videos in devices.values() for v in videos.values())
+            grand_total_return_time = sum(v.return_time for videos in devices.values() for v in videos.values())
+            grand_total_sum_time = sum(v.sum_time for videos in devices.values() for v in videos.values())
+
+            run.dash_down_time = grand_total_dash_down_time
+            run.down_time = grand_total_down_time
+            run.return_time = grand_total_return_time
+            run.sum_time = grand_total_sum_time
+
+            if sum(1 for device in devices.values() if device) > 1:
+                writer.writerow([
+                    "Combined total",
+                    "{:.3f}".format(run.dash_down_time),
+                    "{:.3f}".format(run.down_time) if run.down_time != 0 else "n/a",
+                    "{:.3f}".format(run.return_time),
+                    "{:.3f}".format(run.sum_time)
+                ])
         writer.writerow(["Actual total time", run.get_time_string()])
         writer.writerow('')
 
@@ -334,11 +391,27 @@ def edge_spread(root: str, out: str):
     with open(out, 'a', newline='') as csv_f:
         writer = csv.writer(csv_f)
 
-        writer.writerow(["Summary"])
-        writer.writerow(["Dir", "Total time (s)", "Human-readable time"])
+        writer.writerow(["Summary of total times"])
+        writer.writerow([
+            "Dir",
+            "Download time (s)",
+            "Transfer time (s)",
+            "Return time (s)",
+            "Summarisation time (s)",
+            "Actual time (s)",
+            "Human-readable time"
+        ])
 
         for run in runs:
-            writer.writerow([run.get_sub_log_dir(), run.time.total_seconds(), "{:.11}\t".format(str(run.time))])
+            writer.writerow([
+                run.get_sub_log_dir(),
+                run.dash_down_time,
+                run.down_time if run.down_time else "n/a",
+                run.return_time if run.down_time else "n/a",
+                run.sum_time,
+                run.total_time.total_seconds(),
+                "{:.11}\t".format(str(run.total_time))
+            ])
 
 
 edge_spread(args.dir, args.output)
