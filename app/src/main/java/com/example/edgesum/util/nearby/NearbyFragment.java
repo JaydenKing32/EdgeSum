@@ -23,7 +23,6 @@ import com.example.edgesum.event.RemoveByNameEvent;
 import com.example.edgesum.event.RemoveEvent;
 import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
-import com.example.edgesum.util.dashcam.DashDownloadManager;
 import com.example.edgesum.util.dashcam.DownloadTestVideosTask;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.Message.Command;
@@ -45,7 +44,6 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
-import com.jaredrummler.android.device.DeviceName;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -112,20 +110,25 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     private void setLocalName(Context context) {
+        if (localName != null) {
+            return;
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             @SuppressLint("MissingPermission")
             String sn = Build.getSerial();
-            localName = String.format("%s [%s]", DeviceName.getDeviceName(), sn.substring(sn.length() - 4));
-        } else if (localName == null) {
+            localName = String.format("%s [%s]", Build.MODEL, sn.substring(sn.length() - 4));
+        } else {
             SharedPreferences sharedPrefs = context.getSharedPreferences(LOCAL_NAME_KEY, Context.MODE_PRIVATE);
             String uniqueId = sharedPrefs.getString(LOCAL_NAME_KEY, null);
+
             if (uniqueId == null) {
                 uniqueId = RandomStringUtils.randomAlphanumeric(8);
                 SharedPreferences.Editor editor = sharedPrefs.edit();
                 editor.putString(LOCAL_NAME_KEY, uniqueId);
                 editor.apply();
             }
-            localName = String.format("%s [%s]", DeviceName.getDeviceName(), uniqueId);
+            localName = String.format("%s [%s]", Build.MODEL, uniqueId);
         }
     }
 

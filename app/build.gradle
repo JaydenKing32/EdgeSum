@@ -76,7 +76,6 @@ dependencies {
     implementation 'org.apache.commons:commons-collections4:4.4'
 
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'
-    implementation 'com.jaredrummler:android-device-names:2.0.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
