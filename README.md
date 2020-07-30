@@ -1,4 +1,7 @@
-## Installation (terminal commands)
+To download test videos, clone this repository with `git clone --recursive https://github.com/JaydenKing32/EdgeSum.git`.
+If you have already clone this repository then run `git submodule init; git submodule update`.
+
+## AWS Amplify setup
 
 Prerequisites:
 ```

@@ -1,3 +1,3 @@
-[submodule "edgesum-videos"]
-	path = edgesum-videos
-	url = git@gitlab.com:JaydenKing32/edgesum-videos.git
+[submodule "EdgeSum-Videos"]
+	path = EdgeSum-Videos
+	url = git@github.com:JaydenKing32/EdgeSum-Videos.git
