@@ -1,20 +1,20 @@
 {
-    "dev": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-edgesum-dev-213655-authRole",
-            "UnauthRoleArn": "arn:aws:iam::960905323149:role/amplify-edgesum-dev-213655-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::960905323149:role/amplify-edgesum-dev-213655-authRole",
-            "Region": "ap-southeast-2",
-            "DeploymentBucketName": "amplify-edgesum-dev-213655-deployment",
-            "UnauthRoleName": "amplify-edgesum-dev-213655-unauthRole",
-            "StackName": "amplify-edgesum-dev-213655",
-            "StackId": "arn:aws:cloudformation:ap-southeast-2:960905323149:stack/amplify-edgesum-dev-213655/209ec080-3395-11ea-b14e-026f52927b4e",
-            "AmplifyAppId": "d15vzhhdo958o9"
-        },
-        "categories": {
-            "auth": {
-                "edgesumaaa81878": {}
-            }
-        }
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-edgesum-dev-171352-authRole",
+      "UnauthRoleArn": "arn:aws:iam::960905323149:role/amplify-edgesum-dev-171352-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::960905323149:role/amplify-edgesum-dev-171352-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-edgesum-dev-171352-deployment",
+      "UnauthRoleName": "amplify-edgesum-dev-171352-unauthRole",
+      "StackName": "amplify-edgesum-dev-171352",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:960905323149:stack/amplify-edgesum-dev-171352/9c2e77b0-8ec3-11eb-9c1d-064fe573198c",
+      "AmplifyAppId": "dl62q6r7da6u0"
+    },
+    "categories": {
+      "auth": {
+        "edgesum4de79f1e": {}
+      }
     }
+  }
 }

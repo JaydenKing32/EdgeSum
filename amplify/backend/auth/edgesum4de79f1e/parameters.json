@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "edgesumaaa81878_identitypool_aaa81878",
+    "identityPoolName": "edgesum4de79f1e_identitypool_4de79f1e",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "edgesuaaa81878",
-    "userPoolName": "edgesumaaa81878_userpool_aaa81878",
+    "resourceNameTruncated": "edgesu4de79f1e",
+    "userPoolName": "edgesum4de79f1e_userpool_4de79f1e",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -20,7 +20,7 @@
     "requiredAttributes": [
         "email"
     ],
-    "userpoolClientGenerateSecret": true,
+    "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
         "email"
@@ -28,9 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "edgesuaaa81878_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "edgesu4de79f1e_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "edgesumaaa81878",
+    "sharedId": "4de79f1e",
+    "resourceName": "edgesum4de79f1e",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -49,5 +50,7 @@
         "email"
     ],
     "userPoolGroupList": [],
+    "serviceName": "Cognito",
+    "usernameCaseSensitive": false,
     "dependsOn": []
 }

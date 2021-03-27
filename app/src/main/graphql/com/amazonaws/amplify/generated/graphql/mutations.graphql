@@ -7,6 +7,8 @@ mutation CreateTodo(
     id
     name
     description
+    createdAt
+    updatedAt
   }
 }
 mutation UpdateTodo(
@@ -17,6 +19,8 @@ mutation UpdateTodo(
     id
     name
     description
+    createdAt
+    updatedAt
   }
 }
 mutation DeleteTodo(
@@ -27,5 +31,7 @@ mutation DeleteTodo(
     id
     name
     description
+    createdAt
+    updatedAt
   }
 }

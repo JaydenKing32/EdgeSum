@@ -4,6 +4,8 @@ query GetTodo($id: ID!) {
     id
     name
     description
+    createdAt
+    updatedAt
   }
 }
 query ListTodos(
@@ -16,6 +18,8 @@ query ListTodos(
       id
       name
       description
+      createdAt
+      updatedAt
     }
     nextToken
   }
