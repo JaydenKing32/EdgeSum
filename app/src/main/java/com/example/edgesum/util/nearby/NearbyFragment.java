@@ -76,6 +76,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     private static final String SERVICE_ID = "com.example.edgesum";
     private static final String LOCAL_NAME_KEY = "LOCAL_NAME";
     private static final Algorithm DEFAULT_ALGORITHM = Algorithm.best;
+    private static final String MESSAGE_SEPARATOR = ":";
     private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
     private final Queue<Message> transferQueue = new LinkedList<>();
     private final Queue<Endpoint> endpointQueue = new LinkedList<>();
@@ -93,6 +94,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     protected String localName = null;
 
     private int transferCount = 0;
+    @SuppressWarnings("unused")
     private OnFragmentInteractionListener listener;
 
     @Override
@@ -606,11 +608,10 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     private void nextTransferOrQuickReturn(Context context, String toEndpointId) {
-        boolean quickReturn = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(getString(R.string.scheduling_algorithm_key), "")
-                .equals(getString(R.string.simple_return_algorithm_key));
+        String schedulingAlgorithm = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(getString(R.string.scheduling_algorithm_key), "");
 
-        if (quickReturn) {
+        if (schedulingAlgorithm != null && schedulingAlgorithm.equals(getString(R.string.simple_return_algorithm_key))) {
             Log.v(TAG, String.format("Quick return to %s", discoveredEndpoints.get(toEndpointId)));
             nextTransferTo(toEndpointId);
         } else {
@@ -671,12 +672,13 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         String bytesMessage;
         if (Message.isSummarise(message.command)) {
             SummariserPrefs prefs = SummariserPrefs.extractPreferences(context);
-            bytesMessage = String.format("%s:%s:%s:%s_%s_%s_%s",
-                    message.command, filePayload.getId(), uri.getLastPathSegment(),
-                    prefs.noise, prefs.duration, prefs.quality, prefs.speed
-            );
+            String summariserPrefsString = String.format("%s_%s_%s_%s",
+                    prefs.noise, prefs.duration, prefs.quality, prefs.speed);
+            bytesMessage = String.join(MESSAGE_SEPARATOR, message.command.toString(),
+                    Long.toString(filePayload.getId()), uri.getLastPathSegment(), summariserPrefsString);
         } else {
-            bytesMessage = String.format("%s:%s:%s", message.command, filePayload.getId(), uri.getLastPathSegment());
+            bytesMessage = String.join(MESSAGE_SEPARATOR, message.command.toString(),
+                    Long.toString(filePayload.getId()), uri.getLastPathSegment());
         }
 
         // Send the filename message as a bytes payload.
@@ -691,7 +693,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     @Override
     public void sendCommandMessageToAll(Command command, String filename) {
-        String commandMessage = String.format("%s:%s", command, filename);
+        String commandMessage = String.join(MESSAGE_SEPARATOR, command.toString(), filename);
         Payload filenameBytesPayload = Payload.fromBytes(commandMessage.getBytes(UTF_8));
 
         // Only sent from worker to master, might be better to make bidirectional
@@ -704,7 +706,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
     @Override
     public void sendCommandMessage(Command command, String filename, String toEndpointId) {
-        String commandMessage = String.format("%s:%s", command, filename);
+        String commandMessage = String.join(MESSAGE_SEPARATOR, command.toString(), filename);
         Payload filenameBytesPayload = Payload.fromBytes(commandMessage.getBytes(UTF_8));
         connectionsClient.sendPayload(toEndpointId, filenameBytesPayload);
     }
@@ -765,6 +767,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     }
 
     public interface OnFragmentInteractionListener {
+        @SuppressWarnings("unused")
         void onFragmentInteraction(String name);
     }
 
@@ -874,7 +877,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
             if (payload.getType() == Payload.Type.BYTES) {
                 String message = new String(Objects.requireNonNull(payload.asBytes()), UTF_8);
-                String[] parts = message.split(":");
+                String[] parts = message.split(MESSAGE_SEPARATOR);
                 long payloadId;
                 String videoName;
                 String videoPath;
@@ -963,7 +966,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
 
         /**
          * Extracts the payloadId and filename from the message and stores it in the
-         * filePayloadFilenames map. The format is command:payloadId:filename:preferences.
+         * filePayloadFilenames map. The format is command:payloadId:filename:preferences
+         * where ":" is MESSAGE_SEPARATOR.
          */
         private long addPayloadFilename(String[] message) {
             Command command = Command.valueOf(message[0]);
