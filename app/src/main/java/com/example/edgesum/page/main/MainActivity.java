@@ -56,19 +56,20 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_raw_footage:
-                    Log.v(TAG, "Navigation raw button clicked");
-                    showNewFragmentAndHideOldFragment(rawFootageFragment);
-                    return true;
-                case R.id.navigation_processing:
-                    Log.v(TAG, "Navigation processing button clicked");
-                    showNewFragmentAndHideOldFragment(processingFragment);
-                    return true;
-                case R.id.navigation_summarised_videos:
-                    Log.v(TAG, "Navigation summarised button clicked");
-                    showNewFragmentAndHideOldFragment(summarisedVideoFragment);
-                    return true;
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.navigation_raw_footage) {
+                Log.v(TAG, "Navigation raw button clicked");
+                showNewFragmentAndHideOldFragment(rawFootageFragment);
+                return true;
+            } else if (itemId == R.id.navigation_processing) {
+                Log.v(TAG, "Navigation processing button clicked");
+                showNewFragmentAndHideOldFragment(processingFragment);
+                return true;
+            } else if (itemId == R.id.navigation_summarised_videos) {
+                Log.v(TAG, "Navigation summarised button clicked");
+                showNewFragmentAndHideOldFragment(summarisedVideoFragment);
+                return true;
             }
             return false;
         }
@@ -171,35 +172,35 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // This method gets called when a option in the App bar gets selected.
-
         // Define logic on how to handle each option item selected.
-        switch (item.getItemId()) {
-            case R.id.action_connect:
-                Log.v(TAG, "Connect button clicked");
-                showNewFragmentAndHideOldFragment(connectionFragment);
-                return true;
-            case R.id.action_download:
-                Log.v(TAG, "Download button clicked");
-                Toast.makeText(this, "Starting download", Toast.LENGTH_SHORT).show();
-                DownloadAllTask downloadAllTask = new DownloadAllTask(this);
-                downloadAllTask.execute(DashName.BLACKVUE);
-                return true;
-            case R.id.action_clean:
-                Log.v(TAG, "Clean button clicked");
-                Toast.makeText(this, "Cleaning video directories", Toast.LENGTH_SHORT).show();
-                cleanVideoDirectories();
-                return true;
-            case R.id.action_settings:
-                Log.v(TAG, "Setting button clicked");
-                goToSettingsActivity();
-                return true;
-            case R.id.action_logout:
-                Log.v(TAG, "Logout button clicked");
-                signOut();
-                Intent i = new Intent(MainActivity.this, AuthenticationActivity.class);
-                startActivity(i);
-                finish();
-                return true;
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.action_connect) {
+            Log.v(TAG, "Connect button clicked");
+            showNewFragmentAndHideOldFragment(connectionFragment);
+            return true;
+        } else if (itemId == R.id.action_download) {
+            Log.v(TAG, "Download button clicked");
+            Toast.makeText(this, "Starting download", Toast.LENGTH_SHORT).show();
+            DownloadAllTask downloadAllTask = new DownloadAllTask(this);
+            downloadAllTask.execute(DashName.BLACKVUE);
+            return true;
+        } else if (itemId == R.id.action_clean) {
+            Log.v(TAG, "Clean button clicked");
+            Toast.makeText(this, "Cleaning video directories", Toast.LENGTH_SHORT).show();
+            cleanVideoDirectories();
+            return true;
+        } else if (itemId == R.id.action_settings) {
+            Log.v(TAG, "Setting button clicked");
+            goToSettingsActivity();
+            return true;
+        } else if (itemId == R.id.action_logout) {
+            Log.v(TAG, "Logout button clicked");
+            signOut();
+            Intent i = new Intent(MainActivity.this, AuthenticationActivity.class);
+            startActivity(i);
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
