@@ -25,6 +25,7 @@ import com.example.edgesum.event.Type;
 import com.example.edgesum.model.Video;
 import com.example.edgesum.util.dashcam.DownloadTestVideosTask;
 import com.example.edgesum.util.file.FileManager;
+import com.example.edgesum.util.hardware.HardwareInfo;
 import com.example.edgesum.util.nearby.Message.Command;
 import com.example.edgesum.util.video.FfmpegTools;
 import com.example.edgesum.util.video.VideoManager;
@@ -44,6 +45,7 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
+import com.google.gson.Gson;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -76,7 +78,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     private static final String SERVICE_ID = "com.example.edgesum";
     private static final String LOCAL_NAME_KEY = "LOCAL_NAME";
     private static final Algorithm DEFAULT_ALGORITHM = Algorithm.best;
-    private static final String MESSAGE_SEPARATOR = ":";
+    private static final String MESSAGE_SEPARATOR = "!";
     private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
     private final Queue<Message> transferQueue = new LinkedList<>();
     private final Queue<Endpoint> endpointQueue = new LinkedList<>();
@@ -84,6 +86,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     // Dashcam isn't able to handle concurrent downloads, leads to a very high rate of download errors.
     // Just use a single thread for downloading
     private final ScheduledExecutorService downloadTaskExecutor = Executors.newSingleThreadScheduledExecutor();
+    private final Gson gson = new Gson();
 
     // https://stackoverflow.com/questions/36351417/how-to-inflate-hashmapstring-listitems-into-the-recyclerview
     // https://stackoverflow.com/questions/50809619/on-the-adapter-class-how-to-get-key-and-value-from-hashmap
@@ -711,6 +714,39 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         connectionsClient.sendPayload(toEndpointId, filenameBytesPayload);
     }
 
+    void sendHardwareInfo(Context context) {
+        HardwareInfo hwi = new HardwareInfo(context);
+        String hwiMessage = String.join(MESSAGE_SEPARATOR, Command.HW_INFO.toString(), gson.toJson(hwi));
+        Payload messageBytesPayload = Payload.fromBytes(hwiMessage.getBytes(UTF_8));
+        Log.d(TAG, String.format("Sending hardware information: \n%s", hwi));
+
+        // Only sent from worker to master, might be better to make bidirectional
+        List<String> connectedEndpointIds = discoveredEndpoints.values().stream()
+                .filter(e -> e.connected)
+                .map(e -> e.id)
+                .collect(Collectors.toList());
+        connectionsClient.sendPayload(connectedEndpointIds, messageBytesPayload);
+    }
+
+    void requestHardwareInfo(String toEndpoint) {
+        Log.d(TAG, String.format("Requesting hardware information from %s", toEndpoint));
+        String hwrMessage = String.format("%s%s", Command.HW_INFO_REQUEST, MESSAGE_SEPARATOR);
+        Payload messageBytesPayload = Payload.fromBytes(hwrMessage.getBytes(UTF_8));
+        connectionsClient.sendPayload(toEndpoint, messageBytesPayload);
+    }
+
+    void requestHardwareInfoAll() {
+        Log.d(TAG, "Requesting hardware information from all workers");
+        String hwrMessage = String.format("%s%s", Command.HW_INFO_REQUEST, MESSAGE_SEPARATOR);
+        Payload messageBytesPayload = Payload.fromBytes(hwrMessage.getBytes(UTF_8));
+
+        List<String> connectedEndpointIds = discoveredEndpoints.values().stream()
+                .filter(e -> e.connected)
+                .map(e -> e.id)
+                .collect(Collectors.toList());
+        connectionsClient.sendPayload(connectedEndpointIds, messageBytesPayload);
+    }
+
     @Override
     public boolean isConnected() {
         return discoveredEndpoints.values().stream().anyMatch(e -> e.connected);
@@ -956,6 +992,13 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         }
 
                         nextTransferOrQuickReturn(context, endpointId);
+                        break;
+                    case HW_INFO:
+                        HardwareInfo hwi = gson.fromJson(parts[1], HardwareInfo.class);
+                        Log.i(TAG, String.format("Received hardware information: \n%s", hwi));
+                        break;
+                    case HW_INFO_REQUEST:
+                        sendHardwareInfo(context);
                         break;
                 }
             } else if (payload.getType() == Payload.Type.FILE) {

@@ -76,26 +76,26 @@ public class VideoFragment extends Fragment {
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.send:
-                    if (actionButton.equals(ActionButton.ADD)) {
-                        adapter.sendVideos(tracker.getSelection());
-                    } else {
-                        adapter.uploadVideos(tracker.getSelection());
-                    }
+            int itemId = item.getItemId();
 
-                    mode.finish();
-                    return true;
-                case R.id.select_all:
-                    for (long i = 0L; i < adapter.getItemCount(); i++) {
-                        tracker.select(i);
-                    }
+            if (itemId == R.id.send) {
+                if (actionButton.equals(ActionButton.ADD)) {
+                    adapter.sendVideos(tracker.getSelection());
+                } else {
+                    adapter.uploadVideos(tracker.getSelection());
+                }
 
-                    adapter.notifyDataSetChanged();
-                    return true;
-                default:
-                    return false;
+                mode.finish();
+                return true;
+            } else if (itemId == R.id.select_all) {
+                for (long i = 0L; i < adapter.getItemCount(); i++) {
+                    tracker.select(i);
+                }
+
+                adapter.notifyDataSetChanged();
+                return true;
             }
+            return false;
         }
 
         @Override

@@ -5,9 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,9 +45,9 @@ public class ConnectionFragment extends NearbyFragment {
         TextView locName = rootView.findViewById(R.id.local_name);
         locName.setText(localName);
 
-        Switch discoverSwitch = rootView.findViewById(R.id.discover_switch);
-        Switch advertiseSwitch = rootView.findViewById(R.id.advertise_switch);
-        Switch autoSendSwitch = rootView.findViewById(R.id.auto_send_switch);
+        SwitchCompat discoverSwitch = rootView.findViewById(R.id.discover_switch);
+        SwitchCompat advertiseSwitch = rootView.findViewById(R.id.advertise_switch);
+        SwitchCompat autoSendSwitch = rootView.findViewById(R.id.auto_send_switch);
 
         discoverSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {

@@ -17,7 +17,9 @@ public class Message {
         SUMMARISE_SEGMENT, // Summarise the transferred file as a video segment
         COMPLETE, // Completed file transfer
         RETURN, // Returning summarised file
-        NO_ACTIVITY
+        NO_ACTIVITY, // Video contained no activity
+        HW_INFO, // Message contains hardware information
+        HW_INFO_REQUEST // Requesting hardware information
     }
 
     static boolean isSummarise(Command command) {

@@ -31,7 +31,7 @@
             app:layout_constraintStart_toEndOf="@+id/local_name_label"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/discover_switch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/local_name" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/advertise_switch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/discover_switch" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/auto_send_switch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
