@@ -78,7 +78,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
     private static final String SERVICE_ID = "com.example.edgesum";
     private static final String LOCAL_NAME_KEY = "LOCAL_NAME";
     private static final Algorithm DEFAULT_ALGORITHM = Algorithm.best;
-    private static final String MESSAGE_SEPARATOR = "!";
+    private static final String MESSAGE_SEPARATOR = "~";
     private final PayloadCallback payloadCallback = new ReceiveFilePayloadCallback();
     private final Queue<Message> transferQueue = new LinkedList<>();
     private final Queue<Endpoint> endpointQueue = new LinkedList<>();
