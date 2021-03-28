@@ -4,12 +4,11 @@
 trap 'trap - SIGTERM && kill -- -$$' SIGINT SIGTERM EXIT
 
 usage() {
-    printf "Usage: ./logging.sh [-s SERIAL_NUMBER] [-v V|D|I|W|E|F|S]\n"
+    printf "Usage: ./logging.sh [-s SERIAL_NUMBER]\n"
     exit 1
 }
 
 serials=""
-verbosity=""
 
 while :; do
     case $1 in
@@ -19,18 +18,6 @@ while :; do
             usage
         else
             serials="${2}"
-            shift 2
-        fi
-        ;;
-    -v)
-        if [[ -z "${2}" ]]; then
-            printf "ERROR: No verbosity specified.\n"
-            usage
-        elif [[ ! ${2} =~ ^[VDIWEFS]$ ]]; then
-            printf "ERROR: Invalid ADB logcat verbosity: %s\n" "${2}"
-            usage
-        else
-            verbosity="${2}"
             shift 2
         fi
         ;;
@@ -58,13 +45,13 @@ if [[ -z ${serials} ]]; then
     # Get `adb.exe devices` output, remove \r and "device", skip first line
     serials=$(tail -n +2 <<<"$(adb.exe devices | sed -r 's/(emulator.*)?(device)?\r$//')")
 fi
-if [[ -z ${verbosity} ]]; then
-    verbosity="W"
-fi
 
 for serial in ${serials}; do
+    # Get PID of EdgeSum app in order to filter out logs from other processes
     pid="$(adb.exe -s "${serial}" shell ps | awk '/com\.example\.edgesum/ {print $2}')"
-    adb.exe -s "${serial}" logcat --pid "${pid}" "*:${verbosity}" >"${out_dir}/${serial}.log" &
+    # Filter out non-EdgeSum logs and only keep log messages prefixed with "!"
+    adb.exe -s "${serial}" logcat --pid "${pid}" | grep -P '^\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\s+\d+\s+\d+ \w !' >"${out_dir}/${serial}.log" &
+    # Save a copy of the verbose output
     adb.exe -s "${serial}" logcat --pid "${pid}" >"${verbose_dir}/${serial}.log" &
 done
 
