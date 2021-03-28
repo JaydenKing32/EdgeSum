@@ -130,7 +130,7 @@ public class FfmpegTools {
         if (vidPaths.size() == 1) { // Only one video, no need to merge so just copy
             try {
                 String vidPath = vidPaths.get(0);
-                Log.w(TAG, String.format("Single segment returned, duration of %s: %.2f",
+                Log.i(String.format("!%s", TAG), String.format("Single segment returned, duration of %s: %.2f",
                         baseName, getDuration(vidPath)));
                 FileManager.copy(new File(vidPath), new File(outPath));
                 return true;
@@ -152,7 +152,7 @@ public class FfmpegTools {
         ));
 
         FfmpegTools.executeFfmpeg(ffmpegArgs);
-        Log.w(TAG, String.format("Merged duration of %s: %.2f", baseName, getDuration(outPath)));
+        Log.i(String.format("!%s", TAG), String.format("Merged duration of %s: %.2f", baseName, getDuration(outPath)));
         return true;
     }
 

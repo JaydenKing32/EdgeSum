@@ -49,7 +49,7 @@ public class DashDownloadManager {
         String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
 
         Video video = VideoManager.getVideoFromPath(context, filePath);
-        Log.w(TAG, String.format("Successfully downloaded %s in %ss", filename, time));
+        Log.i(String.format("!%s", TAG), String.format("Successfully downloaded %s in %ss", filename, time));
         downloadCallback.accept(video);
     }
 }

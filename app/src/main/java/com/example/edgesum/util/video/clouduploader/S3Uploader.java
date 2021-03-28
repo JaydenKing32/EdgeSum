@@ -80,7 +80,7 @@ public class S3Uploader implements CloudUploader {
                         if (videoPaths == null) {
                             String time = DurationFormatUtils.formatDuration(
                                     Duration.between(start, Instant.now()).toMillis(), "ss.SSS");
-                            Log.w(TAG, String.format("Uploaded %s in %ss", name, time));
+                            Log.i(String.format("!%s", TAG), String.format("Uploaded %s in %ss", name, time));
                         } else {
                             downloadedVideoPaths.add(path);
                             List<String> toDownload = new ArrayList<>(
@@ -89,7 +89,7 @@ public class S3Uploader implements CloudUploader {
                             if (toDownload.size() == 0) {
                                 String time = DurationFormatUtils.formatDuration(
                                         Duration.between(start, Instant.now()).toMillis(), "ss.SSS");
-                                Log.w(TAG, String.format("All uploads completed in %ss", time));
+                                Log.i(String.format("!%s", TAG), String.format("All uploads completed in %ss", time));
                             }
                         }
                     }

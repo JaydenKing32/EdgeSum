@@ -64,7 +64,7 @@ class Summariser {
         if (activeTimes == null) {
             // Testing purposes: Video file is completely active, so just copy it
             try {
-                Log.w(TAG, "Whole video is active");
+                Log.i(String.format("!%s", TAG), "Whole video is active");
                 FileManager.copy(new File(inPath), new File(getOutPath()));
                 return printResult(start, true, -1);
             } catch (IOException e) {
@@ -76,13 +76,13 @@ class Summariser {
 
         if (activeCount == 0) {
             // Video file is completely inactive, so ignore it, don't copy it
-            Log.w(TAG, "No activity detected");
+            Log.i(String.format("!%s", TAG), "No activity detected");
             return printResult(start, false, 0);
         }
 
         // One or more active scenes found, extract them and combine them into a summarised video
         ArrayList<String> ffmpegArgs = getSummarisationArguments(activeTimes);
-        Log.w(TAG, String.format("%d active sections found", activeCount));
+        Log.i(String.format("!%s", TAG), String.format("%d active sections found", activeCount));
 
         FfmpegTools.executeFfmpeg(ffmpegArgs);
         return printResult(start, true, activeCount);
@@ -108,7 +108,7 @@ class Summariser {
         result.add(String.format("speed: %s", speed));
         result.add(String.format(Locale.ENGLISH, "freeze duration: %.2f", duration));
 
-        Log.w(TAG, result.toString());
+        Log.i(String.format("!%s", TAG), result.toString());
         return isOutVid;
     }
 

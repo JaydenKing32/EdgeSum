@@ -271,15 +271,15 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         int delay = pref.getInt(getString(R.string.download_delay_key), defaultDelay);
 
         printPreferences(true);
-        Log.w(TAG, String.format("Download delay: %ds", delay));
-        Log.w(TAG, "Started downloading from dashcam");
+        Log.i(String.format("!%s", TAG), String.format("Download delay: %ds", delay));
+        Log.i(String.format("!%s", TAG), "Started downloading from dashcam");
 
         downloadTaskExecutor.scheduleWithFixedDelay(new DownloadTestVideosTask(
                 this, context), 0, delay, TimeUnit.SECONDS);
     }
 
     public void stopDashDownload() {
-        Log.w(TAG, "Stopped downloading from dashcam");
+        Log.i(String.format("!%s", TAG), "Stopped downloading from dashcam");
         downloadTaskExecutor.shutdown();
     }
 
@@ -373,7 +373,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         prefMessage.add(String.format("Speed: %s", sumPref.speed));
         prefMessage.add(String.format(Locale.ENGLISH, "Freeze duration: %.2f", sumPref.duration));
 
-        Log.w(TAG, prefMessage.toString());
+        Log.i(String.format("!%s", TAG), prefMessage.toString());
     }
 
     private int splitAndQueue(String videoPath, int segNum) {
@@ -829,7 +829,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             Log.e(TAG, String.format("Could not create file payload for %s", message.video));
             return;
         }
-        Log.w(TAG, String.format("Sending %s to %s", message.video.getName(), toEndpoint.name));
+        Log.i(String.format("!%s", TAG), String.format("Sending %s to %s", message.video.getName(), toEndpoint.name));
 
         // Construct a message mapping the ID of the file payload to the desired filename and command.
         // Also include summarisation preferences for summarisation commands
@@ -1206,7 +1206,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
             if (filePayload != null && filename != null && command != null) {
                 long duration = Duration.between(startTimes.remove(payloadId), Instant.now()).toMillis();
                 String time = DurationFormatUtils.formatDuration(duration, "ss.SSS");
-                Log.w(TAG, String.format("Completed downloading %s from %s in %ss",
+                Log.i(String.format("!%s", TAG), String.format("Completed downloading %s from %s in %ss",
                         filename, discoveredEndpoints.get(fromEndpointId), time));
 
                 completedFilePayloads.remove(payloadId);
