@@ -2,6 +2,7 @@ package com.example.edgesum.page.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.selection.Selection;
 import androidx.recyclerview.selection.SelectionTracker;
@@ -34,6 +36,7 @@ import com.example.edgesum.util.video.viewholderprocessor.VideoViewHolderProcess
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -76,24 +79,62 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
 
     void sendVideos(Selection<Long> positions) {
         transferCallback.printPreferences(false);
-        if (transferCallback.isConnected()) {
-            for (Long pos : positions) {
-                transferCallback.addVideo(videos.get(pos.intValue()));
-            }
-            transferCallback.nextTransfer();
-        } else {
-            for (Long pos : positions) {
-                Video video = videos.get(pos.intValue());
-                EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
-                EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
 
-                final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
-                Intent summariseIntent = new Intent(context, SummariserIntentService.class);
-                summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
-                summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
-                summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
-                context.startService(summariseIntent);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean simDownload = pref.getBoolean(context.getString(R.string.enable_download_simulation_key), false);
+        int downloadDelay = pref.getInt(context.getString(R.string.download_simulation_delay_key), 15);
+
+        if (transferCallback.isConnected()) {
+            if (simDownload) {
+                Thread transferDelayThread = new Thread(transferSelectedDelay(positions, downloadDelay));
+                transferDelayThread.start();
+            } else {
+                transferSelected(positions);
             }
+        } else {
+            summariseSelected(positions);
+        }
+    }
+
+    private void transferSelected(Selection<Long> positions) {
+        for (Long pos : positions) {
+            transferCallback.addVideo(videos.get(pos.intValue()));
+        }
+        transferCallback.nextTransfer();
+    }
+
+    private Runnable transferSelectedDelay(Selection<Long> positions, int delay) {
+        // Not safe to concurrently modify recycler view list, better to copy videos first
+        ArrayList<Video> selectedVideos = new ArrayList<>(positions.size());
+        positions.iterator().forEachRemaining(p -> selectedVideos.add(videos.get(p.intValue())));
+
+        return () -> {
+            for (Video video : selectedVideos) {
+                transferCallback.addVideo(video);
+                transferCallback.nextTransfer();
+
+                try {
+                    // Seconds to milliseconds
+                    Thread.sleep(delay * 1000);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, String.format("Thread error: \n%s", e.getMessage()));
+                }
+            }
+        };
+    }
+
+    private void summariseSelected(Selection<Long> positions) {
+        for (Long pos : positions) {
+            Video video = videos.get(pos.intValue());
+            EventBus.getDefault().post(new AddEvent(video, Type.PROCESSING));
+            EventBus.getDefault().post(new RemoveEvent(video, Type.RAW));
+
+            final String output = String.format("%s/%s", FileManager.getSummarisedDirPath(), video.getName());
+            Intent summariseIntent = new Intent(context, SummariserIntentService.class);
+            summariseIntent.putExtra(SummariserIntentService.VIDEO_KEY, video);
+            summariseIntent.putExtra(SummariserIntentService.OUTPUT_KEY, output);
+            summariseIntent.putExtra(SummariserIntentService.TYPE_KEY, SummariserIntentService.LOCAL_TYPE);
+            context.startService(summariseIntent);
         }
     }
 

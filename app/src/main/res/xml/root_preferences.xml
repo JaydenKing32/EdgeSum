@@ -66,6 +66,22 @@
             app:key="@string/fast_scheduling_key"
             app:summary="@string/fast_scheduling_summary"
             app:title="@string/fast_scheduling_title" />
+        <CheckBoxPreference
+            android:id="@+id/enable_download_simulation_preference"
+            android:defaultValue="false"
+            app:key="@string/enable_download_simulation_key"
+            app:summary="@string/enable_download_simulation_summary"
+            app:title="@string/enable_download_simulation_title" />
+        <SeekBarPreference
+            android:id="@+id/simulate_download_delay_preference"
+            android:max="100"
+            app:defaultValue="15"
+            app:dependency="@string/enable_download_simulation_key"
+            app:key="@string/download_simulation_delay_key"
+            app:min="0"
+            app:persistent="true"
+            app:showSeekBarValue="true"
+            app:title="@string/download_simulation_delay_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/video_header">
