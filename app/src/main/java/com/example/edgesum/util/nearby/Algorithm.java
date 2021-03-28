@@ -6,5 +6,10 @@ public enum Algorithm {
     least_busy,
     ordered,
     best_or_local,
-    simple_return
+    simple_return,
+    fastest_cpu,
+    most_cpu_cores,
+    most_ram,
+    most_storage,
+    highest_battery
 }

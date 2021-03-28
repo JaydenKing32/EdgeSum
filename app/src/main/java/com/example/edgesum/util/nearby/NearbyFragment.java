@@ -203,6 +203,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                                 endpoint.connected = true;
                                 deviceAdapter.notifyDataSetChanged();
                             }
+                            requestHardwareInfo(endpointId);
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                             // The connection was rejected by one or both sides.
@@ -502,6 +503,151 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
         return getConnectedEndpoints().stream().min(Comparator.comparing(Endpoint::getJobCount)).orElse(null);
     }
 
+    private Endpoint getFastestCpuEndpoint() {
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        long maxCpuHz = 0;
+        int minJobs = Integer.MAX_VALUE;
+        Endpoint fastest = null;
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (!endpoint.isActive() && endpoint.hardwareInfo.cpuFreq > maxCpuHz) {
+                maxCpuHz = endpoint.hardwareInfo.cpuFreq;
+                fastest = endpoint;
+            }
+        }
+
+        if (fastest != null) {
+            return fastest;
+        }
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (endpoint.hardwareInfo.cpuFreq > maxCpuHz ||
+                    endpoint.hardwareInfo.cpuFreq == maxCpuHz && endpoint.getJobCount() < minJobs) {
+                maxCpuHz = endpoint.hardwareInfo.cpuFreq;
+                minJobs = endpoint.getJobCount();
+                fastest = endpoint;
+            }
+        }
+
+        return fastest;
+    }
+
+    private Endpoint getMaxCpuCoreEndpoint() {
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        int maxCpuCores = 0;
+        int minJobs = Integer.MAX_VALUE;
+        Endpoint result = null;
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (!endpoint.isActive() && endpoint.hardwareInfo.cpuCores > maxCpuCores) {
+                maxCpuCores = endpoint.hardwareInfo.cpuCores;
+                result = endpoint;
+            }
+        }
+
+        if (result != null) {
+            return result;
+        }
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (endpoint.hardwareInfo.cpuCores > maxCpuCores ||
+                    endpoint.hardwareInfo.cpuCores == maxCpuCores && endpoint.getJobCount() < minJobs) {
+                maxCpuCores = endpoint.hardwareInfo.cpuCores;
+                minJobs = endpoint.getJobCount();
+                result = endpoint;
+            }
+        }
+
+        return result;
+    }
+
+    private Endpoint getMaxRamEndpoint() {
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        long maxRam = 0;
+        int minJobs = Integer.MAX_VALUE;
+        Endpoint result = null;
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (!endpoint.isActive() && endpoint.hardwareInfo.availRam > maxRam) {
+                maxRam = endpoint.hardwareInfo.availRam;
+                result = endpoint;
+            }
+        }
+
+        if (result != null) {
+            return result;
+        }
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (endpoint.hardwareInfo.availRam > maxRam ||
+                    endpoint.hardwareInfo.availRam == maxRam && endpoint.getJobCount() < minJobs) {
+                maxRam = endpoint.hardwareInfo.availRam;
+                minJobs = endpoint.getJobCount();
+                result = endpoint;
+            }
+        }
+
+        return result;
+    }
+
+    private Endpoint getMaxStorageEndpoint() {
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        long maxStorage = 0;
+        int minJobs = Integer.MAX_VALUE;
+        Endpoint result = null;
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (!endpoint.isActive() && endpoint.hardwareInfo.availStorage > maxStorage) {
+                maxStorage = endpoint.hardwareInfo.availStorage;
+                result = endpoint;
+            }
+        }
+
+        if (result != null) {
+            return result;
+        }
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (endpoint.hardwareInfo.availStorage > maxStorage ||
+                    endpoint.hardwareInfo.availStorage == maxStorage && endpoint.getJobCount() < minJobs) {
+                maxStorage = endpoint.hardwareInfo.availStorage;
+                minJobs = endpoint.getJobCount();
+                result = endpoint;
+            }
+        }
+
+        return result;
+    }
+
+    private Endpoint getMaxBatteryEndpoint() {
+        List<Endpoint> connectedEndpoints = getConnectedEndpoints();
+        int maxBattery = 0;
+        int minJobs = Integer.MAX_VALUE;
+        Endpoint result = null;
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (!endpoint.isActive() && endpoint.hardwareInfo.batteryLevel > maxBattery) {
+                maxBattery = endpoint.hardwareInfo.batteryLevel;
+                result = endpoint;
+            }
+        }
+
+        if (result != null) {
+            return result;
+        }
+
+        for (Endpoint endpoint : connectedEndpoints) {
+            if (endpoint.hardwareInfo.batteryLevel > maxBattery ||
+                    endpoint.hardwareInfo.batteryLevel == maxBattery && endpoint.getJobCount() < minJobs) {
+                maxBattery = endpoint.hardwareInfo.batteryLevel;
+                minJobs = endpoint.getJobCount();
+                result = endpoint;
+            }
+        }
+
+        return result;
+    }
+
     /**
      * send messages to endpoints in the order that endpoints have completed jobs
      */
@@ -605,6 +751,21 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                 } else {
                     Log.d(TAG, "In nextTransfer with simple_return; transferQueue is too small to start");
                 }
+                break;
+            case fastest_cpu:
+                sendFile(transferQueue.remove(), getFastestCpuEndpoint());
+                break;
+            case most_cpu_cores:
+                sendFile(transferQueue.remove(), getMaxCpuCoreEndpoint());
+                break;
+            case most_ram:
+                sendFile(transferQueue.remove(), getMaxRamEndpoint());
+                break;
+            case most_storage:
+                sendFile(transferQueue.remove(), getMaxStorageEndpoint());
+                break;
+            case highest_battery:
+                sendFile(transferQueue.remove(), getMaxBatteryEndpoint());
                 break;
             default:
         }
@@ -957,6 +1118,7 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                         nextTransferOrQuickReturn(context, endpointId);
                         break;
                     case COMPLETE:
+                        requestHardwareInfo(endpointId);
                         videoName = parts[1];
                         Log.d(TAG, String.format("%s has finished downloading %s", fromEndpoint, videoName));
 
@@ -996,6 +1158,8 @@ public abstract class NearbyFragment extends Fragment implements DeviceCallback,
                     case HW_INFO:
                         HardwareInfo hwi = gson.fromJson(parts[1], HardwareInfo.class);
                         Log.i(TAG, String.format("Received hardware information: \n%s", hwi));
+                        fromEndpoint.hardwareInfo = hwi;
+                        nextTransferOrQuickReturn(context, endpointId);
                         break;
                     case HW_INFO_REQUEST:
                         sendHardwareInfo(context);

@@ -4,6 +4,8 @@ package com.example.edgesum.util.nearby;
 
 import androidx.annotation.NonNull;
 
+import com.example.edgesum.util.hardware.HardwareInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ class Endpoint {
     boolean connected;
     Integer completeCount = 0;
     private final List<String> jobList = new ArrayList<>();
+    HardwareInfo hardwareInfo;
 
     Endpoint(String id, String name, boolean connected) {
         this.id = id;
