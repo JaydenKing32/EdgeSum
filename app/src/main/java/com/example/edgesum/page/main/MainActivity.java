@@ -1,10 +1,8 @@
 package com.example.edgesum.page.main;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,9 +26,9 @@ import com.example.edgesum.page.authentication.AuthenticationActivity;
 import com.example.edgesum.page.setting.SettingsActivity;
 import com.example.edgesum.util.Injection;
 import com.example.edgesum.util.dashcam.DashName;
+import com.example.edgesum.util.dashcam.DownloadAllTask;
 import com.example.edgesum.util.file.FileManager;
 import com.example.edgesum.util.nearby.NearbyFragment;
-import com.example.edgesum.util.dashcam.DownloadAllTask;
 import com.example.edgesum.util.video.summariser.SummariserIntentService;
 import com.example.edgesum.util.video.videoeventhandler.ProcessingVideosEventHandler;
 import com.example.edgesum.util.video.videoeventhandler.RawFootageEventHandler;
@@ -87,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     @Override
     protected void onStart() {
         super.onStart();
-        checkPermissions();
     }
 
     @Override
@@ -224,36 +221,6 @@ public class MainActivity extends AppCompatActivity implements VideoFragment.OnL
     @Override
     public void onListFragmentInteraction(Video item) {
 
-    }
-
-    private void checkPermissions() {
-        final int REQUEST_PERMISSIONS = 1;
-        String[] PERMISSIONS = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.CHANGE_WIFI_STATE,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.READ_PHONE_STATE
-        };
-
-        if (hasPermissions()) {
-            requestPermissions(PERMISSIONS, REQUEST_PERMISSIONS);
-        }
-    }
-
-    private boolean hasPermissions(String... permissions) {
-        if (permissions != null) {
-            for (String permission : permissions) {
-                if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     @Override
